@@ -11,6 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ApiException extends RuntimeException {
 
-	private final Throwable ex;
+	private Throwable ex;
 	private final ResponseCode responseCode;
 }
