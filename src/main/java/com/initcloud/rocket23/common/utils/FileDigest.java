@@ -12,8 +12,7 @@ public class FileDigest {
 		throw new IllegalStateException("Utility class");
 	}
 
-	public static byte[] createChecksum(String filename)
-		throws IOException, NoSuchAlgorithmException {
+	public static byte[] createChecksum(String filename) throws IOException, NoSuchAlgorithmException {
 		InputStream fis = new FileInputStream(filename);
 
 		byte[] buffer = new byte[1024];
@@ -31,8 +30,7 @@ public class FileDigest {
 		return complete.digest();
 	}
 
-	public static String getChecksum(String filename)
-		throws IOException, NoSuchAlgorithmException {
+	public static String getChecksum(String filename) throws IOException, NoSuchAlgorithmException {
 		byte[] b = createChecksum(filename);
 		StringBuilder result = new StringBuilder();
 
