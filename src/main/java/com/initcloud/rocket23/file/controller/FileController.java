@@ -16,20 +16,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FileController {
 
-<<<<<<< HEAD
     private final FileService fileService;
-=======
-    private final FileService firstService;
-    @GetMapping("/first")
-    public Map<String,Object> firstcontroller(){
-        return firstService.getFirstData();
-    }
->>>>>>> #5-uploadfile
+
 
     //벤더추가
     @PostMapping(value = "/file")
-    public ResponseEntity<String> uploadFile(@RequestPart("file")MultipartFile file) throws IllegalStateException, IOException{
-        if(!file.isEmpty()){
+    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) throws IllegalStateException, IOException {
+        if (!file.isEmpty()) {
             file.transferTo(new File(file.getOriginalFilename()));
         }
         return new ResponseEntity<>("", HttpStatus.OK);
