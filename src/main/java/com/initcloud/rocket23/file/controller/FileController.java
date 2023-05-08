@@ -4,10 +4,7 @@ import com.initcloud.rocket23.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -27,7 +24,7 @@ public class FileController {
 
     //벤더추가
     @PostMapping(value = "/file")
-    public ResponseEntity<String> uploadFile(MultipartFile file) throws IllegalStateException, IOException{
+    public ResponseEntity<String> uploadFile(@RequestPart("file")MultipartFile file) throws IllegalStateException, IOException{
         if(!file.isEmpty()){
             file.transferTo(new File(file.getOriginalFilename()));
         }
