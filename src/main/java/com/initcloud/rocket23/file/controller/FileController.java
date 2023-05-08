@@ -16,11 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final FileService firstService;
-    @GetMapping("/first")
-    public Map<String,Object> firstcontroller(){
-        return firstService.getFirstData();
-    }
+    private final FileService fileService;
 
     //벤더추가
     @PostMapping(value = "/file")
