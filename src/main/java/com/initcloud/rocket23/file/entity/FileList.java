@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name="FILELIST")
+@Table(name = "FILELIST")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileList extends BaseEntity {
 
@@ -21,10 +21,10 @@ public class FileList extends BaseEntity {
     @Column(name = "FILENAME")
     private String filename;
 
-    @Column(name="HASH_512")
+    @Column(name = "HASH_512")
     private String hash512;
 
-    @Column(name="Hash_256")
+    @Column(name = "Hash_256")
     private String hash256;
 
     @Column(name = "PATH")
