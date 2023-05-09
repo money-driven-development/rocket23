@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.file.controller;
 
+import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FileController {
 
+
     private final FileService fileService;
 
 
     //벤더추가
     @PostMapping(value = "/file")
     public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) throws IllegalStateException, IOException {
-        if (!file.isEmpty()) {
-            file.transferTo(new File(file.getOriginalFilename()));
-        }
+        fileService.store(file);
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 }
