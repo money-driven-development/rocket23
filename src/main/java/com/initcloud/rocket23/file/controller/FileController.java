@@ -25,6 +25,6 @@ public class FileController {
     @PostMapping(value = "/file")
     public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) throws IllegalStateException, IOException {
         fileService.store(file);
-        return new ResponseEntity<>("", HttpStatus.OK);
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }

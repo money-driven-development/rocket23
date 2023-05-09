@@ -2,16 +2,18 @@ package com.initcloud.rocket23.file.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
 @Table(name = "FILELIST")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FileList extends BaseEntity {
+public class FileEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,19 +21,27 @@ public class FileList extends BaseEntity {
     private Long id;
 
     @Column(name = "FILENAME")
+    @NotNull
     private String filename;
 
-    @Column(name = "HASH_512")
-    private String hash512;
-
-    @Column(name = "Hash_256")
-    private String hash256;
-
+    @Column(name = "UUID")
+    @NotNull
+    private String uuid;
     @Column(name = "PATH")
+    @NotNull
     private String path;
 
     @Column(name = "SERVER_TYPE")
-    private String serverPath;
+    private String serverType;
+
+    @Builder
+    public FileEntity(Long id, String filename, String uuid, String path, String serverType) {
+        this.id = id;
+        this.filename = filename;
+        this.uuid = uuid;
+        this.path = path;
+        this.serverType = serverType;
+    }
 
 
 }
