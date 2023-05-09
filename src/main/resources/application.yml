@@ -5,7 +5,7 @@ spring:
       path: /h2-console
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test
+    url: jdbc:h2:tcp://localhost/~/test
     username: sa
     password: 12
   servlet:
@@ -15,7 +15,7 @@ spring:
       location: C:\\Temp\\spring_uploaded_file
   jpa:
     database: H2
-    show-sql : true
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
