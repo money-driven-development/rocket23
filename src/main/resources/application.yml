@@ -19,3 +19,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+cloud:
+  aws:
+    s3:
+      bucket: bestofthebest11
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: AKIAZF3SFNWZUJW3WIM2
+      secretKey: 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

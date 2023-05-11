@@ -27,4 +27,10 @@ public class FileController {
         fileService.store(file);
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
+
+    @PostMapping(value = "/file/s3")
+    public ResponseDto<?> uploadFiletoS3(@RequestPart("file") MultipartFile file) {
+        fileService.storeS3(file);
+        return new ResponseDto<>(null);
+    }
 }
