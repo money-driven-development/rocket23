@@ -21,6 +21,15 @@ public class FileDto {
         this.servertype = servertype;
     }
 
+    public static FileDto toDto(String name, String uuid, String path, String serverType) {
+        return FileDto.builder()
+                .filename(name)
+                .uuid(uuid)
+                .path(path)
+                .servertype(serverType)
+                .build();
+    }
+
     public FileEntity toEntity() {
         return FileEntity.builder()
                 .id(id)

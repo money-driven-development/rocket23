@@ -8,11 +8,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "FILELIST")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class FileEntity extends BaseEntity {
 
     @Id
@@ -35,7 +37,6 @@ public class FileEntity extends BaseEntity {
     @Column(name = "SERVER_TYPE")
     private String serverType;
 
-    @Builder
     public FileEntity(Long id, String filename, String uuid, String path, String serverType) {
         this.id = id;
         this.filename = filename;

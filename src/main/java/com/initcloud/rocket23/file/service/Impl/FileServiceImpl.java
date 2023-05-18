@@ -1,7 +1,8 @@
 package com.initcloud.rocket23.file.service.Impl;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+//import com.amazonaws.services.s3.AmazonS3;
+//import com.amazonaws.services.s3.AmazonS3Client;
+
 import com.initcloud.rocket23.common.config.S3Config;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
@@ -28,14 +29,14 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 
-    private final AmazonS3Client amazonS3Client;
-    private final S3Config s3Config;
+//    private final AmazonS3Client amazonS3Client;
+//    private final S3Config s3Config;
 
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+//    @Value("${cloud.aws.s3.bucket}")
+//    private String bucket;
 
     @Override
     public void init() {
@@ -47,7 +48,8 @@ public class FileServiceImpl implements FileService {
     }
 
     /*
-    로컬에 저장 및 DB 저장
+    로컬에  저장 및 DB aksgdl
+    qkQJ저장
      */
     @Override
     public void store(MultipartFile file) {
@@ -71,7 +73,7 @@ public class FileServiceImpl implements FileService {
     /*
         S3에 저장. 개발중
      */
-    @Override
+    /*@Override
     public void storeS3(MultipartFile file) {
         try {
             if (file.isEmpty()) {
@@ -82,7 +84,7 @@ public class FileServiceImpl implements FileService {
         } catch (Exception e) {
             throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
         }
-    }
+    }*/
 
     @Override
     public void save(MultipartFile file, String type) {
@@ -91,16 +93,8 @@ public class FileServiceImpl implements FileService {
 
         String uuid = UUID.randomUUID().toString();
 
-        String path = uploadPath;
-        //S3인 경우 Server-type을 받기 위해 수정 필요.
-        String serverType = type;
-
-        fileRepository.save(FileDto.builder()
-                .filename(name)
-                .uuid(uuid)
-                .path(path)
-                .servertype(type)
-                .build()
-                .toEntity());
+        FileEntity fileEntity = FileDto.toDto(name, uuid, uploadPath, type).toEntity();
+        fileRepository.save(fileEntity);
     }
+
 }

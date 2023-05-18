@@ -30,9 +30,9 @@ public class FileController {
     /*
     S3 저장 개발중
      */
-    @PostMapping(value = "/file/s3")
+    /*@PostMapping(value = "/file/s3")
     public ResponseDto<?> uploadFiletoS3(@RequestPart("file") MultipartFile file) {
         fileService.storeS3(file);
         return new ResponseDto<>(null);
-    }
+    }*/
 }

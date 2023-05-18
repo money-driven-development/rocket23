@@ -20,16 +20,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity {
 
-	@CreatedDate
-	@Column(name = "created_at")
-	private LocalDateTime createdAt;
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-	@LastModifiedDate
-	@Column(name = "modified_at")
-	private LocalDateTime modifiedAt;
+    @LastModifiedDate
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
 
-	protected BaseEntity(LocalDateTime createdAt, LocalDateTime modifiedAt) {
-		this.createdAt = createdAt;
-		this.modifiedAt = modifiedAt;
-	}
+    protected BaseEntity(LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+    }
 }
