@@ -27,6 +27,7 @@ public class FileEntity extends BaseEntity {
     @Column(name = "UUID")
     @NotNull
     private String uuid;
+
     @Column(name = "PATH")
     @NotNull
     private String path;

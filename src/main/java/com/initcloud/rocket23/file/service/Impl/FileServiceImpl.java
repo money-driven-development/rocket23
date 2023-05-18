@@ -30,11 +30,7 @@ public class FileServiceImpl implements FileService {
 
     private final AmazonS3Client amazonS3Client;
     private final S3Config s3Config;
-    /*
-    23.05.09
-    @Value를 사용해서 Property의 값을 가져옴
-    init() 새로운 dir 생성
-     */
+
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
 
@@ -73,7 +69,7 @@ public class FileServiceImpl implements FileService {
     }
 
     /*
-        S3에 저장.
+        S3에 저장. 개발중
      */
     @Override
     public void storeS3(MultipartFile file) {
@@ -82,7 +78,7 @@ public class FileServiceImpl implements FileService {
                 throw new ApiException(ResponseCode.DATA_MISSING);
             }
             String fileName = file.getOriginalFilename();
-        
+
         } catch (Exception e) {
             throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
         }
@@ -90,14 +86,15 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void save(MultipartFile file, String type) {
-        //파일 원본이름
+
         String name = file.getOriginalFilename();
-        //파일 uuid
+
         String uuid = UUID.randomUUID().toString();
-        //파일 저장소 경로
+
         String path = uploadPath;
-        //서버-Type
+        //S3인 경우 Server-type을 받기 위해 수정 필요.
         String serverType = type;
+
         fileRepository.save(FileDto.builder()
                 .filename(name)
                 .uuid(uuid)

@@ -21,13 +21,15 @@ public class FileController {
     private final FileService fileService;
 
 
-    //벤더추가
     @PostMapping(value = "/file")
-    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) throws IllegalStateException, IOException {
+    public ResponseDto<?> uploadFile(@RequestPart("file") MultipartFile file) throws IllegalStateException, IOException {
         fileService.store(file);
-        return new ResponseEntity<>("success", HttpStatus.OK);
+        return new ResponseDto<>(null);
     }
 
+    /*
+    S3 저장 개발중
+     */
     @PostMapping(value = "/file/s3")
     public ResponseDto<?> uploadFiletoS3(@RequestPart("file") MultipartFile file) {
         fileService.storeS3(file);
