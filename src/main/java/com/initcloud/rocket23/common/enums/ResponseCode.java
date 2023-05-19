@@ -10,8 +10,18 @@ import lombok.Getter;
 public enum ResponseCode {
 
 	/* Invalid Request */
+	/**
+	 * 4000 ~ 4199: Common, Auth Exception
+	 */
 	INVALID_REQUEST(4001, HttpStatus.BAD_REQUEST, "Invalid Request."),
 
+	/**
+	 * 42xx: File Exception
+	 */
+
+	/**
+	 * 43xx: Docker API Exception
+	 */
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
