@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.initcloud'
-version = '0.0.1-SNAPSHOT'
+version = 'rocket23'
 sourceCompatibility = '11'
 
 configurations {
@@ -25,6 +25,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    //implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.5'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
