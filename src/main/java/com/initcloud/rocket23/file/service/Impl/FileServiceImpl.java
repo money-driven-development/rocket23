@@ -30,14 +30,8 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 	private final FileRepository fileRepository;
 
-	//    private final AmazonS3Client amazonS3Client;
-	//    private final S3Config s3Config;
-
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
-
-	//    @Value("${cloud.aws.s3.bucket}")
-	//    private String bucket;
 
 	@Override
 	public void init() {
@@ -48,10 +42,6 @@ public class FileServiceImpl implements FileService {
 		}
 	}
 
-	/*
-	로컬에  저장 및 DB aksgdl
-	qkQJ저장
-	 */
 	@Override
 	public void store(MultipartFile file) {
 		try {
@@ -70,22 +60,6 @@ public class FileServiceImpl implements FileService {
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 		}
 	}
-
-    /*
-        S3에 저장. 개발중
-     */
-    /*@Override
-    public void storeS3(MultipartFile file) {
-        try {
-            if (file.isEmpty()) {
-                throw new ApiException(ResponseCode.DATA_MISSING);
-            }
-            String fileName = file.getOriginalFilename();
-
-        } catch (Exception e) {
-            throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
-        }
-    }*/
 
 	@Override
 	public void save(MultipartFile file, String type) {

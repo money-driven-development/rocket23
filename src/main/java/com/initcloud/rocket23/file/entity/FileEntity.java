@@ -21,9 +21,9 @@ public class FileEntity extends BaseEntity {
 	@Column(name = "FILE_ID")
 	private Long id;
 
-	@Column(name = "FILENAME")
+	@Column(name = "FILE_NAME")
 	@NotNull
-	private String filename;
+	private String fileName;
 
 	@Column(name = "UUID")
 	@NotNull
@@ -37,9 +37,9 @@ public class FileEntity extends BaseEntity {
 	private String serverType;
 
 	@Builder
-	public FileEntity(Long id, String filename, String uuid, String path, String serverType) {
+	public FileEntity(Long id, String fileName, String uuid, String path, String serverType) {
 		this.id = id;
-		this.filename = filename;
+		this.fileName = fileName;
 		this.uuid = uuid;
 		this.path = path;
 		this.serverType = serverType;

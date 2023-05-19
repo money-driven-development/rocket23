@@ -8,36 +8,36 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileDto {
 	private Long id;
-	private String filename;
+	private String fileName;
 	private String uuid;
 	private String path;
-	private String servertype;
+	private String serverType;
 
 	@Builder
-	public FileDto(Long id, String filename, String uuid, String path, String servertype) {
+	public FileDto(Long id, String fileName, String uuid, String path, String serverType) {
 		this.id = id;
-		this.filename = filename;
+		this.fileName = fileName;
 		this.uuid = uuid;
 		this.path = path;
-		this.servertype = servertype;
+		this.serverType = serverType;
 	}
 
 	public static FileDto toDto(String name, String uuid, String path, String serverType) {
 		return FileDto.builder()
-			.filename(name)
+			.fileName(name)
 			.uuid(uuid)
 			.path(path)
-			.servertype(serverType)
+			.serverType(serverType)
 			.build();
 	}
 
 	public FileEntity toEntity() {
 		return FileEntity.builder()
 			.id(id)
-			.filename(filename)
+			.fileName(fileName)
 			.uuid(uuid)
 			.path(path)
-			.serverType(servertype)
+			.serverType(serverType)
 			.build();
 	}
 }

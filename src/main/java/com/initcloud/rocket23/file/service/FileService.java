@@ -12,9 +12,6 @@ public interface FileService {
 	//Local 저장
 	void store(MultipartFile file);
 
-	//S3 저장
-	//    void storeS3(MultipartFile file);
-
 	//DB 저장
 	void save(MultipartFile file, String type);
 }

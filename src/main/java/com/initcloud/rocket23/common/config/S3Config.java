@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.common.config;
+
+// TODO: 2023-05-19 S3 configuration 개발시 필요한 라이브러리, 박병제 
 /*
-추후 S3 기능 관련 사용할 예정
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -15,9 +16,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
-/*
-	S3 기능 개발중
- */
+// TODO: 2023-05-19 S3 configuration 개발예정, 박병제 
 @Configuration
 public class S3Config {
 	/*
