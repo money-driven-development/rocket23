@@ -1,10 +1,6 @@
 package com.initcloud.rocket23.file.service;
 
-import com.initcloud.rocket23.file.dto.FileDto;
-
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Map;
 
 public interface FileService {
 	void init();
