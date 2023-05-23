@@ -13,5 +13,5 @@ public interface FileService {
 	void store(MultipartFile file);
 
 	//DB 저장
-	void save(MultipartFile file, String type);
+	void save(MultipartFile file, String type, String uploadPath);
 }
