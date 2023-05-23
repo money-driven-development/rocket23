@@ -3,7 +3,6 @@ package com.initcloud.rocket23.file.service.Impl;
 //import com.amazonaws.services.s3.AmazonS3;
 //import com.amazonaws.services.s3.AmazonS3Client;
 
-import com.initcloud.rocket23.common.config.S3Config;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.file.dto.FileDto;
@@ -55,14 +54,14 @@ public class FileServiceImpl implements FileService {
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, root.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
 			}
-			save(file, "local");
+			save(file, "local", uploadPath);
 		} catch (Exception e) {
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 		}
 	}
 
 	@Override
-	public void save(MultipartFile file, String type) {
+	public void save(MultipartFile file, String type, String uploadPath) {
 
 		String name = file.getOriginalFilename();
 
