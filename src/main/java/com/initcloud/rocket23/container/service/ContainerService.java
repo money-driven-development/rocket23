@@ -2,15 +2,15 @@ package com.initcloud.rocket23.container.service;
 
 public interface ContainerService {
 
-	void executeContainer();
+	void executeContainer(Integer count);
 
-	void executeContainerForStandBy();
+	void executeContainerForStandBy(Integer count);
 
-	void terminateContainer();
+	void terminateContainer(String containerId);
 
-	void getContainer();
+	void getContainer(String containerId);
 
 	void getContainerList();
 
-	void pauseContainer();
+	void pauseContainer(String containerId);
 }
