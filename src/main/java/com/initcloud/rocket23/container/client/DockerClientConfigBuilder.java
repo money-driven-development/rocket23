@@ -1,8 +1,8 @@
-package com.initcloud.rocket23.docker.client;
+package com.initcloud.rocket23.container.client;
 
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientConfig;
-import com.initcloud.rocket23.docker.dto.DockerDto;
+import com.initcloud.rocket23.container.dto.DockerDto;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
