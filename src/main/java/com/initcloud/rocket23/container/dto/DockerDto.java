@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.docker.dto;
+package com.initcloud.rocket23.container.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;

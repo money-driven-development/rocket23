@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.docker.config;
+package com.initcloud.rocket23.container.config;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
