@@ -43,4 +43,16 @@ public class DockerDto {
 			this.registryPassword = registryPassword;
 		}
 	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Container {
+		private String id;
+		private String image;
+
+		public Container(String id, String image) {
+			this.id = id;
+			this.image = image;
+		}
+	}
 }
