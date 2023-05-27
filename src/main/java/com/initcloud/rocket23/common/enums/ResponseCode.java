@@ -13,24 +13,25 @@ public enum ResponseCode {
 	/**
 	 * 4000 ~ 4199: Common, Auth Exception
 	 */
-	INVALID_REQUEST(4001, HttpStatus.BAD_REQUEST, "Invalid Request."),
+	INVALID_REQUEST(4001, HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
 
 	/**
 	 * 42xx: File Exception
 	 */
 
 	/**
-	 * 43xx: Docker API Exception
+	 * 43xx: Container Exception
+	 * @Todo - 추후, 컨테이너 관련 예외는 4xx와 5xx 에러를 명확하게 구분해야 함.
 	 */
+	DOCKER_CANNOT_RUN_CONTAINER(4301, HttpStatus.BAD_REQUEST, "컨테이너를 실행할 수 없습니다."),
+	DOCKER_CANNOT_GET_CONTAINER(4302, HttpStatus.BAD_REQUEST, "도커 컨테이너를 조회할 수 없습니다."),
+	DOCKER_CANNOT_GET_CONTAINER_LIST(4303, HttpStatus.BAD_REQUEST, "도커 컨테이너 목록을 조회할 수 없습니다."),
+	DOCKER_CANNOT_TERMINATE_CONTAINER(4304, HttpStatus.BAD_REQUEST, "도커 컨테이너를 종료할 수 없습니다."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
 	SCAN_ERROR(5002, HttpStatus.INTERNAL_SERVER_ERROR, "Scan Error."),
-
-	SERVER_ERROR(5100, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error."),
-	/*File Uplaod Error. */
-	SERVER_CREATED_DIR_ERROR(5101, HttpStatus.INTERNAL_SERVER_ERROR, "Could not create upload directory"),
-	SERVER_STORE_ERROR(5102, HttpStatus.INTERNAL_SERVER_ERROR, "Could not store the file");
+	SERVER_ERROR(5100, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error.");
 
 	private final int code;
 	private final HttpStatus httpStatus;
