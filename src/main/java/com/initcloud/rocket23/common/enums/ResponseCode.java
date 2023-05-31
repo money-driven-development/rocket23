@@ -20,7 +20,9 @@ public enum ResponseCode {
 	SERVER_ERROR(5100, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error."),
 	/*File Uplaod Error. */
 	SERVER_CREATED_DIR_ERROR(5101, HttpStatus.INTERNAL_SERVER_ERROR, "Could not create upload directory"),
-	SERVER_STORE_ERROR(5102, HttpStatus.INTERNAL_SERVER_ERROR, "Could not store the file");
+	SERVER_STORE_ERROR(5102, HttpStatus.INTERNAL_SERVER_ERROR, "Could not store the file"),
+	FILE_EMPTY(5103, HttpStatus.INTERNAL_SERVER_ERROR, "빈 파일입니다."),
+	AWS_S3_ERROR(5104, HttpStatus.INTERNAL_SERVER_ERROR, "AWS 파일 업로드 오류입니다.");
 
 	private final int code;
 	private final HttpStatus httpStatus;
