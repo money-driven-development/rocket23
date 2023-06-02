@@ -11,18 +11,16 @@ public enum ResponseCode {
 
 	/* Invalid Request */
 	INVALID_REQUEST(4001, HttpStatus.BAD_REQUEST, "Invalid Request."),
-
 	DATA_MISSING(4002, HttpStatus.INTERNAL_SERVER_ERROR, "BAD_REQUEST"),
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
 	SCAN_ERROR(5002, HttpStatus.INTERNAL_SERVER_ERROR, "Scan Error."),
-
 	SERVER_ERROR(5100, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error."),
 	/*File Uplaod Error. */
-	SERVER_CREATED_DIR_ERROR(5101, HttpStatus.INTERNAL_SERVER_ERROR, "Could not create upload directory"),
-	SERVER_STORE_ERROR(5102, HttpStatus.INTERNAL_SERVER_ERROR, "Could not store the file"),
+	SERVER_CREATED_DIR_ERROR(5101, HttpStatus.INTERNAL_SERVER_ERROR, "디렉토리를 생성할 수 없습니다."),
+	SERVER_STORE_ERROR(5102, HttpStatus.INTERNAL_SERVER_ERROR, "서버 저장 오류입니다."),
 	FILE_EMPTY(5103, HttpStatus.INTERNAL_SERVER_ERROR, "빈 파일입니다."),
-	AWS_S3_ERROR(5104, HttpStatus.INTERNAL_SERVER_ERROR, "AWS 파일 업로드 오류입니다.");
+	AWS_FILE_UPLOAD_ERROR(5104, HttpStatus.INTERNAL_SERVER_ERROR, "AWS 파일 업로드 오류입니다.");
 
 	private final int code;
 	private final HttpStatus httpStatus;
