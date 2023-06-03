@@ -17,10 +17,10 @@ public enum ResponseCode {
 	SCAN_ERROR(5002, HttpStatus.INTERNAL_SERVER_ERROR, "Scan Error."),
 	SERVER_ERROR(5100, HttpStatus.INTERNAL_SERVER_ERROR, "Unknown error."),
 	/*File Uplaod Error. */
-	SERVER_CREATED_DIR_ERROR(5101, HttpStatus.INTERNAL_SERVER_ERROR, "디렉토리를 생성할 수 없습니다."),
-	SERVER_STORE_ERROR(5102, HttpStatus.INTERNAL_SERVER_ERROR, "서버 저장 오류입니다."),
-	FILE_EMPTY(5103, HttpStatus.INTERNAL_SERVER_ERROR, "빈 파일입니다."),
-	AWS_FILE_UPLOAD_ERROR(5104, HttpStatus.INTERNAL_SERVER_ERROR, "AWS 파일 업로드 오류입니다.");
+	SERVER_CREATED_DIR_ERROR(5201, HttpStatus.INTERNAL_SERVER_ERROR, "디렉토리를 생성할 수 없습니다."),
+	SERVER_STORE_ERROR(5202, HttpStatus.INTERNAL_SERVER_ERROR, "서버 저장 오류입니다."),
+	FILE_EMPTY(5203, HttpStatus.INTERNAL_SERVER_ERROR, "빈 파일입니다."),
+	AWS_FILE_UPLOAD_ERROR(5204, HttpStatus.INTERNAL_SERVER_ERROR, "AWS 파일 업로드 오류입니다.");
 
 	private final int code;
 	private final HttpStatus httpStatus;
