@@ -1,8 +1,11 @@
 package com.initcloud.dockerapi.container.service;
 
+import java.util.List;
+
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
+import com.initcloud.dockerapi.container.dto.DockerDto;
 import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
 
 import lombok.RequiredArgsConstructor;
@@ -19,8 +22,10 @@ public class DockerService implements ContainerService {
 	 * count 가 null 일 경우 단일(1개) 실행.
 	 */
 	@Override
-	public void executeContainer(Integer count) {
+	public Void executeContainer(Integer count) {
 		dockerContainerApi.create();
+
+		return null;
 	}
 
 	/**
@@ -29,8 +34,10 @@ public class DockerService implements ContainerService {
 	 * count 가 null 일 경우 단일(1개) 실행.
 	 */
 	@Override
-	public void executeContainerForStandBy(@Nullable Integer count) {
+	public Void executeContainerForStandBy(@Nullable Integer count) {
 		dockerContainerApi.create();
+
+		return null;
 	}
 
 	/**
@@ -38,8 +45,10 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public void terminateContainer(String containerId) {
+	public Void terminateContainer(String containerId) {
+		dockerContainerApi.terminate(containerId);
 
+		return null;
 	}
 
 	/**
@@ -47,16 +56,20 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public void getContainer(String containerId) {
+	public DockerDto.Container getContainerDetails(String containerId) {
+		dockerContainerApi.inspect(containerId);
 
+		return null;
 	}
 
 	/**
-	 * 도커 컨테이너 목록을 조회.
+	 * 전체 도커 컨테이너 목록을 조회.
 	 */
 	@Override
-	public void getContainerList() {
+	public List<Object> getContainerList() {
+		dockerContainerApi.get();
 
+		return null;
 	}
 
 	/**
@@ -64,7 +77,9 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public void pauseContainer(String containerId) {
+	public Void pauseContainer(String containerId) {
+		dockerContainerApi.stop(containerId);
 
+		return null;
 	}
 }
