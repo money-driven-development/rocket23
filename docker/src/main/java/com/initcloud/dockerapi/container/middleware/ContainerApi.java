@@ -1,19 +1,22 @@
 package com.initcloud.dockerapi.container.middleware;
 
-public interface ContainerApi {
+public interface ContainerApi<T> {
 
 	/* 생성 */
-	public void create();
+	public T create();
 
 	/* 실행 */
-	public void execute();
+	public T execute();
 
 	/* 목록 조회 */
-	public void get();
+	public T get();
 
 	/* 세부 조회 */
-	public void inspect(String containerId);
+	public T inspect(String containerId);
+
+	/* 일시정지 */
+	public T stop(String containerId);
 
 	/* 종료 */
-	public void terminate(String containerId);
+	public T terminate(String containerId);
 }
