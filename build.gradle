@@ -44,6 +44,9 @@ allprojects {
         // https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5
         // 후보군 com.github.docker-java:docker-java-transport-zerodep
         implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.0'
+
+        // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+        implementation 'com.google.code.findbugs:jsr305:3.0.2'
     }
 
     jar {
