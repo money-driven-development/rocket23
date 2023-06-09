@@ -1,12 +1,15 @@
 package com.initcloud.dockerapi.container.middleware;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
+import com.github.dockerjava.api.model.Container;
 import com.initcloud.dockerapi.common.enums.ResponseCode;
 import com.initcloud.dockerapi.common.exception.ApiException;
 import com.initcloud.dockerapi.container.client.DockerContainerClient;
@@ -25,11 +28,11 @@ public class DockerContainerApi implements ContainerApi {
 	private final DockerContainerClient dockerContainerClient = new DockerContainerClient();
 
 	@Override
-	public void create() {
-		this.create(DockerImages.ALPINE_LATEST);
+	public CreateContainerResponse create() {
+		return this.create(DockerImages.ALPINE_LATEST);
 	}
 
-	public void create(DockerImages image) {
+	public CreateContainerResponse create(DockerImages image) {
 		try {
 			String containerName = CONTAINER_NAME_PREFIX + new SecureRandom().nextInt();
 			this.pull(image);
@@ -41,6 +44,7 @@ public class DockerContainerApi implements ContainerApi {
 				.exec();
 
 			log.info("Created container {}", container.toString());
+			return container;
 		} catch (NullPointerException e) {
 			throw new ApiException(e, ResponseCode.NULL_DOCKER_CLIENT);
 		} catch (NotFoundException e) {
@@ -53,29 +57,36 @@ public class DockerContainerApi implements ContainerApi {
 	}
 
 	@Override
-	public void execute() {
-		dockerContainerClient.getDockerClient()
+	public Void execute() {
+		return dockerContainerClient.getDockerClient()
 			.pingCmd()
 			.exec();
 	}
 
 	@Override
-	public void inspect(String containerId) {
-		dockerContainerClient.getDockerClient()
+	public InspectContainerResponse inspect(String containerId) {
+		return dockerContainerClient.getDockerClient()
 			.inspectContainerCmd(containerId)
 			.exec();
 	}
 
 	@Override
-	public void get() {
-		dockerContainerClient.getDockerClient()
+	public List<Container> get() {
+		return dockerContainerClient.getDockerClient()
 			.listContainersCmd()
 			.exec();
 	}
 
 	@Override
-	public void terminate(String containerId) {
-		dockerContainerClient.getDockerClient()
+	public Void stop(String containerId) {
+		return dockerContainerClient.getDockerClient()
+			.stopContainerCmd(containerId)
+			.exec();
+	}
+
+	@Override
+	public Void terminate(String containerId) {
+		return dockerContainerClient.getDockerClient()
 			.stopContainerCmd(containerId)
 			.exec();
 	}
