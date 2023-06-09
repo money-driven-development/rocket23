@@ -1,7 +1,12 @@
 package com.initcloud.dockerapi.container.client;
 
+import java.net.URI;
+
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientConfig;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.github.dockerjava.transport.DockerHttpClient;
+import com.github.dockerjava.transport.SSLConfig;
 import com.initcloud.dockerapi.container.dto.DockerDto;
 
 import lombok.AccessLevel;
@@ -15,7 +20,7 @@ public class DockerClientConfigBuilder {
 	 * @return DockerClientConfig
 	 */
 	public static DockerClientConfig buildDefaultDockerClientConfig() {
-		return DefaultDockerClientConfig.createDefaultConfigBuilder().build();
+		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost("unix:///var/run/docker.sock").build();
 	}
 
 	/**
@@ -37,16 +42,12 @@ public class DockerClientConfigBuilder {
 	}
 
 	/**
-	 * 도커 클라이언트 구성을 반환합니다.
-	 * @return DockerClientConfig
+	 * 의존성 - Apache HttpClient library version 5
 	 */
-	public static DockerClientConfig buildDockerClientConfig() throws NullPointerException {
-		DockerClientProperties properties = new DockerClientProperties();
-
-		return DefaultDockerClientConfig.createDefaultConfigBuilder()
-			.withDockerHost(properties.getDockerUnixHost())
+	public DockerHttpClient createDockerHttpClient(URI dockerHost, SSLConfig sslConfig) {
+		return new ApacheDockerHttpClient.Builder()
+			.dockerHost(dockerHost)
+			.sslConfig(sslConfig)
 			.build();
 	}
-
-
 }

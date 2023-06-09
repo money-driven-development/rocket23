@@ -97,27 +97,22 @@ import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.transport.DockerHttpClient;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 @Component
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DockerContainerClient implements Closeable, DockerClient {
 
+	@Getter
 	private DockerClientConfig dockerClientConfig;
 	private DockerHttpClient dockerHttpClient;
 
-	public DockerContainerClient(DockerClientConfig dockerClientConfig, DockerHttpClient dockerHttpClient) {
-		this.dockerClientConfig = dockerClientConfig;
-		this.dockerHttpClient = dockerHttpClient;
+	public DockerContainerClient() {
+		this.dockerClientConfig = DockerClientConfigBuilder.buildDefaultDockerClientConfig();
+		this.dockerHttpClient = DockerContainerHttpClient.createDockerHttpClient();
 	}
 
 	public DockerClient getDockerClient() {
 		return DockerClientImpl.getInstance(dockerClientConfig, dockerHttpClient);
-	}
-
-	public DockerClient getInstance(DockerClientConfig dockerClientConfig, DockerHttpClient dockerHttpClient) {
-		return new DockerContainerClient(dockerClientConfig, dockerHttpClient);
 	}
 
 	@Override
