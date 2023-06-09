@@ -1,16 +1,18 @@
 package com.initcloud.dockerapi.container.service;
 
-public interface ContainerService {
+import java.util.List;
 
-	void executeContainer(Integer count);
+public interface ContainerService<T> {
 
-	void executeContainerForStandBy(Integer count);
+	T executeContainer(Integer count);
 
-	void terminateContainer(String containerId);
+	T executeContainerForStandBy(Integer count);
 
-	void getContainer(String containerId);
+	T terminateContainer(String containerId);
 
-	void getContainerList();
+	T getContainerDetails(String containerId);
 
-	void pauseContainer(String containerId);
+	List getContainerList();
+
+	T pauseContainer(String containerId);
 }
