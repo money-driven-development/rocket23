@@ -9,4 +9,6 @@ public interface ContainerApi {
 	public void get();
 
 	public void terminate();
+
+	void pull() throws InterruptedException;
 }
