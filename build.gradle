@@ -9,8 +9,6 @@ version = '0.0.1'
 sourceCompatibility = '11'
 
 
-
-
 allprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
@@ -32,21 +30,29 @@ allprojects {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+        /* 편의성 */
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
 
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+        // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+        implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
+        /* Docker API */
         // https://mvnrepository.com/artifact/com.github.docker-java/docker-java-core
         implementation 'com.github.docker-java:docker-java-core:3.3.0'
-
         // https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5
         // 후보군 com.github.docker-java:docker-java-transport-zerodep
         implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.0'
 
-        // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
-        implementation 'com.google.code.findbugs:jsr305:3.0.2'
+        /* Redis */
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.7.11'
+        // https://mvnrepository.com/artifact/io.lettuce/lettuce-core
+        implementation 'io.lettuce:lettuce-core:6.1.10.RELEASE'
+
+        /* 테스트 */
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     }
 
     jar {
