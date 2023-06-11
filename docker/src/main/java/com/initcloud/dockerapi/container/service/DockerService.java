@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
-import com.initcloud.dockerapi.container.dto.DockerDto;
-import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
+import com.initcloud.dockerapi.container.dto.ContainerDto;
+import com.initcloud.dockerapi.container.client.DockerContainerApi;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,7 +56,7 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public DockerDto.Container getContainerDetails(String containerId) {
+	public ContainerDto getContainerDetails(String containerId) {
 		dockerContainerApi.inspect(containerId);
 
 		return null;
