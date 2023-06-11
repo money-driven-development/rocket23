@@ -1,4 +1,4 @@
-package com.initcloud.dockerapi.container.middleware;
+package com.initcloud.dockerapi.container.client;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -12,8 +12,7 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
 import com.initcloud.dockerapi.common.enums.ResponseCode;
 import com.initcloud.dockerapi.common.exception.ApiException;
-import com.initcloud.dockerapi.container.client.DockerContainerClient;
-import com.initcloud.dockerapi.container.enums.DockerImages;
+import com.initcloud.dockerapi.container.enums.ContainerImages;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -29,16 +28,16 @@ public class DockerContainerApi implements ContainerApi {
 
 	@Override
 	public CreateContainerResponse create() {
-		return this.create(DockerImages.ALPINE_LATEST);
+		return this.create(ContainerImages.ALPINE_LATEST);
 	}
 
-	public CreateContainerResponse create(DockerImages image) {
+	public CreateContainerResponse create(ContainerImages image) {
 		try {
 			String containerName = CONTAINER_NAME_PREFIX + new SecureRandom().nextInt();
 			this.pull(image);
 
 			CreateContainerResponse container = dockerContainerClient.getDockerClient()
-				.createContainerCmd(DockerImages.getFullImageName(image))
+				.createContainerCmd(ContainerImages.getFullImageName(image))
 				.withCmd("env")
 				.withName(containerName)
 				.exec();
@@ -91,7 +90,7 @@ public class DockerContainerApi implements ContainerApi {
 			.exec();
 	}
 
-	public void pull(DockerImages image) throws InterruptedException {
+	public void pull(ContainerImages image) throws InterruptedException {
 		dockerContainerClient.getDockerClient()
 			.pullImageCmd(image.getRepository())
 			.withTag(image.getTag())

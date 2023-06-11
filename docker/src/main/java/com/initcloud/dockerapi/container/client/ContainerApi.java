@@ -1,4 +1,4 @@
-package com.initcloud.dockerapi.container.middleware;
+package com.initcloud.dockerapi.container.client;
 
 public interface ContainerApi<T> {
 
