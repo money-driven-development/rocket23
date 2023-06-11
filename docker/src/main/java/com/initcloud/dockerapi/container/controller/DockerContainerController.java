@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.initcloud.dockerapi.common.dto.ResponseDto;
+import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.container.dto.DockerDto;
 import com.initcloud.dockerapi.container.service.DockerService;
 
@@ -29,9 +30,9 @@ public class DockerContainerController {
 	}
 
 	@GetMapping("/{containerId}")
-	public ResponseDto<DockerDto.Container> containerDetails(@Nullable @PathVariable String containerId) {
+	public ResponseDto<ContainerDto> containerDetails(@Nullable @PathVariable String containerId) {
 
-		DockerDto.Container response = dockerService.getContainerDetails(containerId);
+		ContainerDto response = dockerService.getContainerDetails(containerId);
 
 		return new ResponseDto<>(response);
 	}
