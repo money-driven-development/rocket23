@@ -27,6 +27,7 @@ public enum ResponseCode {
 	DOCKER_CANNOT_GET_CONTAINER(4302, HttpStatus.BAD_REQUEST, "도커 컨테이너를 조회할 수 없습니다."),
 	DOCKER_CANNOT_GET_CONTAINER_LIST(4303, HttpStatus.BAD_REQUEST, "도커 컨테이너 목록을 조회할 수 없습니다."),
 	DOCKER_CANNOT_TERMINATE_CONTAINER(4304, HttpStatus.BAD_REQUEST, "도커 컨테이너를 종료할 수 없습니다."),
+	DOCKER_IMAGE_NOT_FOUND(4305, HttpStatus.BAD_REQUEST, "도커 이미지가 존재하지 않습니다."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "서버가 바쁩니다. 잠시 후 다시 시도해주세요."),
