@@ -1,33 +1,45 @@
 package com.initcloud.dockerapi.container.dto;
 
-import java.time.LocalDateTime;
-
+import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.initcloud.dockerapi.container.enums.ContainerAPIType;
-import com.initcloud.dockerapi.container.enums.ContainerStatus;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContainerDto {
 
 	private Long pid;
-	private Long port;
+	private String containerStatus;
+	private String startAt;
 	private String containerId;
-	private LocalDateTime startTime;
+	private String image;
 	private ContainerAPIType apiType;
-	private ContainerStatus containerStatus;
+	private String[] args;
 
 	@Builder(builderClassName = "containerBuilder", builderMethodName = "containerStatusBuilder")
-	public ContainerDto(Long pid, Long port, String containerId, LocalDateTime startTime, ContainerAPIType apiType,
-		ContainerStatus containerStatus) {
+	public ContainerDto(Long pid, String containerId, String[] args, String image, String startAt,
+		ContainerAPIType apiType, String containerStatus) {
 		this.pid = pid;
-		this.port = port;
 		this.containerId = containerId;
-		this.startTime = startTime;
+		this.args = args;
+		this.image = image;
+		this.startAt = startAt;
 		this.apiType = apiType;
 		this.containerStatus = containerStatus;
+	}
+
+	public ContainerDto(final InspectContainerResponse container, final ContainerAPIType apiType) throws
+		NullPointerException {
+		this.pid = container.getState().getPidLong();
+		this.startAt = container.getState().getStartedAt();
+		this.containerStatus = container.getState().getStatus();
+		this.containerId = container.getName();
+		this.image = container.getImageId();
+		this.apiType = apiType;
+		this.args = container.getArgs();
 	}
 }
