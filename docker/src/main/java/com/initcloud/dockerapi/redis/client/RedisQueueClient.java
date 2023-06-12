@@ -4,18 +4,17 @@ import org.redisson.Redisson;
 import org.redisson.api.RQueue;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RedisQueueClient {
 
-	private static RedisQueueClient redissonQueueClient = new RedisQueueClient();
+	private static final RedisQueueClient redissonQueueClient = new RedisQueueClient("container.standby");
+
 	@Value("${redis.queue.maxsize}")
-	private Integer maxQueueSize;
+	private Integer maxQueueSize = 7;
 	private RedissonClient redissonClient;
 	private RQueue<String> queue;
 
@@ -24,6 +23,9 @@ public class RedisQueueClient {
 		this.queue = this.redissonClient.getQueue(queue);
 	}
 
+	/**
+	 * 싱글톤 패턴을 통해서 RedisQueueClient 에 대한 단일 인스턴스만 제공
+	 */
 	public static RedisQueueClient getRedisQueueClient() {
 		return redissonQueueClient;
 	}
@@ -32,12 +34,12 @@ public class RedisQueueClient {
 		return this.queue.size();
 	}
 
-	public Boolean addToQueue(String containerid) {
+	public Boolean addToQueue(String containerId) {
 		if (this.queue.size() == maxQueueSize) {
 			return false;
 		}
 
-		return this.queue.add(containerid);
+		return this.queue.add(containerId);
 	}
 
 	public String pollContainerIdFromQueue() {
