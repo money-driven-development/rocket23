@@ -1,10 +1,10 @@
 package com.initcloud.dockerapi.container.dto;
 
-import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.initcloud.dockerapi.container.enums.ContainerAPIType;
+import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.model.Container;
 
 import lombok.AccessLevel;
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,38 +12,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ContainerDto {
 
-	private Long pid;
-	private String containerStatus;
-	private String startAt;
 	private String containerId;
-	private String containerName;
-	private String image;
-	private ContainerAPIType apiType;
-	private String[] args;
+	private String containerStatus;
 
-	@Builder(builderClassName = "containerBuilder", builderMethodName = "containerStatusBuilder")
-	public ContainerDto(Long pid, String containerId, String containerName, String[] args, String image, String startAt,
-		ContainerAPIType apiType, String containerStatus) {
-		this.pid = pid;
-		this.containerId = containerId;
-		this.containerName = containerName;
-		this.args = args;
-		this.image = image;
-		this.startAt = startAt;
-		this.apiType = apiType;
+	public ContainerDto(String containerId, String containerStatus) {
 		this.containerStatus = containerStatus;
+		this.containerId = containerId;
 	}
 
-	public ContainerDto(final InspectContainerResponse container, final ContainerAPIType apiType) throws
-		NullPointerException {
-		this.pid = container.getState().getPidLong();
-		this.startAt = container.getState().getStartedAt();
-		this.containerStatus = container.getState().getStatus();
-
+	public ContainerDto(final Container container) throws NullPointerException {
 		this.containerId = container.getId();
-		this.containerName = container.getName();
-		this.image = container.getImageId();
-		this.apiType = apiType;
-		this.args = container.getArgs();
+		this.containerStatus = container.getState();
+	}
+
+	public ContainerDto(final CreateContainerResponse container) throws NullPointerException {
+		this.containerId = container.getId();
+		this.containerStatus = null;
 	}
 }

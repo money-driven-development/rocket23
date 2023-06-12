@@ -1,12 +1,18 @@
 package com.initcloud.dockerapi.container.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
+import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.InspectContainerResponse;
+import com.github.dockerjava.api.model.Container;
+import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
 import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.container.client.DockerContainerApi;
+import com.initcloud.dockerapi.container.enums.ContainerAPIType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,10 +28,10 @@ public class DockerService implements ContainerService {
 	 * count 가 null 일 경우 단일(1개) 실행.
 	 */
 	@Override
-	public Void executeContainer(Integer count) {
-		dockerContainerApi.create();
+	public ContainerDto executeContainer(Integer count) {
+		CreateContainerResponse containerResponse = dockerContainerApi.create();
 
-		return null;
+		return new ContainerDto(containerResponse);
 	}
 
 	/**
@@ -34,10 +40,10 @@ public class DockerService implements ContainerService {
 	 * count 가 null 일 경우 단일(1개) 실행.
 	 */
 	@Override
-	public Void executeContainerForStandBy(@Nullable Integer count) {
-		dockerContainerApi.create();
+	public ContainerDto executeContainerForStandBy(@Nullable Integer count) {
+		CreateContainerResponse containerResponse = dockerContainerApi.create();
 
-		return null;
+		return new ContainerDto(containerResponse);
 	}
 
 	/**
@@ -45,10 +51,11 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public Void terminateContainer(String containerId) {
+	public Boolean terminateContainer(String containerId) {
 		dockerContainerApi.terminate(containerId);
+		InspectContainerResponse containerResponse = dockerContainerApi.inspect(containerId);
 
-		return null;
+		return (containerResponse == null);
 	}
 
 	/**
@@ -56,20 +63,22 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public ContainerDto getContainerDetails(String containerId) {
-		dockerContainerApi.inspect(containerId);
+	public ContainerInspectDto getContainerDetails(String containerId) {
+		InspectContainerResponse containerResponse = dockerContainerApi.inspect(containerId);
 
-		return null;
+		return new ContainerInspectDto(containerResponse, ContainerAPIType.DOCKER);
 	}
 
 	/**
 	 * 전체 도커 컨테이너 목록을 조회.
 	 */
 	@Override
-	public List<Object> getContainerList() {
-		dockerContainerApi.get();
+	public List<ContainerDto> getContainerList() {
+		List<Container> containers = dockerContainerApi.get();
 
-		return null;
+		return containers.stream()
+			.map(ContainerDto::new)
+			.collect(Collectors.toList());
 	}
 
 	/**
@@ -77,9 +86,10 @@ public class DockerService implements ContainerService {
 	 * @param containerId 를 대상으로 함.
 	 */
 	@Override
-	public Void pauseContainer(String containerId) {
+	public Boolean pauseContainer(String containerId) {
 		dockerContainerApi.stop(containerId);
+		InspectContainerResponse containerResponse = dockerContainerApi.inspect(containerId);
 
-		return null;
+		return containerResponse.getState().getPaused();
 	}
 }

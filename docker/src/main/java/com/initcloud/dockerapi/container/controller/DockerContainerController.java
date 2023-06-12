@@ -1,5 +1,7 @@
 package com.initcloud.dockerapi.container.controller;
 
+import java.util.List;
+
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +23,11 @@ public class DockerContainerController {
 	private final DockerService dockerService;
 
 	@GetMapping
-	public ResponseDto containerList() {
+	public ResponseDto<List<ContainerDto>> containerList() {
 
-		dockerService.getContainerList();
+		List<ContainerDto> response = dockerService.getContainerList();
 
-		return new ResponseDto<>(null);
+		return new ResponseDto<>(response);
 	}
 
 	@GetMapping("/{containerId}")

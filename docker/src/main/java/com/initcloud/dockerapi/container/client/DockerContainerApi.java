@@ -36,14 +36,13 @@ public class DockerContainerApi implements ContainerApi {
 			String containerName = CONTAINER_NAME_PREFIX + new SecureRandom().nextInt();
 			this.pull(image);
 
-			CreateContainerResponse container = dockerContainerClient.getDockerClient()
+			log.info("Created container");
+			return dockerContainerClient.getDockerClient()
 				.createContainerCmd(ContainerImages.getFullImageName(image))
 				.withCmd("env")
 				.withName(containerName)
 				.exec();
 
-			log.info("Created container {}", container.toString());
-			return container;
 		} catch (NullPointerException e) {
 			throw new ApiException(e, ResponseCode.NULL_DOCKER_CLIENT);
 		} catch (NotFoundException e) {
