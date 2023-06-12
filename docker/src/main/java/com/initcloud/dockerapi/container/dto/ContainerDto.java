@@ -16,15 +16,17 @@ public class ContainerDto {
 	private String containerStatus;
 	private String startAt;
 	private String containerId;
+	private String containerName;
 	private String image;
 	private ContainerAPIType apiType;
 	private String[] args;
 
 	@Builder(builderClassName = "containerBuilder", builderMethodName = "containerStatusBuilder")
-	public ContainerDto(Long pid, String containerId, String[] args, String image, String startAt,
+	public ContainerDto(Long pid, String containerId, String containerName, String[] args, String image, String startAt,
 		ContainerAPIType apiType, String containerStatus) {
 		this.pid = pid;
 		this.containerId = containerId;
+		this.containerName = containerName;
 		this.args = args;
 		this.image = image;
 		this.startAt = startAt;
@@ -37,7 +39,9 @@ public class ContainerDto {
 		this.pid = container.getState().getPidLong();
 		this.startAt = container.getState().getStartedAt();
 		this.containerStatus = container.getState().getStatus();
-		this.containerId = container.getName();
+
+		this.containerId = container.getId();
+		this.containerName = container.getName();
 		this.image = container.getImageId();
 		this.apiType = apiType;
 		this.args = container.getArgs();
