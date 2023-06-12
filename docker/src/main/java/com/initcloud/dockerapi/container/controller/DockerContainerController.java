@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.initcloud.dockerapi.common.dto.ResponseDto;
-import com.initcloud.dockerapi.container.dto.DockerDto;
+import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.container.service.DockerService;
 
 import lombok.RequiredArgsConstructor;
