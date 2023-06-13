@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Container;
-import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
 import com.initcloud.dockerapi.container.dto.ContainerDto;
-import com.initcloud.dockerapi.container.client.DockerContainerApi;
+import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
 import com.initcloud.dockerapi.container.enums.ContainerAPIType;
+import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
 
 import lombok.RequiredArgsConstructor;
 

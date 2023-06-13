@@ -1,4 +1,4 @@
-package com.initcloud.dockerapi.container.client;
+package com.initcloud.dockerapi.container.middleware;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -12,6 +12,7 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
 import com.initcloud.dockerapi.common.enums.ResponseCode;
 import com.initcloud.dockerapi.common.exception.ApiException;
+import com.initcloud.dockerapi.container.client.DockerContainerClient;
 import com.initcloud.dockerapi.container.enums.ContainerImages;
 
 import lombok.AccessLevel;
@@ -86,6 +87,14 @@ public class DockerContainerApi implements ContainerApi {
 	public Void terminate(String containerId) {
 		return dockerContainerClient.getDockerClient()
 			.stopContainerCmd(containerId)
+			.exec();
+	}
+
+	public Void remove(String containerId) {
+		return dockerContainerClient.getDockerClient()
+			.removeContainerCmd(containerId)
+			.withRemoveVolumes(true)
+			.withForce(true)
 			.exec();
 	}
 

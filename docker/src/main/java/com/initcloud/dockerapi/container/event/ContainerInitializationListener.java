@@ -5,7 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.initcloud.dockerapi.container.client.DockerContainerApi;
+import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
 import com.initcloud.dockerapi.redis.client.RedisQueueClient;
 
 import lombok.RequiredArgsConstructor;
