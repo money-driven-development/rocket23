@@ -8,7 +8,7 @@ import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.initcloud.dockerapi.container.annotation.ContainerLifeCycle;
 import com.initcloud.dockerapi.container.aspect.ContainerOrchestrationAspect;
 import com.initcloud.dockerapi.container.enums.ContainerLifeCycleStrategy;
-import com.initcloud.dockerapi.redis.client.RedisQueueClient;
+import com.initcloud.dockerapi.redis.client.RedisContainerQueueClient;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class ContainerStrategyApi {
 
 	private final DockerContainerApi dockerContainerApi;
-	private RedisQueueClient redisQueueClient = RedisQueueClient.getRedisQueueClient();
+	private RedisContainerQueueClient redisContainerQueueClient = RedisContainerQueueClient.getRedisQueueClient();
 
 	public void manageStandByContainerByStrategy() {
 		Annotation[] annotations = ContainerOrchestrationAspect.class.getDeclaredAnnotations();
@@ -51,7 +51,7 @@ public class ContainerStrategyApi {
 		boolean isNotFull = true;
 		while (isNotFull) {
 			CreateContainerResponse containerResponse = dockerContainerApi.create();
-			isNotFull = redisQueueClient.addToQueue(containerResponse.getId());
+			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
 		}
 	}
 

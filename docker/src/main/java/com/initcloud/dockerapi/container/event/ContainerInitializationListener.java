@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
-import com.initcloud.dockerapi.redis.client.RedisQueueClient;
+import com.initcloud.dockerapi.redis.client.RedisContainerQueueClient;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,12 +21,12 @@ public class ContainerInitializationListener {
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationEvent() {
-		RedisQueueClient redisQueueClient = RedisQueueClient.getRedisQueueClient();
+		RedisContainerQueueClient redisContainerQueueClient = RedisContainerQueueClient.getRedisQueueClient();
 
 		boolean isNotFull = true;
 		while(isNotFull) {
 			CreateContainerResponse containerResponse = containerApi.create();
-			isNotFull = redisQueueClient.addToQueue(containerResponse.getId());
+			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
 		}
 	}
 }
