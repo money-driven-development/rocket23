@@ -56,15 +56,14 @@ allprojects {
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     }
 
-    jar {
+    bootJar {
         enabled = false
+    }
+    jar {
+        enabled = true
     }
 
     test {
         useJUnitPlatform()
     }
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
