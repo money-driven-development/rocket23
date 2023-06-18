@@ -11,7 +11,7 @@ import com.initcloud.dockerapi.container.service.DockerManageService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/rocket23/container")
+@RequestMapping("/rocket23/containers")
 @RequiredArgsConstructor
 public class DockerContainerManageController {
 
