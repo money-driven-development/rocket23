@@ -3,12 +3,17 @@ package com.initcloud.dockerapi.redis.client;
 import static com.initcloud.dockerapi.redis.client.RedisStreamClient.*;
 
 import org.redisson.api.RStream;
+import org.redisson.api.StreamMessageId;
+import org.springframework.stereotype.Component;
 
 import com.initcloud.dockerapi.redis.message.StreamMessage;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@Component
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RedisMessageStreamProducer {
 
@@ -25,6 +30,7 @@ public class RedisMessageStreamProducer {
 
 	public void produceMessage(StreamMessage message) {
 		RStream<String, StreamMessage> stream = redisStreamClient.getRStream();
-		stream.add(message.getDirectory(), message); // Todo - id 로 무엇을 넣을지 파악해야 함.
+		StreamMessageId id = stream.add(message.getDirectory(), message); // Todo - id 로 무엇을 넣을지 파악해야 함.
+		log.info("PRODUCE {}", id);
 	}
 }

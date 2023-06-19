@@ -1,7 +1,5 @@
 package com.initcloud.dockerapi.redis.client;
 
-import java.util.Map;
-
 import org.redisson.Redisson;
 import org.redisson.api.RStream;
 import org.redisson.api.RedissonClient;
