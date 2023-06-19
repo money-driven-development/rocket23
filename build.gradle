@@ -4,15 +4,27 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'com.initcloud'
-version = 'rocket23'
+group = 'com.initcloud.rocket23'
+version = '1.0.0'
 sourceCompatibility = '11'
 
+repositories {
+    mavenCentral()
+}
 
-allprojects {
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.7.11'
+    }
+}
+
+subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+
+    group = rootProject.group
+    version = rootProject.version
 
     repositories {
         mavenCentral()
@@ -56,14 +68,20 @@ allprojects {
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     }
 
-    bootJar {
-        enabled = false
-    }
-    jar {
-        enabled = true
-    }
-
     test {
         useJUnitPlatform()
+    }
+}
+
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
+
+task buildJars(type: Jar) {
+    subprojects {
+        from it.tasks.jar
     }
 }
