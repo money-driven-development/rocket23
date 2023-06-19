@@ -28,9 +28,9 @@ public class RedisMessageStreamProducer {
 		return redissonMessageStreamPublisher;
 	}
 
-	public void produceMessage(StreamMessage message) {
+	public void produceMessage(String containerId, StreamMessage message) {
 		RStream<String, StreamMessage> stream = redisStreamClient.getRStream();
-		StreamMessageId id = stream.add(message.getDirectory(), message); // Todo - id 로 무엇을 넣을지 파악해야 함.
+		StreamMessageId id = stream.add(containerId, message); // Todo - id 로 무엇을 넣을지 파악해야 함.
 		log.info("PRODUCE {}", id);
 	}
 }
