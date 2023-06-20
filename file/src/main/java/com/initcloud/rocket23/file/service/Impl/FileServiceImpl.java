@@ -58,7 +58,9 @@ public class FileServiceImpl implements FileService {
 			}
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.FILE_WRONG);
-		} catch (Exception e) {
+		} catch(IllegalArgumentException e){
+			throw new ApiException(ResponseCode.ZIP_TO_FILE_ERROR);
+		} catch(Exception e){
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 		}
 	}
@@ -88,22 +90,45 @@ public class FileServiceImpl implements FileService {
 		String fileName = file.getOriginalFilename();
 		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
 		String check = "zip";
-		/// TODO: 2023-06-20 zip확장자뿐만이 아니라 tar.gz과 같은 다른 확장자 고려
+		/*
+		TODO: 2023-06-20 zip확장자뿐만이 아니라 tar.gz과 같은 다른 확장자 고려
+		 */
 		return extension.matches(check);
 	}
 
 	@Override
-	public void storeZip(MultipartFile file, Path path) throws IOException {
-		ZipEntry zipEntry = zipInputStream.getNextEntry();
-		while (zipEntry != null) {
-			String zipFileName = zipEntry.getName();
-			Path newPath = path.resolve(zipFileName);
-			if (zipEntry.isDirectory()) {
-				Files.createDirectories(path.resolve(newPath));
-			} else {
-				Files.copy(zipInputStream, newPath, StandardCopyOption.REPLACE_EXISTING);
+	public void storeZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
+		String name = file.getOriginalFilename();
+		try(ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream())){
+			ZipEntry zipEntry = zipInputStream.getNextEntry();
+			while(zipEntry != null){
+				boolean isDirectory = false;
+				if(zipEntry.getName().endsWith(File.separator)){
+					isDirectory = true;
+				}
+				Path newPath = zipSlipProtect(zipEntry, path);
+				if(isDirectory){
+					Files.createDirectories(newPath);
+				}else{
+					if(newPath.getParent() != null){
+						if(Files.notExists(newPath.getParent())){
+							Files.createDirectories(newPath.getParent());
+						}
+					}
+					Files.copy(zipInputStream, newPath, StandardCopyOption.REPLACE_EXISTING);
+				}
+				zipEntry = zipInputStream.getNextEntry();
 			}
-			zipEntry = zipInputStream.getNextEntry();
+			zipInputStream.closeEntry();
 		}
+	}
+
+	private Path zipSlipProtect(ZipEntry zipEntry,Path path) {
+		Path pathResolved = path.resolve(zipEntry.getName());
+		Path normalizePath = pathResolved.normalize();
+		if(!normalizePath.startsWith(path)){
+			throw new ApiException(ResponseCode.ZIP_PATH_ERROR);
+		}
+		return normalizePath;
 	}
 }
