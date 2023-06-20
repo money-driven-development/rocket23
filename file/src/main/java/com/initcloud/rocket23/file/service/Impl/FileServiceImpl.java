@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import java.util.zip.ZipInputStream;
 
 @RequiredArgsConstructor
 @Service
@@ -55,6 +56,8 @@ public class FileServiceImpl implements FileService {
 				Files.copy(inputStream, root.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
 			}
 			save(file, "local", uploadPath);
+		} catch (IOException e) {
+			throw new ApiException(ResponseCode.FILE_WRONG);
 		} catch (Exception e) {
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 		}
@@ -71,4 +74,9 @@ public class FileServiceImpl implements FileService {
 		fileRepository.save(fileEntity);
 	}
 
+	@Override
+	public boolean isZipfile(MultipartFile file) throws IOException {
+		ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream());
+		return zipInputStream.getNextEntry() != null;
+	}
 }
