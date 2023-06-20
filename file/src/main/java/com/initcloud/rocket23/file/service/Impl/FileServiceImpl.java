@@ -1,8 +1,5 @@
 package com.initcloud.rocket23.file.service.Impl;
 
-//import com.amazonaws.services.s3.AmazonS3;
-//import com.amazonaws.services.s3.AmazonS3Client;
-
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.file.dto.FileDto;
@@ -16,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -23,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @RequiredArgsConstructor
@@ -52,15 +51,25 @@ public class FileServiceImpl implements FileService {
 			if (!Files.exists(root)) {
 				init();
 			}
-			try (InputStream inputStream = file.getInputStream()) {
-				Files.copy(inputStream, root.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
+			if (isZip(file)) {
+				storeZip(file, root);
+			} else {
+				storeFile(file, root);
 			}
-			save(file, "local", uploadPath);
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.FILE_WRONG);
 		} catch (Exception e) {
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 		}
+	}
+
+	@Override
+	public void storeFile(MultipartFile file, Path path) throws IOException {
+		try (InputStream inputStream = file.getInputStream()) {
+			Files.copy(inputStream, path.resolve(file.getOriginalFilename()),
+				StandardCopyOption.REPLACE_EXISTING);
+		}
+		save(file, "local", uploadPath);
 	}
 
 	@Override
@@ -75,8 +84,26 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public boolean isZipfile(MultipartFile file) throws IOException {
-		ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream());
-		return zipInputStream.getNextEntry() != null;
+	public boolean isZip(MultipartFile file) {
+		String fileName = file.getOriginalFilename();
+		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+		String check = "zip";
+		/// TODO: 2023-06-20 zip확장자뿐만이 아니라 tar.gz과 같은 다른 확장자 고려
+		return extension.matches(check);
+	}
+
+	@Override
+	public void storeZip(MultipartFile file, Path path) throws IOException {
+		ZipEntry zipEntry = zipInputStream.getNextEntry();
+		while (zipEntry != null) {
+			String zipFileName = zipEntry.getName();
+			Path newPath = path.resolve(zipFileName);
+			if (zipEntry.isDirectory()) {
+				Files.createDirectories(path.resolve(newPath));
+			} else {
+				Files.copy(zipInputStream, newPath, StandardCopyOption.REPLACE_EXISTING);
+			}
+			zipEntry = zipInputStream.getNextEntry();
+		}
 	}
 }
