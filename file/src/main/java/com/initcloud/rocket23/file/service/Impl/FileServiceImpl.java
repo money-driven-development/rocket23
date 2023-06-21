@@ -33,10 +33,11 @@ public class FileServiceImpl implements FileService {
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
 
+	//path입력을 통해서 uuid 디렉토리를 생성함.
 	@Override
-	public void init() {
+	public void init(Path path) {
 		try {
-			Files.createDirectories(Paths.get(uploadPath));
+			Files.createDirectories(path);
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.SERVER_CREATED_DIR_ERROR);
 		}
@@ -48,13 +49,13 @@ public class FileServiceImpl implements FileService {
 			if (file.isEmpty()) {
 				throw new ApiException(ResponseCode.DATA_MISSING);
 			}
-			Path root = Paths.get(uploadPath);
+			//기존의 파일 저장위치와 uuid 값을 결합하여, uuid별 디렉토리를 생성
+			String uuid = UUID.randomUUID().toString();
+			String url = uploadPath + uuid;
+			Path root = Paths.get(url);
 			if (!Files.exists(root)) {
-				init();
+				init(root);
 			}
-			/*
-			TODO: 2023-06-21 파일의 uuid펼 디렉토리를 생성하고, 해당 디렉토리에 파일 업로드 기능을 구현해야함.
-			 */
 			if (isZip(file)) {
 				unZip(file, root);
 			} else {

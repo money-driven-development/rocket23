@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
-	void init();
+	void init(Path path);
 
 	//Local 저장
 	void store(MultipartFile file);
