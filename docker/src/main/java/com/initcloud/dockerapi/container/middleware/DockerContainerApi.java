@@ -91,11 +91,16 @@ public class DockerContainerApi implements ContainerApi {
 	}
 
 	public Void remove(String containerId) {
-		return dockerContainerClient.getDockerClient()
-			.removeContainerCmd(containerId)
-			.withRemoveVolumes(true)
-			.withForce(true)
-			.exec();
+		try {
+			return dockerContainerClient.getDockerClient()
+				.removeContainerCmd(containerId)
+				.withRemoveVolumes(true)
+				.withForce(true)
+				.exec();
+		} catch (NotFoundException e) {
+			log.warn("Not Found Container {}", containerId);
+			return null;
+		}
 	}
 
 	public void pull(ContainerImages image) throws InterruptedException {

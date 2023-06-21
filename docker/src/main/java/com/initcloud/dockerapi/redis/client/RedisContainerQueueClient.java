@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RedisContainerQueueClient {
 
-	private static final RedisContainerQueueClient redissonQueueClient = new RedisContainerQueueClient("container.standby");
+	private static final RedisContainerQueueClient redissonQueueClient = new RedisContainerQueueClient(
+		"container.standby");
 
 	@Value("${redis.queue.maxsize}")
 	private Integer maxQueueSize = 7;
@@ -35,7 +38,7 @@ public class RedisContainerQueueClient {
 	}
 
 	public Boolean addToQueue(String containerId) {
-		if (this.queue.size() == maxQueueSize) {
+		if (this.queue.size() >= maxQueueSize) {
 			return false;
 		}
 
@@ -48,5 +51,9 @@ public class RedisContainerQueueClient {
 
 	public Integer adjustMaxQueueSize(int size) {
 		return (this.maxQueueSize += size);
+	}
+
+	public void shutDown() {
+		redissonClient.shutdown();
 	}
 }
