@@ -70,7 +70,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public void storeFile(MultipartFile file, Path path, boolean check) throws IOException {
-		if (check) {
+		if (!check) {
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, path.resolve(file.getOriginalFilename()),
 					StandardCopyOption.REPLACE_EXISTING);
@@ -105,10 +105,7 @@ public class FileServiceImpl implements FileService {
 		try (ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream(), CP866)) {
 			ZipEntry zipEntry = zipInputStream.getNextEntry();
 			while (zipEntry != null) {
-				boolean isDirectory = false;
-				if (zipEntry.getName().endsWith(File.separator)) {
-					isDirectory = true;
-				}
+				boolean isDirectory = zipEntry.getName().endsWith(File.separator);
 				Path newPath = zipSlipProtect(zipEntry, path);
 				if (isDirectory) {
 					Files.createDirectories(newPath);
@@ -135,3 +132,4 @@ public class FileServiceImpl implements FileService {
 		return normalizePath;
 	}
 }
+dh
