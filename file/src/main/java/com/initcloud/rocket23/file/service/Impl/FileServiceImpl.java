@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,15 +52,16 @@ public class FileServiceImpl implements FileService {
 			if (!Files.exists(root)) {
 				init();
 			}
+			/// TODO: 2023-06-21 파일의 uuid펼 디렉토리를 생성하고, 해당 디렉토리에 파일 업로드 기능을 구현해야함.
 			if (isZip(file)) {
-				storeZip(file, root);
+				unZip(file, root);
 			} else {
 				storeFile(file, root);
 			}
 		} catch (IOException e) {
-			throw new ApiException(ResponseCode.FILE_WRONG);
+			throw new ApiException(ResponseCode.FILE_WRONG_ERROR);
 		} catch(IllegalArgumentException e){
-			throw new ApiException(ResponseCode.ZIP_TO_FILE_ERROR);
+			throw new ApiException(ResponseCode.ZIP_ENCODING_ERROR);
 		} catch(Exception e){
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 		}
@@ -97,9 +99,9 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void storeZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
-		String name = file.getOriginalFilename();
-		try(ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream())){
+	public void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
+		Charset CP866 = Charset.forName("CP866");
+		try(ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream(),CP866)){
 			ZipEntry zipEntry = zipInputStream.getNextEntry();
 			while(zipEntry != null){
 				boolean isDirectory = false;

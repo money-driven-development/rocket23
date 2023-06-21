@@ -17,7 +17,7 @@ public interface FileService {
 
 	void storeFile(MultipartFile file, Path path) throws IOException;
 
-	void storeZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
+	void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
 	//DB 저장
 	void save(MultipartFile file, String type, String uploadPath);
