@@ -6,7 +6,7 @@ import org.redisson.api.RStream;
 import org.redisson.api.StreamMessageId;
 import org.springframework.stereotype.Component;
 
-import com.initcloud.dockerapi.redis.message.StreamMessage;
+import com.initcloud.dockerapi.redis.message.ScanStreamMessage;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -28,23 +28,9 @@ public class RedisMessageStreamProducer {
 		return redissonMessageStreamProducer;
 	}
 
-	public void produceMessage(String containerId, StreamMessage message) {
-		RStream<String, StreamMessage> stream = redisStreamClient.getRStream();
+	public void produceMessage(String containerId, ScanStreamMessage message) {
+		RStream<String, ScanStreamMessage> stream = redisStreamClient.getRStream();
 		StreamMessageId id = stream.add(containerId, message); // Todo - id 로 무엇을 넣을지 파악해야 함.
 		log.info("PRODUCE {}", id);
-	}
-
-	/**
-	 * 메시지 처리에 대한 응답
-	 */
-	public void ackMessageProcessing() {
-
-	}
-
-	/**
-	 * Pending 상태의 메시지 처리에 대한 응답
-	 */
-	public void claimMessageProcessing() {
-
 	}
 }

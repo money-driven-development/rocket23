@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StreamMessage<T> {
+public class ScanStreamMessage<T> {
 
 	private enum MessageType {
 		SCAN_START, // 스캔 시작
@@ -26,7 +26,7 @@ public class StreamMessage<T> {
 	/**
 	 * 성공 시
 	 */
-	public StreamMessage(String directory, T body) {
+	public ScanStreamMessage(String directory, T body) {
 		this.directory = directory;
 		this.messageType = MessageType.SCAN_COMPLETE;
 		this.hasBody = true;
@@ -37,7 +37,7 @@ public class StreamMessage<T> {
 	 * 실패 시
 	 */
 	@Builder(builderClassName = "streamBuilder", builderMethodName = "redisStreamFailedBuilder")
-	public StreamMessage(String directory) {
+	public ScanStreamMessage(String directory) {
 		this.directory = directory;
 		this.messageType = MessageType.SCAN_FAULT;
 		this.hasBody = false;
@@ -47,8 +47,8 @@ public class StreamMessage<T> {
 	/**
 	 * 실패 시 builder 를 통해 메시지 생성
 	 */
-	public static StreamMessage<Object> toFailedStreamMessage(String directory) {
-		return StreamMessage.redisStreamFailedBuilder()
+	public static ScanStreamMessage<Object> toFailedStreamMessage(String directory) {
+		return ScanStreamMessage.redisStreamFailedBuilder()
 			.directory(directory)
 			.build();
 	}

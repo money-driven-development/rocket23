@@ -1,25 +1,24 @@
 package com.initcloud.dockerapi.redis.client;
 
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.data.redis.connection.stream.MapRecord;
+import org.redisson.api.StreamMessageId;
 import org.springframework.data.redis.connection.stream.RecordId;
-import org.springframework.data.redis.stream.StreamListener;
-import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.stereotype.Component;
 
-@Component
-public class RedisMessageStreamConsumer implements StreamListener<String, MapRecord<String, Object, Object>> {
+import lombok.extern.slf4j.Slf4j;
 
-	private StreamMessageListenerContainer<String, MapRecord<String, Object, Object>> streamMessageListenerContainer;
+@Slf4j
+@Component
+public class RedisMessageStreamConsumer {
+
 	private RedisStreamClient client = RedisStreamClient.getRedisStreamClient();
 	private String streamKey = "container.docker";
 	private String consumerGroupName = "consumerGroupContainer";
 	private String consumerName = "consumerContainerDocker";
 
+	private StreamMessageId lastMessageId;
+
 	public RedisMessageStreamConsumer() {
+		client.getRStream().createGroup(consumerGroupName, StreamMessageId.ALL);
 	}
 
 	/**
@@ -30,16 +29,22 @@ public class RedisMessageStreamConsumer implements StreamListener<String, MapRec
 	}
 
 	/**
-	 * 메시지 Listen
+	 * Pending 상태의 메시지 처리에 대한 응답
 	 */
-	@Override
-	public void onMessage(MapRecord<String, Object, Object> message) {
-		RecordId messageId = message.getId();
-		Map<Object, Object> body = message.getValue();
+	private void claimMessageProcessing() {
 
-		/** Todo - 스캔 로직 구현 이후 추가
-		 * 1. Redis Queue 에서 containerId를 pop.
-		 * 2. 해당 컨테이너를 동작시킴
-		 */
+	}
+
+	/**
+	 * 메시지 Listen
+	 * Todo -
+	 */
+	public void consumeRedisStream() {
+	}
+
+	/**
+	 * 메시지 처리에 대한 응답
+	 */
+	private void ackMessageProcessing(RecordId id) {
 	}
 }

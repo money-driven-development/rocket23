@@ -7,7 +7,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.initcloud.dockerapi.redis.message.StreamMessage;
+import com.initcloud.dockerapi.redis.message.ScanStreamMessage;
 
 import lombok.Getter;
 
@@ -20,7 +20,7 @@ public class RedisStreamClient implements InitializingBean {
 	private RedissonClient redissonClient;
 
 	@Getter
-	private RStream<String, StreamMessage> rStream;
+	private RStream<String, ScanStreamMessage> rStream;
 
 	public RedisStreamClient() {
 		this.redissonClient = Redisson.create();
