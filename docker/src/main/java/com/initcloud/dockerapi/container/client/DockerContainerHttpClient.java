@@ -5,6 +5,7 @@ import java.net.URI;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import com.github.dockerjava.transport.SSLConfig;
+import com.initcloud.dockerapi.container.enums.ContainerAPIType;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class DockerContainerHttpClient {
 
 	public static DockerHttpClient createDockerHttpClient() {
 		return new ApacheDockerHttpClient.Builder()
-			.dockerHost(URI.create("unix:///var/run/docker.sock"))
+			.dockerHost(URI.create(ContainerAPIType.DOCKER.getSocket()))
 			.sslConfig(null)
 			.build();
 	}
