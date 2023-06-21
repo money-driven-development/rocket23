@@ -105,9 +105,8 @@ public class FileServiceImpl implements FileService {
 		try (ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream(), CP866)) {
 			ZipEntry zipEntry = zipInputStream.getNextEntry();
 			while (zipEntry != null) {
-				boolean isDirectory = zipEntry.getName().endsWith(File.separator);
 				Path newPath = zipSlipProtect(zipEntry, path);
-				if (isDirectory) {
+				if (zipEntry.getName().endsWith(File.separator)) {
 					Files.createDirectories(newPath);
 				} else {
 					if (newPath.getParent() != null) {
@@ -132,4 +131,3 @@ public class FileServiceImpl implements FileService {
 		return normalizePath;
 	}
 }
-dh
