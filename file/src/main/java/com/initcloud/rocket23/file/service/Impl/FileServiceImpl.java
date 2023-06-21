@@ -89,6 +89,13 @@ public class FileServiceImpl implements FileService {
 		fileRepository.save(fileEntity);
 	}
 
+	/**
+	 *
+	 * @param file 업로드된 파일
+	 * @return zip파일 -> true, 아닌 경우 -> false
+	 *
+	 * 파일 확장자를 통한 zip파일 확인
+	 */
 	private boolean isZip(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -99,6 +106,17 @@ public class FileServiceImpl implements FileService {
 		return extension.matches(check);
 	}
 
+	/**
+	 *
+	 * @param file 업로드된 파일
+	 * @param path 저장할 root 경로
+	 * @throws IOException file.getinputstream의 경우 IOException이 발생
+	 * @throws IllegalArgumentException zipinputstream의 경우 encoding에서 해당 exception이 발생
+	 *
+	 * zip파일을 순서별로 압축해제,
+	 * 디렉터로인 경우 생성, 파일인 경우 복사
+	 *
+	 */
 	@Override
 	public void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
 		Charset CP866 = Charset.forName("CP866");
@@ -122,6 +140,15 @@ public class FileServiceImpl implements FileService {
 		}
 	}
 
+	/**
+	 *
+	 * @param zipEntry 저장하고자 하는 zip파일의 요소
+	 * @param path 저장하고자하는 zip파일의 root 경로
+	 * @return zipentry의 저장 경로
+	 *
+	 * zip 내부 파일에 대한 경로 반환,
+	 * root가 올바르지 않은 경우, 오루 -> ZIP_PATH_ERROR 호출
+	 */
 	private Path zipSlipProtect(ZipEntry zipEntry, Path path) {
 		Path pathResolved = path.resolve(zipEntry.getName());
 		Path normalizePath = pathResolved.normalize();
