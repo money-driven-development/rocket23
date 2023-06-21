@@ -17,20 +17,34 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RedisMessageStreamProducer {
 
-	private static final RedisMessageStreamProducer redissonMessageStreamPublisher = new RedisMessageStreamProducer();
+	private static final RedisMessageStreamProducer redissonMessageStreamProducer = new RedisMessageStreamProducer();
 
 	private RedisStreamClient redisStreamClient = getRedisStreamClient();
 
 	/**
 	 * 싱글톤 패턴을 통해서 RedisMessageStreamProducer 에 대한 단일 인스턴스만 제공
 	 */
-	public static RedisMessageStreamProducer getMessageStreamPublisher() {
-		return redissonMessageStreamPublisher;
+	public static RedisMessageStreamProducer getMessageStreamProducer() {
+		return redissonMessageStreamProducer;
 	}
 
 	public void produceMessage(String containerId, StreamMessage message) {
 		RStream<String, StreamMessage> stream = redisStreamClient.getRStream();
 		StreamMessageId id = stream.add(containerId, message); // Todo - id 로 무엇을 넣을지 파악해야 함.
 		log.info("PRODUCE {}", id);
+	}
+
+	/**
+	 * 메시지 처리에 대한 응답
+	 */
+	public void ackMessageProcessing() {
+
+	}
+
+	/**
+	 * Pending 상태의 메시지 처리에 대한 응답
+	 */
+	public void claimMessageProcessing() {
+
 	}
 }

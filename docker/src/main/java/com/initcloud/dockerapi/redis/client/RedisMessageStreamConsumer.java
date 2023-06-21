@@ -23,21 +23,6 @@ public class RedisMessageStreamConsumer implements StreamListener<String, MapRec
 	}
 
 	/**
-	 * 메시지 Listen
-	 */
-	@PostConstruct
-	public void consumeMessage() {
-		// Todo - 컨슈머 구현
-	}
-
-	/**
-	 * 메시지 처리에 대한 응답
-	 */
-	public void ackMessageProcessing() {
-
-	}
-
-	/**
 	 * Pending 상태의 메시지 Listen
 	 */
 	public void consumePendingMessage() {
@@ -45,17 +30,16 @@ public class RedisMessageStreamConsumer implements StreamListener<String, MapRec
 	}
 
 	/**
-	 * Pending 상태의 메시지 처리에 대한 응답
+	 * 메시지 Listen
 	 */
-	public void claimMessageProcessing() {
-
-	}
-
 	@Override
 	public void onMessage(MapRecord<String, Object, Object> message) {
 		RecordId messageId = message.getId();
 		Map<Object, Object> body = message.getValue();
 
-		// Todo - 처리로직 추가
+		/** Todo - 스캔 로직 구현 이후 추가
+		 * 1. Redis Queue 에서 containerId를 pop.
+		 * 2. 해당 컨테이너를 동작시킴
+		 */
 	}
 }
