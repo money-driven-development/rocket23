@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MessageStreamAspect {
 
-	private RedisMessageStreamProducer producer = RedisMessageStreamProducer.getMessageStreamPublisher();
+	private RedisMessageStreamProducer producer = RedisMessageStreamProducer.getMessageStreamProducer();
 
 	@AfterReturning(value = "execution(* com.initcloud.dockerapi.container.service.DockerManageService.executeContainer(..)) && args(containerId, message))")
 	public void produceMessageAfterReturningContainerExecute(String containerId, StreamMessage message) {
