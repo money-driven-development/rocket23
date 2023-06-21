@@ -53,14 +53,12 @@ public class FileServiceImpl implements FileService {
 			String uuid = UUID.randomUUID().toString();
 			String url = uploadPath + uuid;
 			Path root = Paths.get(url);
+			boolean zipCheck = false;
 			if (!Files.exists(root)) {
 				init(root);
 			}
-			if (isZip(file)) {
-				unZip(file, root);
-			} else {
-				storeFile(file, root);
-			}
+			zipCheck = isZip(file);
+			storeFile(file, root, zipCheck);
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.FILE_WRONG_ERROR);
 		} catch (IllegalArgumentException e) {
@@ -71,12 +69,16 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void storeFile(MultipartFile file, Path path) throws IOException {
-		try (InputStream inputStream = file.getInputStream()) {
-			Files.copy(inputStream, path.resolve(file.getOriginalFilename()),
-				StandardCopyOption.REPLACE_EXISTING);
+	public void storeFile(MultipartFile file, Path path, boolean check) throws IOException {
+		if (check) {
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, path.resolve(file.getOriginalFilename()),
+					StandardCopyOption.REPLACE_EXISTING);
+			}
+		} else {
+			unZip(file, path);
 		}
-		save(file, "local", uploadPath);
+		save(file, "local", path.toString());
 	}
 
 	@Override
@@ -87,8 +89,7 @@ public class FileServiceImpl implements FileService {
 		fileRepository.save(fileEntity);
 	}
 
-	@Override
-	public boolean isZip(MultipartFile file) {
+	private boolean isZip(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
 		String check = "zip";

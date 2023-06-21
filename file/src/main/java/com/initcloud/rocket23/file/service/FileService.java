@@ -11,9 +11,7 @@ public interface FileService {
 	//Local 저장
 	void store(MultipartFile file);
 
-	boolean isZip(MultipartFile file);
-
-	void storeFile(MultipartFile file, Path path) throws IOException;
+	void storeFile(MultipartFile file, Path path,boolean check) throws IOException;
 
 	void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
