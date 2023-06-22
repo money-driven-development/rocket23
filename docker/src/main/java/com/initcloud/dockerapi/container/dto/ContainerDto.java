@@ -1,5 +1,7 @@
 package com.initcloud.dockerapi.container.dto;
 
+import java.io.Serializable;
+
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.model.Container;
 
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ContainerDto {
+public class ContainerDto implements Serializable {
 
 	private String containerId;
 	private String containerStatus;

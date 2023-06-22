@@ -22,6 +22,7 @@ public class ContainerInitializationListener {
 
 	/**
 	 * 앱 구동 완료 후 동작
+	 * 컨테이너를 초기화하고 Subscriber 를 실행시킴.
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationEvent() {
@@ -32,8 +33,10 @@ public class ContainerInitializationListener {
 		while (isNotFull) {
 			CreateContainerResponse containerResponse = containerApi.create();
 			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
-			log.info("[Init Containers] - {} {}", containerResponse.getId(), isNotFull);
+			log.info("[Init Containers] - {}", containerResponse.getId());
 		}
+
+		log.info("[INIT] - {}", !isNotFull);
 	}
 
 	/**

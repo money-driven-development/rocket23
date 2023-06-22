@@ -1,5 +1,7 @@
 package com.initcloud.dockerapi.redis.message;
 
+import java.io.Serializable;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ScanStreamMessage<T> {
+public class ScanStreamMessage<T> implements Serializable {
 
 	public enum MessageType {
 		SCAN_COMPLETE, // 스캔 완료
