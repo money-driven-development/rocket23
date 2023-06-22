@@ -11,7 +11,9 @@ import com.initcloud.dockerapi.container.enums.ContainerLifeCycleStrategy;
 import com.initcloud.dockerapi.redis.client.RedisContainerQueueClient;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ContainerStrategyApi {
@@ -48,7 +50,7 @@ public class ContainerStrategyApi {
 	 * 스탠바이 컨테이너를 유지하기 위해 컨테이너를 생성함.
 	 */
 	public void manageStandbyContainerByCreateStrategy() {
-		boolean isNotFull = true;
+		boolean isNotFull = redisContainerQueueClient.canCreateContainer();
 		while (isNotFull) {
 			CreateContainerResponse containerResponse = dockerContainerApi.create();
 			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
@@ -76,7 +78,7 @@ public class ContainerStrategyApi {
 	 * [온디맨드 컨테이너 실행 전략]
 	 * 완료된 컨테이너를 삭제함.
 	 */
-	public void manageCompletedStandbyContainerByOnDemandCreateStrategy() {
+	public void manageCompletedContainerByOnDemandCreateStrategy() {
 		// Todo
 	}
 }

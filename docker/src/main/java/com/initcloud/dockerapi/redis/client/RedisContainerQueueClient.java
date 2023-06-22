@@ -37,6 +37,10 @@ public class RedisContainerQueueClient {
 		return this.queue.size();
 	}
 
+	public boolean canCreateContainer() {
+		return this.queue.size() < maxQueueSize;
+	}
+
 	public Boolean addToQueue(String containerId) {
 		if (this.queue.size() >= maxQueueSize) {
 			return false;

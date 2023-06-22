@@ -1,6 +1,7 @@
 package com.initcloud.dockerapi.container.event;
 
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Profile("production")
 public class ContainerInitializationListener {
 
 	private final DockerContainerApi containerApi;
@@ -32,8 +34,6 @@ public class ContainerInitializationListener {
 			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
 			log.info("[Init Containers] - {} {}", containerResponse.getId(), isNotFull);
 		}
-
-		redisContainerQueueClient.shutDown();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class ContainerInitializationListener {
 	private void removeUnControlledContainer(RedisContainerQueueClient redisContainerQueueClient) {
 		int legacyQueueSize = redisContainerQueueClient.getQueueSize();
 
-		for(int i = 0 ; i < legacyQueueSize ; i++) {
+		for (int i = 0; i < legacyQueueSize; i++) {
 			String containerId = redisContainerQueueClient.pollContainerIdFromQueue();
 			containerApi.remove(containerId);
 		}
