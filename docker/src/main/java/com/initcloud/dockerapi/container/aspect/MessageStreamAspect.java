@@ -4,20 +4,22 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.redis.client.RedisMessageStreamProducer;
-import com.initcloud.dockerapi.redis.message.ScanStreamMessage;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Aspect
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class MessageStreamAspect {
 
-	private RedisMessageStreamProducer producer = RedisMessageStreamProducer.getMessageStreamProducer();
+	private final RedisMessageStreamProducer producer;
 
-	@AfterReturning(value = "execution(* com.initcloud.dockerapi.container.service.DockerManageService.executeContainer(..)) && args(containerId, message))")
-	public void produceMessageAfterReturningContainerExecute(String containerId, ScanStreamMessage message) {
-		producer.produceMessage(containerId, message);
+	@AfterReturning(value = "execution(* com.initcloud.dockerapi.container.service.DockerManageService.executeContainer(..))", returning = "containerDto")
+	public void produceMessageAfterReturningContainerExecute(final ContainerDto containerDto) {
+		producer.produceMessage(containerDto);
 	}
 }

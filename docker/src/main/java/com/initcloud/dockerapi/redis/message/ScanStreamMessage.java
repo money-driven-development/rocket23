@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScanStreamMessage<T> {
 
-	private enum MessageType {
-		SCAN_START, // 스캔 시작
+	public enum MessageType {
 		SCAN_COMPLETE, // 스캔 완료
 		SCAN_FAULT // 스캔 실패
 	}
