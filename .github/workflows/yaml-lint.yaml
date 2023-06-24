@@ -1,0 +1,23 @@
+name: Lint Action YAML
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - '.github/**'
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - '.github/**'
+
+jobs:
+  validate-yaml:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      ## 액션 변경 시 yml Lint
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .github/workflows/**.yaml
