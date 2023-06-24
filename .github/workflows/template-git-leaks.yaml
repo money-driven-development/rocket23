@@ -1,0 +1,24 @@
+name: Git-Leaks
+
+on:
+  workflow_call:
+    secrets:
+      TOKEN_FOR_CICD:
+        required: true
+
+env:
+  TOKEN_FOR_CICD: ${{ secrets.TOKEN_FOR_CICD }}
+
+jobs:
+  git-leaks:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ env.TOKEN_FOR_CICD }}
