@@ -27,6 +27,6 @@ jobs:
 
   gradle-build:
     uses: money-driven-development/rocket23/.github/workflows/template-gradle-build.yml@main
-    needs: [app-scan, git-leaks]
+    needs: [git-leaks]
     secrets:
-      SERVICE-NAME: file
+      SERVICE-NAME: docker

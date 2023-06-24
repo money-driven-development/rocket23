@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-20.04]
 
         ## 추후, 버전 변경이 있을 경우
-        java-version: [17]
+        java-version: [11]
         jdk-distribution: ['temurin']
 
     runs-on: ${{ matrix.os }}
