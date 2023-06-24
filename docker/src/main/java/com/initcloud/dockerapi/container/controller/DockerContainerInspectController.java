@@ -16,7 +16,7 @@ import com.initcloud.dockerapi.container.service.DockerInspectService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/rocket23/container")
+@RequestMapping("/rocket23/containers")
 @RequiredArgsConstructor
 public class DockerContainerInspectController {
 
@@ -62,7 +62,7 @@ public class DockerContainerInspectController {
 	 * 컨테이너 자원 상태 상세 조회
 	 * @return ContainerInspectDto
 	 */
-	@GetMapping("/{containerId}")
+	@GetMapping("/{containerId}/metrics")
 	public ResponseDto<ContainerDto> containerMetrics(@Nullable @PathVariable String containerId) {
 
 		ContainerDto response = dockerService.getContainerDetails(containerId);

@@ -19,9 +19,9 @@ public class ContainerInspectDto extends ContainerDto {
 	private String[] args;
 
 	@Builder(builderClassName = "containerBuilder", builderMethodName = "containerDetailsStatusBuilder")
-	public ContainerInspectDto(Long pid, String containerName, String[] args, String image, String startAt,
+	public ContainerInspectDto(Long pid, String containerId, String containerName, String[] args, String image, String startAt,
 		ContainerAPIType apiType, String containerStatus) {
-		super(containerName, containerStatus);
+		super(containerId, containerStatus);
 		this.pid = pid;
 		this.containerName = containerName;
 		this.startAt = startAt;
@@ -32,7 +32,7 @@ public class ContainerInspectDto extends ContainerDto {
 
 	public ContainerInspectDto(final InspectContainerResponse container, final ContainerAPIType apiType) throws
 		NullPointerException {
-		super(container.getName(), container.getState().getStatus());
+		super(container.getId(), container.getState().getStatus());
 		this.pid = container.getState().getPidLong();
 		this.containerName = container.getName();
 		this.startAt = container.getState().getStartedAt();

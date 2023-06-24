@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import com.initcloud.dockerapi.container.annotation.ContainerLifeCycle;
+import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.container.middleware.ContainerStrategyApi;
 
 import lombok.RequiredArgsConstructor;
@@ -23,17 +24,8 @@ public class ContainerOrchestrationAspect {
 	/**
 	 * 컨테이너 동작 전 스탠바이 컨테이너 수 조정
 	 */
-	@Before(value = "execution(* com.initcloud.dockerapi.container.service.DockerService.executeContainer(..)))")
+	@Before(value = "execution(* com.initcloud.dockerapi.container.service.DockerManageService.executeContainer(..)))")
 	public void beforeContainerExecute() {
 		containerStrategyApi.manageStandByContainerByStrategy();
-	}
-
-	/**
-	 * 컨테이너 동작 후 컨테이너 조정
-	 */
-	@AfterReturning(value = "execution(* com.initcloud.dockerapi.container.service.DockerService.executeContainer(..)) && args(containerId))")
-	public void afterReturningContainerExecute(String containerId) {
-		log.info("[SCAN FINISHED] {}", containerId);
-		containerStrategyApi.manageCompletedContainerByStrategy(containerId);
 	}
 }
