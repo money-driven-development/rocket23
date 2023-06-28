@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.11'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -20,7 +21,9 @@ dependencyManagement {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
+    apply plugin: 'org.asciidoctor.jvm.convert'
     apply plugin: 'io.spring.dependency-management'
 
     group = rootProject.group
@@ -28,6 +31,14 @@ subprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    configurations {
+        asciidoctorExtensions
+
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
     }
 
     dependencies {
@@ -84,4 +95,8 @@ task buildJars(type: Jar) {
     subprojects {
         from it.tasks.jar
     }
+}
+
+test {
+    useJUnitPlatform()
 }
