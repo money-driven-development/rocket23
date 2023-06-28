@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.file.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.file.enums.ServerType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,10 +35,11 @@ public class FileEntity extends BaseEntity {
 	private String path;
 
 	@Column(name = "SERVER_TYPE")
-	private String serverType;
+	@Enumerated(EnumType.STRING)
+	private ServerType serverType;
 
 	@Builder
-	public FileEntity(Long id, String fileName, String uuid, String path, String serverType) {
+	public FileEntity(Long id, String fileName, String uuid, String path, ServerType serverType) {
 		this.id = id;
 		this.fileName = fileName;
 		this.uuid = uuid;

@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.file.dto;
 
 import com.initcloud.rocket23.file.entity.FileEntity;
+import com.initcloud.rocket23.file.enums.ServerType;
 
 import lombok.*;
 
@@ -11,10 +12,10 @@ public class FileDto {
 	private String fileName;
 	private String uuid;
 	private String path;
-	private String serverType;
+	private ServerType serverType;
 
 	@Builder
-	public FileDto(Long id, String fileName, String uuid, String path, String serverType) {
+	public FileDto(Long id, String fileName, String uuid, String path, ServerType serverType) {
 		this.id = id;
 		this.fileName = fileName;
 		this.uuid = uuid;
@@ -22,7 +23,7 @@ public class FileDto {
 		this.serverType = serverType;
 	}
 
-	public static FileDto toDto(String name, String uuid, String path, String serverType) {
+	public static FileDto toDto(String name, String uuid, String path, ServerType serverType) {
 		return FileDto.builder()
 			.fileName(name)
 			.uuid(uuid)

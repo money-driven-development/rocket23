@@ -4,6 +4,7 @@ import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.file.dto.FileDto;
 import com.initcloud.rocket23.file.entity.FileEntity;
+import com.initcloud.rocket23.file.enums.ServerType;
 import com.initcloud.rocket23.file.repository.FileRepository;
 import com.initcloud.rocket23.file.service.FileService;
 
@@ -98,11 +99,11 @@ public class FileServiceImpl implements FileService {
 					StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
-		save(file, "local", path.toString());
+		save(file, ServerType.LOCAL, path.toString());
 	}
 
 	@Override
-	public void save(MultipartFile file, String type, String uploadPath) {
+	public void save(MultipartFile file, ServerType type, String uploadPath) {
 		String name = file.getOriginalFilename();
 		String uuid = UUID.randomUUID().toString();
 		FileEntity fileEntity = FileDto.toDto(name, uuid, uploadPath, type).toEntity();
@@ -175,4 +176,5 @@ public class FileServiceImpl implements FileService {
 		}
 		return normalizePath;
 	}
+
 }
