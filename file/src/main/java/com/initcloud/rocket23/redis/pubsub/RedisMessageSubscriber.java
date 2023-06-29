@@ -15,20 +15,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RedisMessageSubscriber {
 
-	@Qualifier("topicScan")
-	private final RTopic topicScan;
-
-	@Qualifier("topicContainer")
-	private final RTopic topicContainer;
+	@Qualifier("topicFile")
+	private final RTopic topicFile;
 
 	@PostConstruct
 	public void initialize() {
-		subscribeScanChannel();
+		subscribeFileChannel();
 	}
 
-	public void subscribeScanChannel() {
-		log.info("[Subscribe Scan Channel]");
-		topicScan.addListener(String.class, (channel, data) -> {
+	public void subscribeFileChannel() {
+		log.info("[Subscribe File Channel]");
+		topicFile.addListener(String.class, (channel, data) -> {
 			try {
 				log.info("[RECEIVED] {} - {}", channel, data);
 			} catch (DecoderException e) {

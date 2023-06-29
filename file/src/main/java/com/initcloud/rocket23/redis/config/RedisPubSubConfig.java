@@ -16,14 +16,8 @@ public class RedisPubSubConfig {
 	private final RedissonClient redissonClient;
 
 	@Bean
-	public RTopic topicScan() {
-		RTopic topic = redissonClient.getTopic(Channels.SCAN.getChannel());
-		return topic;
-	}
-
-	@Bean
-	public RTopic topicContainer() {
-		RTopic topic = redissonClient.getTopic(Channels.CONTAINER.getChannel());
+	public RTopic topicFile() {
+		RTopic topic = redissonClient.getTopic(Channels.FILE.getChannel());
 		return topic;
 	}
 }

@@ -18,21 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RedisMessagePublisher {
 
-	@Qualifier("topicScan")
-	private final RTopic topicScan;
-
-	@Qualifier("topicContainer")
-	private final RTopic topicContainer;
+	@Qualifier("topicFile")
+	private final RTopic topicFile;
 
 	private final ObjectMapper objectMapper;
-	public void publishContainerMessage(String data) {
-		topicContainer.publish(data);
-	}
 
-	public void publishScanMessage(RedisFileDto data) {
+	public void publishFileMessage(RedisFileDto data) {
 		try{
 			String jsonMessage = objectMapper.writeValueAsString(data);
-			topicScan.publish(jsonMessage);
+			topicFile.publish(jsonMessage);
 		} catch (JsonProcessingException e) {
 			throw new ApiException(ResponseCode.JSON_PROCESSING_ERROR);
 		}

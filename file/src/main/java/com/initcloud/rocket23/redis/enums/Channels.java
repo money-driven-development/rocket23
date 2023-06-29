@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public enum Channels {
 
-	CONTAINER("channel.container"),
-	SCAN("channel.scan");
+	FILE("channel.file");
 
 	@Getter
 	private String channel;
