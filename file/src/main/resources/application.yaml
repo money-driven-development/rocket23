@@ -17,6 +17,9 @@ spring:
     show-sql: true
   profiles:
     active: dev, db-maria
+  redis:
+    host: ${REDIS_DATASOURCE_URL}
+    port: ${REDIS_PORT}
 cloud:
   aws:
     stack:
