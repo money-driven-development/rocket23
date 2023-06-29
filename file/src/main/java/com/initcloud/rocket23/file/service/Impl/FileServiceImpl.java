@@ -3,10 +3,12 @@ package com.initcloud.rocket23.file.service.Impl;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.file.dto.FileDto;
+import com.initcloud.rocket23.file.dto.RedisFileDto;
 import com.initcloud.rocket23.file.entity.FileEntity;
 import com.initcloud.rocket23.file.enums.ServerType;
 import com.initcloud.rocket23.file.repository.FileRepository;
 import com.initcloud.rocket23.file.service.FileService;
+import com.initcloud.rocket23.redis.pubsub.RedisMessagePublisher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +31,9 @@ import java.util.zip.ZipInputStream;
 @RequiredArgsConstructor
 @Service
 public class FileServiceImpl implements FileService {
+
 	private final FileRepository fileRepository;
+	private final RedisMessagePublisher redisMessagePublisher;
 
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
@@ -100,6 +104,7 @@ public class FileServiceImpl implements FileService {
 			}
 		}
 		save(file, ServerType.LOCAL, path.toString());
+		redisMessagePublisher.publishScanMessage(RedisFileDto.toDto("1"));
 	}
 
 	@Override

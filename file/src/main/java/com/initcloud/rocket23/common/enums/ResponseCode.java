@@ -23,7 +23,8 @@ public enum ResponseCode {
 	AWS_FILE_UPLOAD_ERROR(5204, HttpStatus.INTERNAL_SERVER_ERROR, "AWS 파일 업로드 오류입니다."),
 	FILE_WRONG_ERROR(5205,HttpStatus.INTERNAL_SERVER_ERROR,"파일이 올바르지 않습니다."),
 	ZIP_PATH_ERROR(5206,HttpStatus.INTERNAL_SERVER_ERROR,"zip 파일 경로가 올바르지 않습니다."),
-	ZIP_ENCODING_ERROR(5207,HttpStatus.INTERNAL_SERVER_ERROR,"압축파일 인코딩 오류입니다.");
+	ZIP_ENCODING_ERROR(5207,HttpStatus.INTERNAL_SERVER_ERROR,"압축파일 인코딩 오류입니다."),
+	JSON_PROCESSING_ERROR(5208,HttpStatus.INTERNAL_SERVER_ERROR,"Redis Publish JSON 직렬화 오류입니다.");
 
 	private final int code;
 	private final HttpStatus httpStatus;
