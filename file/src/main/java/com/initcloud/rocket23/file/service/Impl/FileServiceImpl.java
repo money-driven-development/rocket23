@@ -104,15 +104,23 @@ public class FileServiceImpl implements FileService {
 			}
 		}
 		save(file, ServerType.LOCAL, path.toString());
-		redisMessagePublisher.publishScanMessage(RedisFileDto.toDto("1"));
 	}
 
+	/**
+	 * 
+	 * @param file 업로드된 파일
+	 * @param type 파일 저장 종류
+	 * @param uploadPath 파일이 저장된 root 디렉토리 위치
+	 * 파일 정보를 repository에 저장
+	 * 저장 후 redis publish를 통한 uuid, timestamp 정보 메세지 생성   
+	 */
 	@Override
 	public void save(MultipartFile file, ServerType type, String uploadPath) {
 		String name = file.getOriginalFilename();
 		String uuid = UUID.randomUUID().toString();
 		FileEntity fileEntity = FileDto.toDto(name, uuid, uploadPath, type).toEntity();
 		fileRepository.save(fileEntity);
+		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
 	}
 
 	/**
