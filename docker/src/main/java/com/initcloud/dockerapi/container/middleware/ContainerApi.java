@@ -6,7 +6,7 @@ public interface ContainerApi<T> {
 	T create();
 
 	/* 실행 */
-	T execute();
+	T execute(String containerId);
 
 	/* 목록 조회 */
 	T get();

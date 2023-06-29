@@ -24,17 +24,18 @@ public class DockerManageService implements ContainerManageService {
 	@Override
 	public ContainerDto executeContainer(Integer count) {
 		CreateContainerResponse containerResponse = dockerContainerApi.create();
+		dockerContainerApi.execute(containerResponse.getId());
 
 		return new ContainerDto(containerResponse);
 	}
 
 	/**
-	 * 도커 컨테이너를 실행 후 대기.
-	 * @param count 만큼 컨테이너 실행
-	 * count 가 null 일 경우 단일(1개) 실행.
+	 * 도커 컨테이너를 생성.
+	 * @param count 만큼 컨테이너를 생성하며 실행하지 않음.
+	 * count 가 null 일 경우 단일(1개) 생성.
 	 */
 	@Override
-	public ContainerDto executeContainerForStandBy(@Nullable Integer count) {
+	public ContainerDto createContainerForStandBy(@Nullable Integer count) {
 		CreateContainerResponse containerResponse = dockerContainerApi.create();
 
 		return new ContainerDto(containerResponse);

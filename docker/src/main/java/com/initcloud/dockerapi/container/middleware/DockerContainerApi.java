@@ -1,12 +1,20 @@
 package com.initcloud.dockerapi.container.middleware;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.security.SecureRandom;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
+import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
-
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
@@ -29,37 +37,63 @@ public class DockerContainerApi implements ContainerApi {
 
 	@Override
 	public CreateContainerResponse create() {
-		return this.create(ContainerImages.ALPINE_LATEST);
+		return this.create(ContainerImages.SCANNER_ALPINE_LATEST);
 	}
 
 	public CreateContainerResponse create(ContainerImages image) {
 		try {
-			String containerName = CONTAINER_NAME_PREFIX + new SecureRandom().nextInt();
-			this.pull(image);
-
-			log.info("Created container");
-			return dockerContainerClient.getDockerClient()
-				.createContainerCmd(ContainerImages.getFullImageName(image))
-				.withCmd("env")
-				.withName(containerName)
-				.exec();
-
+			CreateContainerResponse createContainerResponse = this.create(image, null);
+			log.info("Created container - {}", createContainerResponse.getId());
+			return createContainerResponse;
 		} catch (NullPointerException e) {
 			throw new ApiException(e, ResponseCode.NULL_DOCKER_CLIENT);
 		} catch (NotFoundException e) {
 			log.info("Not Found Image {}", image);
-			throw new ApiException(e, ResponseCode.DOCKER_IMAGE_NOT_FOUND);
-		} catch (InterruptedException e) {
-			log.warn("Couldn't pull Image {}", image);
-			throw new ApiException(e, ResponseCode.DOCKER_CANNOT_PULL_IMAGE);
+			this.pull(image);
+			return this.create(image, null);
 		}
 	}
 
-	@Override
-	public Void execute() {
+	private CreateContainerResponse create(ContainerImages image, String cmd) {
 		return dockerContainerClient.getDockerClient()
-			.pingCmd()
+			.createContainerCmd(ContainerImages.getFullImageName(image))
+			.withCmd(cmd)
+			.withName(CONTAINER_NAME_PREFIX + new SecureRandom().nextInt())
 			.exec();
+	}
+
+	@Override
+	public String execute(String containerId) {
+		DockerClient dockerClient = dockerContainerClient.getDockerClient();
+
+		try (PipedOutputStream outputStream = new PipedOutputStream()) {
+			PipedInputStream inputStream = new PipedInputStream(outputStream);
+			dockerClient.startContainerCmd(containerId).exec();
+			getLogFromContainer(containerId, dockerClient, outputStream);
+
+			/**
+			 * @Todo - 추후 출력 리팩터링 예정
+			 */
+			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+			StringBuilder output = new StringBuilder();
+			String rawResult;
+
+			while ((rawResult = br.readLine()) != null) {
+				if (rawResult.contains("framework ]"))
+					continue;
+
+				output.append(rawResult);
+			}
+
+			JSONParser jsonParser = new JSONParser();
+			JSONObject jsonObject = (JSONObject)jsonParser.parse(output.toString());
+
+			return output.toString();
+		} catch (IOException e) {
+			throw new ApiException(ResponseCode.DOCKER_CANNOT_READ_SCAN_OUTPUT);
+		} catch (ParseException e) {
+			throw new ApiException(ResponseCode.DOCKER_CANNOT_PARSE_SCAN_TO_JSON);
+		}
 	}
 
 	@Override
@@ -103,11 +137,29 @@ public class DockerContainerApi implements ContainerApi {
 		}
 	}
 
-	public void pull(ContainerImages image) throws InterruptedException {
-		dockerContainerClient.getDockerClient()
-			.pullImageCmd(image.getRepository())
-			.withTag(image.getTag())
-			.start()
-			.awaitCompletion();
+	public void pull(ContainerImages image) {
+		try {
+			dockerContainerClient.getDockerClient()
+				.pullImageCmd(image.getRepository())
+				.withTag(image.getTag())
+				.start()
+				.awaitCompletion();
+		} catch (InterruptedException e) {
+			log.warn("Couldn't pull Image {}", image);
+			throw new ApiException(e, ResponseCode.DOCKER_CANNOT_PULL_IMAGE);
+		}
+	}
+
+	public DockerCmdResultCallback getLogFromContainer(String containerId, DockerClient dockerClient,
+		PipedOutputStream outputStream) throws IOException {
+		return dockerClient.logContainerCmd(containerId)
+			.withStdOut(true)
+			.withStdErr(true)
+			.withFollowStream(true)
+			.withTailAll()
+			.exec(new DockerCmdResultCallback(outputStream));
 	}
 }
+
+
+
