@@ -24,7 +24,7 @@ public class RedisMessagePublisher {
 	private final ObjectMapper objectMapper;
 
 	public void publishFileMessage(RedisFileDto data) {
-		try{
+		try {
 			String jsonMessage = objectMapper.writeValueAsString(data);
 			topicFile.publish(jsonMessage);
 		} catch (JsonProcessingException e) {

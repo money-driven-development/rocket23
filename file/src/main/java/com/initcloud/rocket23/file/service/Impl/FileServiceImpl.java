@@ -35,6 +35,8 @@ public class FileServiceImpl implements FileService {
 	private final FileRepository fileRepository;
 	private final RedisMessagePublisher redisMessagePublisher;
 
+	private String check = "zip";
+	private Charset CP866 = Charset.forName("CP866");
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
 
@@ -107,7 +109,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param file 업로드된 파일
 	 * @param type 파일 저장 종류
 	 * @param uploadPath 파일이 저장된 root 디렉토리 위치
@@ -118,8 +120,7 @@ public class FileServiceImpl implements FileService {
 	public void save(MultipartFile file, ServerType type, String uploadPath) {
 		String name = file.getOriginalFilename();
 		String uuid = UUID.randomUUID().toString();
-		FileEntity fileEntity = FileDto.toDto(name, uuid, uploadPath, type).toEntity();
-		fileRepository.save(fileEntity);
+		fileRepository.save(new FileEntity(name, uuid, uploadPath, type));
 		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
 	}
 
@@ -133,7 +134,6 @@ public class FileServiceImpl implements FileService {
 	private boolean isZip(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-		String check = "zip";
 		/*
 		TODO: 2023-06-20 zip확장자뿐만이 아니라 tar.gz과 같은 다른 확장자 고려
 		 */
@@ -153,7 +153,6 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
-		Charset CP866 = Charset.forName("CP866");
 		try (ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream(), CP866)) {
 			ZipEntry zipEntry = zipInputStream.getNextEntry();
 			while (zipEntry != null) {

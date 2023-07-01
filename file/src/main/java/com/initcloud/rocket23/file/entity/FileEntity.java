@@ -46,4 +46,11 @@ public class FileEntity extends BaseEntity {
 		this.path = path;
 		this.serverType = serverType;
 	}
+
+	public FileEntity(String fileName, String uuid, String path, ServerType serverType) {
+		this.fileName = fileName;
+		this.uuid = uuid;
+		this.path = path;
+		this.serverType = serverType;
+	}
 }
