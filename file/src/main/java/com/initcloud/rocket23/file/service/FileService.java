@@ -5,6 +5,8 @@ import java.nio.file.Path;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.initcloud.rocket23.file.enums.ServerType;
+
 public interface FileService {
 	void init(Path path);
 
@@ -16,5 +18,5 @@ public interface FileService {
 	void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
 	//DB 저장
-	void save(MultipartFile file, String type, String uploadPath);
+	void save(MultipartFile file, ServerType type, String uploadPath);
 }

@@ -3,9 +3,12 @@ package com.initcloud.rocket23.file.service.Impl;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.file.dto.FileDto;
+import com.initcloud.rocket23.file.dto.RedisFileDto;
 import com.initcloud.rocket23.file.entity.FileEntity;
+import com.initcloud.rocket23.file.enums.ServerType;
 import com.initcloud.rocket23.file.repository.FileRepository;
 import com.initcloud.rocket23.file.service.FileService;
+import com.initcloud.rocket23.redis.pubsub.RedisMessagePublisher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +31,12 @@ import java.util.zip.ZipInputStream;
 @RequiredArgsConstructor
 @Service
 public class FileServiceImpl implements FileService {
-	private final FileRepository fileRepository;
 
+	private final FileRepository fileRepository;
+	private final RedisMessagePublisher redisMessagePublisher;
+
+	private String check = "zip";
+	private Charset CP866 = Charset.forName("CP866");
 	@Value("${spring.servlet.multipart.location}")
 	private String uploadPath;
 
@@ -98,15 +105,23 @@ public class FileServiceImpl implements FileService {
 					StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
-		save(file, "local", path.toString());
+		save(file, ServerType.LOCAL, path.toString());
 	}
 
+	/**
+	 *
+	 * @param file 업로드된 파일
+	 * @param type 파일 저장 종류
+	 * @param uploadPath 파일이 저장된 root 디렉토리 위치
+	 * 파일 정보를 repository에 저장
+	 * 저장 후 redis publish를 통한 uuid, timestamp 정보 메세지 생성   
+	 */
 	@Override
-	public void save(MultipartFile file, String type, String uploadPath) {
+	public void save(MultipartFile file, ServerType type, String uploadPath) {
 		String name = file.getOriginalFilename();
 		String uuid = UUID.randomUUID().toString();
-		FileEntity fileEntity = FileDto.toDto(name, uuid, uploadPath, type).toEntity();
-		fileRepository.save(fileEntity);
+		fileRepository.save(new FileEntity(name, uuid, uploadPath, type));
+		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
 	}
 
 	/**
@@ -119,7 +134,6 @@ public class FileServiceImpl implements FileService {
 	private boolean isZip(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-		String check = "zip";
 		/*
 		TODO: 2023-06-20 zip확장자뿐만이 아니라 tar.gz과 같은 다른 확장자 고려
 		 */
@@ -139,7 +153,6 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
-		Charset CP866 = Charset.forName("CP866");
 		try (ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream(), CP866)) {
 			ZipEntry zipEntry = zipInputStream.getNextEntry();
 			while (zipEntry != null) {
@@ -175,4 +188,5 @@ public class FileServiceImpl implements FileService {
 		}
 		return normalizePath;
 	}
+
 }
