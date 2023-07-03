@@ -13,12 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DockerCmdResultCallback extends ResultCallback.Adapter {
 	private PipedOutputStream outputStream;
+	public ResultCallback<Frame> Adapter;
 
 	public DockerCmdResultCallback(PipedOutputStream outputStream) throws IOException {
 		this.outputStream = outputStream;
 	}
-
-	public ResultCallback<Frame> Adapter;
 
 	@Override
 	public void close() throws IOException {

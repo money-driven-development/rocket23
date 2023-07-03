@@ -7,6 +7,7 @@ import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
+import com.initcloud.dockerapi.redis.pubsub.RedisMessagePublisher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class DockerManageService implements ContainerManageService {
 
 	private final DockerContainerApi dockerContainerApi;
+	private final RedisMessagePublisher publisher;
 
 	/**
 	 * 도커 컨테이너를 실행. 스캔 명령이 함께 동작.
@@ -24,7 +26,8 @@ public class DockerManageService implements ContainerManageService {
 	@Override
 	public ContainerDto executeContainer(Integer count) {
 		CreateContainerResponse containerResponse = dockerContainerApi.create();
-		dockerContainerApi.execute(containerResponse.getId());
+		String scanResult = dockerContainerApi.execute(containerResponse.getId());
+		publisher.publishScanMessage(scanResult);
 
 		return new ContainerDto(containerResponse);
 	}

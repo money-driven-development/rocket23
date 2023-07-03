@@ -1,16 +1,11 @@
 package com.initcloud.dockerapi.container.middleware;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.security.SecureRandom;
 import java.util.List;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.github.dockerjava.api.DockerClient;
@@ -20,6 +15,7 @@ import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
 import com.initcloud.dockerapi.common.enums.ResponseCode;
 import com.initcloud.dockerapi.common.exception.ApiException;
+import com.initcloud.dockerapi.common.utils.DockerBufferStreamReader;
 import com.initcloud.dockerapi.container.client.DockerContainerClient;
 import com.initcloud.dockerapi.container.enums.ContainerImages;
 
@@ -68,31 +64,14 @@ public class DockerContainerApi implements ContainerApi {
 
 		try (PipedOutputStream outputStream = new PipedOutputStream()) {
 			PipedInputStream inputStream = new PipedInputStream(outputStream);
+
 			dockerClient.startContainerCmd(containerId).exec();
 			getLogFromContainer(containerId, dockerClient, outputStream);
+			StringBuilder scanOutput = DockerBufferStreamReader.outputStreamToStringBuilder(inputStream);
 
-			/**
-			 * @Todo - 추후 출력 리팩터링 예정
-			 */
-			BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-			StringBuilder output = new StringBuilder();
-			String rawResult;
-
-			while ((rawResult = br.readLine()) != null) {
-				if (rawResult.contains("framework ]"))
-					continue;
-
-				output.append(rawResult);
-			}
-
-			JSONParser jsonParser = new JSONParser();
-			JSONObject jsonObject = (JSONObject)jsonParser.parse(output.toString());
-
-			return output.toString();
+			return scanOutput.toString();
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.DOCKER_CANNOT_READ_SCAN_OUTPUT);
-		} catch (ParseException e) {
-			throw new ApiException(ResponseCode.DOCKER_CANNOT_PARSE_SCAN_TO_JSON);
 		}
 	}
 
