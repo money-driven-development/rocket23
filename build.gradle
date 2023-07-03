@@ -54,9 +54,12 @@ subprojects {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-        /* 편의성 */
+        /* Lombok */
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+
+        // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+        implementation 'com.googlecode.json-simple:json-simple:1.1'
 
         // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
         implementation 'com.google.code.findbugs:jsr305:3.0.2'
