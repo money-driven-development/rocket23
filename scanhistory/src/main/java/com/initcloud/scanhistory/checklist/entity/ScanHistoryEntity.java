@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 
 import com.initcloud.scanhistory.common.entity.BaseEntity;
@@ -20,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "SCAN_HISTORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScanHistory extends BaseEntity {
+public class ScanHistoryEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,7 +71,7 @@ public class ScanHistory extends BaseEntity {
 	private Double score;
 
 	@Builder
-	public ScanHistory(Long id, String fileName, Integer passed, Integer skipped, Integer failed, Integer high,
+	public ScanHistoryEntity(Long id, String fileName, Integer passed, Integer skipped, Integer failed, Integer high,
 		Integer medium, Integer low, Integer unknown, Integer cveCount, Double score) {
 		this.id = id;
 		this.fileName = fileName;
