@@ -1,6 +1,7 @@
 package com.initcloud.scanhistory.common.dto;
 
-import com.initcloud.rocket23.common.enums.ResponseCode;
+
+import com.initcloud.scanhistory.common.enums.ResponseCode;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

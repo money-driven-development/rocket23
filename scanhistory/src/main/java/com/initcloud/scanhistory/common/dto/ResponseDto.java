@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 
-import com.initcloud.rocket23.common.enums.ResponseCode;
-import com.initcloud.rocket23.common.exception.ApiAuthException;
-import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.scanhistory.common.enums.ResponseCode;
+import com.initcloud.scanhistory.common.exception.ApiAuthException;
+import com.initcloud.scanhistory.common.exception.ApiException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
