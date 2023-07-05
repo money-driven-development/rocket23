@@ -38,7 +38,7 @@ public class DockerManageService implements ContainerManageService {
 		publisher.publishScanMessage(scanResult);
 		dockerContainerApi.stop(containerId);
 
-		return new ContainerDto(containerResponse);
+		return new ContainerDto(containerId, "Exited");
 	}
 
 	/**
