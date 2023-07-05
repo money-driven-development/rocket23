@@ -28,7 +28,10 @@ public class RedisMessagePublisher {
 	public void publishContainerMessage(String data) {
 		try {
 			String jsonMessage = objectMapper.writeValueAsString(data);
-			topicContainer.publish(jsonMessage);
+
+			if (!data.isEmpty()) {
+				topicContainer.publish(jsonMessage);
+			}
 		} catch (JsonProcessingException e) {
 			// Todo - 이 예외는 응답으로 반환할 것이 아니므로 별도의 처리가 필요.
 			throw new ApiException(ResponseCode.INVALID_REQUEST);
@@ -36,6 +39,8 @@ public class RedisMessagePublisher {
 	}
 
 	public void publishScanMessage(String data) {
-		topicScan.publish(data);
+		if (!data.isEmpty()) {
+			topicScan.publish(data);
+		}
 	}
 }

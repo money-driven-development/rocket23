@@ -1,12 +1,14 @@
 package com.initcloud.dockerapi.container.middleware;
 
+import com.initcloud.dockerapi.container.dto.IaCScanRequestDto;
+
 public interface ContainerApi<T> {
 
 	/* 생성 */
 	T create();
 
 	/* 실행 */
-	T execute(String containerId);
+	T execute(String containerId, IaCScanRequestDto path);
 
 	/* 목록 조회 */
 	T get();

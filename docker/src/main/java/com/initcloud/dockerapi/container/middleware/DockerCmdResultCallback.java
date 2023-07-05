@@ -45,6 +45,10 @@ public class DockerCmdResultCallback extends ResultCallback.Adapter {
 
 	@Override
 	public void onComplete() {
-
+		try {
+			outputStream.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
