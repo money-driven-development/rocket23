@@ -21,7 +21,7 @@ public class ScanHistoryController {
 	private final ScanHistoryService scanHistoryService;
 
 	@GetMapping("/scan/{uuid}")
-	public ResponseDto<List<ScanHistoryDto>> getHistoryList(@PathVariable String fileHash){
+	public ResponseDto<List<ScanHistoryDto>> getHistoryList(@PathVariable String fileHash) {
 		List<ScanHistoryDto> dtos = scanHistoryService.getHistoryList(fileHash);
 		return new ResponseDto<>(dtos);
 	}

@@ -21,7 +21,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	public List<ScanHistoryDto> getHistoryList(String fileHash) {
 		List<ScanHistoryDto> dtos = new ArrayList<ScanHistoryDto>();
 		List<ScanHistoryEntity> scanHistoryEntities = scanHistoryRepository.findByFileHash(fileHash);
-		for(ScanHistoryEntity e : scanHistoryEntities){
+		for (ScanHistoryEntity e : scanHistoryEntities) {
 			dtos.add(new ScanHistoryDto(e));
 		}
 		return dtos;
