@@ -3,6 +3,10 @@ package com.initcloud.dockerapi.container.dto;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.initcloud.dockerapi.common.enums.ResponseCode;
+import com.initcloud.dockerapi.common.exception.ApiException;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -84,5 +88,14 @@ public class CheckovScanDto {
 
 		@JsonProperty("checkov_version")
 		private final String checkovVersion;
+	}
+
+	public static CheckovScanDto deserializeToScanDto(String json) {
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			return objectMapper.readValue(json, CheckovScanDto.class);
+		} catch (JsonProcessingException e) {
+			throw new ApiException(ResponseCode.DOCKER_CANNOT_PARSE_SCAN_TO_JSON);
+		}
 	}
 }
