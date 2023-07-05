@@ -4,14 +4,16 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class FailedCheckovScanDto extends CheckovScanDto.Checks {
 
 	/**
-	 * 2개의 원소를 가짐
+	 * 2개의 원소를 가짐.
 	 * 정수, 문자열
+	 * [1, "code"]
 	 */
 	@JsonProperty("code_block")
 	private final List<List<Object>> codeBlock;
@@ -28,6 +30,7 @@ public class FailedCheckovScanDto extends CheckovScanDto.Checks {
 	@JsonProperty("connected_node")
 	private final String connectedNode;
 
+	@Builder
 	public FailedCheckovScanDto(String checkId, String bcCheckId, String checkName, CheckResult checkResult,
 		String filePath, String fileAbsPath, String repoFilePath, String resource, List<List<Object>> codeBlock,
 		List<Integer> fileLineRange, String checkClass, String vulnerabilityDetails, String connectedNode) {
