@@ -71,10 +71,11 @@ public class ScanHistoryEntity extends BaseEntity {
 	private Double score;
 
 	@Builder
-	public ScanHistoryEntity(Long id, String fileName, Integer passed, Integer skipped, Integer failed, Integer high,
+	public ScanHistoryEntity(Long id, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed, Integer high,
 		Integer medium, Integer low, Integer unknown, Integer cveCount, Double score) {
 		this.id = id;
 		this.fileName = fileName;
+		this.fileHash = fileHash;
 		this.passed = passed;
 		this.skipped = skipped;
 		this.failed = failed;
