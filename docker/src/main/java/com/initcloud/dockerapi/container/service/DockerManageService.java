@@ -60,6 +60,8 @@ public class DockerManageService implements ContainerManageService {
 	@Override
 	public Boolean terminateContainer(String containerId) {
 		dockerContainerApi.terminate(containerId);
+		dockerContainerApi.remove(containerId);
+
 		InspectContainerResponse containerResponse = dockerContainerApi.inspect(containerId);
 
 		return (containerResponse == null);
