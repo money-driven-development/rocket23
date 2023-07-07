@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
@@ -50,22 +49,19 @@ public class DockerContainerApi implements ContainerApi {
 		} catch (NullPointerException e) {
 			throw new ApiException(e, ResponseCode.NULL_DOCKER_CLIENT);
 		} catch (NotFoundException e) {
-			log.info("[NOT FOUND] - Image {}", image);
+			log.info("[NOT FOUND] Image - {}", image);
 			this.pull(image);
 			return this.create(image, null);
 		}
 	}
 
 	private CreateContainerResponse create(ContainerImages image, String env) {
-		HostConfig hostConfig = HostConfig.newHostConfig()
-			.withBinds(
-				new Bind(
-					dockerClientProperties.getVolumeHostRoot(),
-					new Volume(dockerClientProperties.getVolumeContainerRoot()))
-			);
+		HostConfig hostConfig = setVolumeHostConfig();
 
 		return dockerContainerClient.getDockerClient()
-			.createContainerCmd(ContainerImages.getFullImageName(image))
+			.createContainerCmd(
+				ContainerImages.getFullImageName(image)
+			)
 			.withTty(true)
 			.withHostConfig(hostConfig)
 			.withName(CONTAINER_NAME_PREFIX + new SecureRandom().nextInt())
@@ -74,21 +70,17 @@ public class DockerContainerApi implements ContainerApi {
 
 	@Override
 	public String execute(String containerId, IaCScanRequestDto path) {
-		DockerClient dockerClient = dockerContainerClient.getDockerClient();
-
 		try (PipedOutputStream outputStream = new PipedOutputStream()) {
 			PipedInputStream inputStream = new PipedInputStream(outputStream);
 
 			this.execStart(containerId, path.getIacPath(), outputStream);
-			this.getLogFromContainer(containerId, dockerClient, outputStream);
+			this.getLogFromContainer(containerId, outputStream);
 
-			StringBuilder scanOutput = DockerBufferStreamReader.outputStreamToStringBuilder(inputStream);
-
-			return scanOutput.toString();
+			return DockerBufferStreamReader.outputStreamToStringBuilder(inputStream).toString();
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.DOCKER_CANNOT_READ_SCAN_OUTPUT);
 		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+			throw new ApiException(ResponseCode.SERVER_ERROR);
 		}
 	}
 
@@ -192,16 +184,23 @@ public class DockerContainerApi implements ContainerApi {
 	/**
 	 * 컨테이너의 표준 출력, 표춘 에러를 가져옴.
 	 */
-	public DockerCmdResultCallback getLogFromContainer(String containerId, DockerClient dockerClient,
-		PipedOutputStream outputStream) throws IOException {
-		return dockerClient.logContainerCmd(containerId)
+	public DockerCmdResultCallback getLogFromContainer(String containerId, PipedOutputStream outputStream) throws
+		IOException {
+		return dockerContainerClient.getDockerClient()
+			.logContainerCmd(containerId)
 			.withStdOut(true)
 			.withStdErr(true)
 			.withFollowStream(true)
 			.withTailAll()
 			.exec(new DockerCmdResultCallback(outputStream));
 	}
+
+	public HostConfig setVolumeHostConfig() {
+		return HostConfig.newHostConfig()
+			.withBinds(
+				new Bind(
+					dockerClientProperties.getVolumeHostRoot(),
+					new Volume(dockerClientProperties.getVolumeContainerRoot()))
+			);
+	}
 }
-
-
-
