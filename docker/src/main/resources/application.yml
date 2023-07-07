@@ -1,11 +1,15 @@
 docker:
   host:
     ssl:
-    unix:
+    unix: "unix:///var/run/docker.sock"
+  volume:
+    host:
+    container: "/app"
+
 
 redis:
   mode: single
   nodes:
-    -
+    - "redis://localhost:6379"
   queue:
-    max:
+    max: 7

@@ -27,16 +27,14 @@ public class ContainerInitializationListener {
 	@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationEvent() {
 		RedisContainerQueueClient redisContainerQueueClient = RedisContainerQueueClient.getRedisQueueClient();
-		removeUnControlledContainer(redisContainerQueueClient);
+		this.removeUnControlledContainer(redisContainerQueueClient);
 
 		boolean isNotFull = true;
 		while (isNotFull) {
 			CreateContainerResponse containerResponse = containerApi.create();
+			containerApi.start(containerResponse.getId());
 			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
-			log.info("[Init Containers] - {}", containerResponse.getId());
 		}
-
-		log.info("[INIT] - {}", !isNotFull);
 	}
 
 	/**

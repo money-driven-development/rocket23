@@ -29,7 +29,7 @@ public class RedisMessageSubscriber {
 	}
 
 	public void subscribeScanChannel() {
-		log.info("[Subscribe Scan Channel]");
+		log.info("[SUBSCRIBE] - Scan Channel");
 		topicScan.addListener(String.class, (channel, data) -> {
 			try {
 				log.info("[RECEIVED] {} - {}", channel, data);

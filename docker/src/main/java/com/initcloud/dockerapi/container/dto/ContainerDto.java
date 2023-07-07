@@ -29,6 +29,6 @@ public class ContainerDto implements Serializable {
 
 	public ContainerDto(final CreateContainerResponse container) throws NullPointerException {
 		this.containerId = container.getId();
-		this.containerStatus = null;
+		this.containerStatus = "Created";
 	}
 }
