@@ -16,7 +16,7 @@ import com.initcloud.scanhistory.checklist.repository.ScanHistoryRepository;
 import com.initcloud.scanhistory.checklist.service.Impl.ScanHistoryServiceImpl;
 
 @SpringBootTest
-@DisplayName("Entity 개발 테스트")
+@DisplayName("ScanHistory Service 및 Entity 테스트")
 public class ScanHistoryTest {
 	@Autowired
 	ScanHistoryRepository scanHistoryRepository;
@@ -25,12 +25,12 @@ public class ScanHistoryTest {
 	ScanHistoryServiceImpl scanHistoryService;
 
 	@AfterEach
-	public void cleanup(){
+	public void cleanup() {
 		scanHistoryRepository.deleteAll();
 	}
 
 	@Test
-	public void ScanHistoryEntityTest(){
+	public void ScanHistoryEntityTest() {
 		//given
 		String fileName = "abc.yaml";
 		String fileHash = "a73609ba-c96e-40ec-9d8d-cdfc0a4f5c68";
