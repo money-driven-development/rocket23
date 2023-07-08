@@ -56,18 +56,19 @@ public class FileVulnDetailEntity {
 
 	@Column(name = "VULN_SCORE")
 	@NotNull
-	private String vulnScores;
+	private Integer vulnScore;
 
 	@Builder
-	public FileVulnDetailEntity(ScanHistoryEntity scanHistoryEntity, String isValid, String validContent,
-		String vulnTitle, String hasVuln, String vulnContent, String vulnScores) {
-		this.scanHistoryEntity=scanHistoryEntity;
-		this.isValid=isValid;
-		this.validContent=validContent;
-		this.vulnTitle=vulnTitle;
-		this.hasVuln=hasVuln;
-		this.vulnContent=vulnContent;
-		this.vulnScores=vulnScores;
+	public FileVulnDetailEntity(ScanHistoryEntity scanHistoryEntity, String line, String isValid, String validContent,
+		String vulnTitle, String hasVuln, String vulnContent, Integer vulnScore) {
+		this.line = line;
+		this.scanHistoryEntity = scanHistoryEntity;
+		this.isValid = isValid;
+		this.validContent = validContent;
+		this.vulnTitle = vulnTitle;
+		this.hasVuln = hasVuln;
+		this.vulnContent = vulnContent;
+		this.vulnScore = vulnScore;
 		scanHistoryEntity.getFileDetails().add(this);
 	}
 }
