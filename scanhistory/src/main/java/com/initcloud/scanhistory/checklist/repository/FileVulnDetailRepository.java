@@ -1,0 +1,8 @@
+package com.initcloud.scanhistory.checklist.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface FileVulnDetailRepository extends JpaRepository<FileVulnDetailRepository, Long> {
+}
