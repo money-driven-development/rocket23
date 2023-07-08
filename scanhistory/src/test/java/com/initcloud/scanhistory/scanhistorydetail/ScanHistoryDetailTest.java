@@ -29,13 +29,15 @@ public class ScanHistoryDetailTest {
 
 	@Autowired
 	ScanHistoryDetailRespository scanHistoryDetailRespository;
+
 	@AfterEach
-	public void cleanup(){
+	public void cleanup() {
 		scanHistoryDetailRespository.deleteAll();
 		scanHistoryRepository.deleteAll();
 	}
+
 	@Test
-	public void ScanHistoryDetailEntityTesT(){
+	public void ScanHistoryDetailEntityTesT() {
 
 		//given
 		String fileName = "abc.yaml";
@@ -84,7 +86,8 @@ public class ScanHistoryDetailTest {
 		scanHistoryDetailRespository.save(scanHistoryDetailEntity);
 
 		//when
-		Optional<ScanHistoryDetailEntity> Result = scanHistoryDetailRespository.findById(scanHistoryDetailEntity.getId());
+		Optional<ScanHistoryDetailEntity> Result = scanHistoryDetailRespository.findById(
+			scanHistoryDetailEntity.getId());
 
 		//then
 		assertThat(Result.get().getScanHistoryEntity().getFileName()).isEqualTo(fileName);

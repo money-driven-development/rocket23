@@ -1,6 +1,5 @@
 package com.initcloud.scanhistory.common.dto;
 
-
 import com.initcloud.scanhistory.common.enums.ResponseCode;
 
 import lombok.AllArgsConstructor;
