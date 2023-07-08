@@ -10,17 +10,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "FILE_VULN_DETAIL")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FileVulnDetailEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "FILEVULNDETAIL_ID")
-	private String id;
+	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "HISTORY_ID")
@@ -53,4 +57,17 @@ public class FileVulnDetailEntity {
 	@Column(name = "VULN_SCORE")
 	@NotNull
 	private String vulnScores;
+
+	@Builder
+	public FileVulnDetailEntity(ScanHistoryEntity scanHistoryEntity, String isValid, String validContent,
+		String vulnTitle, String hasVuln, String vulnContent, String vulnScores) {
+		this.scanHistoryEntity=scanHistoryEntity;
+		this.isValid=isValid;
+		this.validContent=validContent;
+		this.vulnTitle=vulnTitle;
+		this.hasVuln=hasVuln;
+		this.vulnContent=vulnContent;
+		this.vulnScores=vulnScores;
+		scanHistoryEntity.getFileDetails().add(this);
+	}
 }

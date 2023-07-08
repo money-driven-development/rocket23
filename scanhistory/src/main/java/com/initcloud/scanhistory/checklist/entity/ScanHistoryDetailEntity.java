@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -56,4 +57,18 @@ public class ScanHistoryDetailEntity {
 	@Column(name = "CODE")
 	@NotNull
 	private String code;
+
+	@Builder
+	public ScanHistoryDetailEntity(ScanHistoryEntity scanHistoryEntity, String checkType,
+		String targetFileName, String appType, String provider, String scanResult, String line, String code) {
+		this.scanHistoryEntity = scanHistoryEntity;
+		this.checkType = checkType;
+		this.targetFileName = targetFileName;
+		this.appType = appType;
+		this.provider = provider;
+		this.scanResult = scanResult;
+		this.line = line;
+		this.code = code;
+		scanHistoryEntity.getDetails().add(this);
+	}
 }
