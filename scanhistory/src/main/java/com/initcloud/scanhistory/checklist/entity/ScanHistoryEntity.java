@@ -75,10 +75,10 @@ public class ScanHistoryEntity extends BaseEntity {
 	@NotNull
 	private Double score;
 
-	@OneToMany(mappedBy = "scanhistoryentity")
+	@OneToMany(mappedBy = "scanHistoryEntity")
 	private List<ScanHistoryDetailEntity> details = new ArrayList<>();
 
-	@OneToMany(mappedBy = "scanhistoryentity")
+	@OneToMany(mappedBy = "scanHistoryEntity")
 	private List<FileVulnDetailEntity> fileDetails = new ArrayList<>();
 
 	@Builder
