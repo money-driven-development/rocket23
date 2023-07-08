@@ -34,7 +34,7 @@ public class ScanHistoryDto {
 		this.failed = entity.getFailed();
 		this.skipped = entity.getSkipped();
 		this.high = entity.getHigh();
-		this.medium = entity.getLow();
+		this.medium = entity.getMedium();
 		this.low = entity.getLow();
 		this.unknown = entity.getUnknown();
 		this.cveCount = entity.getCveCount();
