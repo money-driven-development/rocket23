@@ -1,10 +1,14 @@
 package com.initcloud.scanhistory.checklist.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -70,8 +74,12 @@ public class ScanHistoryEntity extends BaseEntity {
 	@NotNull
 	private Double score;
 
+	@OneToMany(mappedBy = "scanhistoryentity")
+	private List<ScanHistoryDetailEntity> details = new ArrayList<>();
+
 	@Builder
-	public ScanHistoryEntity(Long id, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed, Integer high,
+	public ScanHistoryEntity(Long id, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed,
+		Integer high,
 		Integer medium, Integer low, Integer unknown, Integer cveCount, Double score) {
 		this.id = id;
 		this.fileName = fileName;
