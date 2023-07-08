@@ -1,5 +1,6 @@
 package com.initcloud.scanhistory.checklist.entity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,9 @@ public class ScanHistoryEntity extends BaseEntity {
 
 	@OneToMany(mappedBy = "scanhistoryentity")
 	private List<ScanHistoryDetailEntity> details = new ArrayList<>();
+
+	@OneToMany(mappedBy = "scanhistoryentity")
+	private List<FileVulnDetailEntity> fileDetails = new ArrayList<>();
 
 	@Builder
 	public ScanHistoryEntity(Long id, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed,

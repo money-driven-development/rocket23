@@ -11,8 +11,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @Table(name = "SCAN_HISTORY_DETAIL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,7 +25,7 @@ public class ScanHistoryDetailEntity {
 	@Column(name = "SCANHISTORYDETAIL_ID")
 	private Long id;
 
-	@ManyToOne 	
+	@ManyToOne
 	@JoinColumn(name = "HiSTORY_ID")
 	private ScanHistoryEntity scanHistoryEntity;
 
