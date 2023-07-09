@@ -70,6 +70,6 @@ public class ScanHistoryDetailEntity {
 		this.scanResult = scanResult;
 		this.line = line;
 		this.code = code;
-		scanHistoryEntity.getDetails().add(this);
+		scanHistoryEntity.getScanDetails().add(this);
 	}
 }
