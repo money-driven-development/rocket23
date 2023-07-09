@@ -2,6 +2,7 @@ package com.initcloud.scanhistory.checklist.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class ScanHistoryDetailEntity {
 	@Column(name = "SCANHISTORYDETAIL_ID")
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "HiSTORY_ID")
 	private ScanHistoryEntity scanHistoryEntity;
 
