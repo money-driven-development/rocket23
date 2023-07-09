@@ -23,7 +23,7 @@ public class FileVulnDetailEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "FILEVULNDETAIL_ID")
+	@Column(name = "FILE_VULN_DETAIL_ID")
 	private Long id;
 
 	@ManyToOne
