@@ -30,7 +30,7 @@ public class FileVulnDetailEntity {
 	@JoinColumn(name = "HISTORY_ID")
 	private ScanHistoryEntity scanHistoryEntity;
 
-	@Column(name = "line")
+	@Column(name = "LINE")
 	@NotNull
 	private String line;
 
