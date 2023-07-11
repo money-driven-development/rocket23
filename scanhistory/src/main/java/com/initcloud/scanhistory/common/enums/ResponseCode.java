@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.common.enums;
+package com.initcloud.scanhistory.common.enums;
 
 import org.springframework.http.HttpStatus;
 
