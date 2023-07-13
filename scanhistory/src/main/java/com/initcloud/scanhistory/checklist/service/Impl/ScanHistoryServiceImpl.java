@@ -23,9 +23,18 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 * @param fileHash file의 uuid 정보를 입력받음
 	 * @return ScanHistory에서 조회한 내역을 dto로 반환함
 	 */
-	public List<ScanHistoryDto> getHistoryList(String fileHash) {
+	public List<ScanHistoryDto> getFileHistoryList(String fileHash) {
 		List<ScanHistoryDto> dtos = new ArrayList<>();
 		List<ScanHistoryEntity> scanHistoryEntities = scanHistoryRepository.findByFileHash(fileHash);
+		for (ScanHistoryEntity e : scanHistoryEntities) {
+			dtos.add(new ScanHistoryDto(e));
+		}
+		return dtos;
+	}
+
+	public List<ScanHistoryDto> getHistoryList() {
+		List<ScanHistoryDto> dtos = new ArrayList<>();
+		List<ScanHistoryEntity> scanHistoryEntities = scanHistoryRepository.findTop10ByOrderByIdDesc();
 		for (ScanHistoryEntity e : scanHistoryEntities) {
 			dtos.add(new ScanHistoryDto(e));
 		}

@@ -5,5 +5,7 @@ import java.util.List;
 import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;
 
 public interface ScanHistoryService {
-	List<ScanHistoryDto> getHistoryList(String fileHash);
+	List<ScanHistoryDto> getFileHistoryList(String fileHash);
+
+	List<ScanHistoryDto> getHistoryList();
 }

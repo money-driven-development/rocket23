@@ -58,7 +58,7 @@ public class ScanHistoryTest {
 			.build());
 
 		//when
-		List<ScanHistoryDto> dtos = scanHistoryService.getHistoryList(fileHash);
+		List<ScanHistoryDto> dtos = scanHistoryService.getFileHistoryList(fileHash);
 
 		//then
 		ScanHistoryDto dto = dtos.get(0);

@@ -10,4 +10,6 @@ import com.initcloud.scanhistory.checklist.entity.ScanHistoryEntity;
 @Repository
 public interface ScanHistoryRepository extends JpaRepository<ScanHistoryEntity, Long> {
 	List<ScanHistoryEntity> findByFileHash(String fileHash);
+
+	List<ScanHistoryEntity> findTop10ByOrderByIdDesc();
 }
