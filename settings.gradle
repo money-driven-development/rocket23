@@ -3,4 +3,5 @@ rootProject.name = 'rocket23'
 include 'docker'
 include 'file'
 include 'restdocs'
+include 'scanhistory'
 
