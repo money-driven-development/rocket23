@@ -21,32 +21,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamWithUsers extends BaseEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private Boolean isAdmin;
+    private Boolean isAdmin;
 
-	private String roleType;
+    private String roleType;
 
-	private String authorities;
+    private String authorities;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private Team team;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Team team;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
 
-	public TeamWithUsers(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, Boolean isAdmin,
-		String roleType, String authorities, Team team, User user) {
-		super(createdAt, modifiedAt);
-		this.id = id;
-		this.isAdmin = isAdmin;
-		this.roleType = roleType;
-		this.authorities = authorities;
-		this.team = team;
-		this.user = user;
-	}
+    public TeamWithUsers(Long id, Boolean isAdmin, String roleType, String authorities, Team team, User user) {
+        this.id = id;
+        this.isAdmin = isAdmin;
+        this.roleType = roleType;
+        this.authorities = authorities;
+        this.team = team;
+        this.user = user;
+    }
 }

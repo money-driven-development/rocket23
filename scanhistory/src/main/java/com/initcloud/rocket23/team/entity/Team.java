@@ -17,19 +17,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private String logoUri;
+    private String logoUri;
 
-	public Team(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String name,
-		String logoUri) {
-		super(createdAt, modifiedAt);
-		this.id = id;
-		this.name = name;
-		this.logoUri = logoUri;
-	}
+    public Team(Long id, String name, String logoUri) {
+        this.id = id;
+        this.name = name;
+        this.logoUri = logoUri;
+    }
 }

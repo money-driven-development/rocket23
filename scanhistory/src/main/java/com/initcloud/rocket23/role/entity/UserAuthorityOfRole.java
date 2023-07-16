@@ -22,28 +22,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAuthorityOfRole extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private TeamWithUsers userWithTeam;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private TeamWithUsers userWithTeam;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private UserAuthority userAuthority;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private UserAuthority userAuthority;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private Features features;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Features features;
 
-	public UserAuthorityOfRole(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id,
-		TeamWithUsers userWithTeam, UserAuthority userAuthority, Features features) {
-		super(createdAt, modifiedAt);
-		this.id = id;
-		this.userWithTeam = userWithTeam;
-		this.userAuthority = userAuthority;
-		this.features = features;
-	}
+    public UserAuthorityOfRole(Long id, TeamWithUsers userWithTeam, UserAuthority userAuthority, Features features) {
+        this.id = id;
+        this.userWithTeam = userWithTeam;
+        this.userAuthority = userAuthority;
+        this.features = features;
+    }
 }

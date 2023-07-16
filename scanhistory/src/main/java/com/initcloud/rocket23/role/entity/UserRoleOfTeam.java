@@ -20,23 +20,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRoleOfTeam extends BaseEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private UserRole userRole;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private UserRole userRole;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn
-	private UserAuthorityOfRole userAuthorityOfRole;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private UserAuthorityOfRole userAuthorityOfRole;
 
-	public UserRoleOfTeam(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, UserRole userRole,
-		UserAuthorityOfRole userAuthorityOfRole) {
-		super(createdAt, modifiedAt);
-		this.id = id;
-		this.userRole = userRole;
-		this.userAuthorityOfRole = userAuthorityOfRole;
-	}
+    public UserRoleOfTeam(Long id, UserRole userRole, UserAuthorityOfRole userAuthorityOfRole) {
+        this.id = id;
+        this.userRole = userRole;
+        this.userAuthorityOfRole = userAuthorityOfRole;
+    }
 }

@@ -41,9 +41,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private String email;
 
-    public User(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, LocalDateTime lastLogin, String username,
-                String password, String profileImageUrl, String contact, String email) {
-        super(createdAt, modifiedAt);
+    public User(Long id, LocalDateTime lastLogin, String username, String password, String profileImageUrl, String contact, String email) {
         this.id = id;
         this.lastLogin = lastLogin;
         this.username = username;
@@ -57,7 +55,6 @@ public class User extends BaseEntity implements UserDetails {
      * Constructor for Individual social User
      */
     public User(String username, String nickname, AuthProvider oAuthProvider, UserState userState) {
-        super(LocalDateTime.now(), LocalDateTime.now());
         this.lastLogin = LocalDateTime.now();
         this.username = username;
         this.password = "";
@@ -67,6 +64,7 @@ public class User extends BaseEntity implements UserDetails {
 
     /**
      * Add Social User with Github, has no team.
+     *
      * @return User
      */
     public static User addIndividualSocialUser(OAuthDto.GithubUserDetail detail) {

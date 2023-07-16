@@ -17,19 +17,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserRole extends BaseEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String roleName;
+    private String roleName;
 
-	private Integer rolePriority;
+    private Integer rolePriority;
 
-	public UserRole(LocalDateTime createdAt, LocalDateTime modifiedAt, Long id, String roleName,
-		Integer rolePriority) {
-		super(createdAt, modifiedAt);
-		this.id = id;
-		this.roleName = roleName;
-		this.rolePriority = rolePriority;
-	}
+    public UserRole(Long id, String roleName, Integer rolePriority) {
+        this.id = id;
+        this.roleName = roleName;
+        this.rolePriority = rolePriority;
+    }
 }
