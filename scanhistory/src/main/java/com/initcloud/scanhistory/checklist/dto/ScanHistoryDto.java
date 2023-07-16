@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScanHistoryDto {
+	private Long id;
 	private String fileName;
 	private String fileHash;
 	private Integer passed;
@@ -28,6 +29,7 @@ public class ScanHistoryDto {
 	private Double score;
 
 	public ScanHistoryDto(ScanHistoryEntity entity) {
+		this.id = entity.getId();
 		this.fileName = entity.getFileName();
 		this.fileHash = entity.getFileHash();
 		this.passed = entity.getPassed();

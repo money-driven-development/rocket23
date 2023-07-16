@@ -16,5 +16,7 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistoryEntity, 
 
 	List<ScanHistoryEntity> findAllByOrderByIdDesc(Pageable page);
 
-	List<ScanHistoryEntity> findByIdLessThanOrderByIdDesc(Long id,Pageable page);
+	List<ScanHistoryEntity> findByIdLessThanOrderByIdDesc(Long id, Pageable page);
+
+	Boolean existsByIdLessThan(Long id);
 }

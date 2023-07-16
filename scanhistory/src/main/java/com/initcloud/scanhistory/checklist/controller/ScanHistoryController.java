@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.initcloud.scanhistory.checklist.dto.CursorResultDto;
 import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;
 import com.initcloud.scanhistory.checklist.service.ScanHistoryService;
 import com.initcloud.scanhistory.common.dto.ResponseDto;
@@ -47,11 +48,11 @@ public class ScanHistoryController {
 	}
 
 	@GetMapping("/history")
-	public ResponseDto<List<ScanHistoryDto>> getPageHistoryList(@RequestParam Long cursorId,
+	public ResponseDto<CursorResultDto> getPageHistoryList(@RequestParam Long cursorId,
 		@RequestParam(required = false) Integer size) {
 		if (size == null)
 			size = DEFAULT_SIZE;
-		List<ScanHistoryDto> dtos = scanHistoryService.getPageHistoryList(cursorId, (Pageable)PageRequest.of(0, size));
+		CursorResultDto dtos = scanHistoryService.getPageHistoryList(cursorId, (Pageable)PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
 	}
 }

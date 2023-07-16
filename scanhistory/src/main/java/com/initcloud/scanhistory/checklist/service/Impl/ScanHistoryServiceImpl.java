@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.initcloud.scanhistory.checklist.dto.CursorResultDto;
 import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;
 import com.initcloud.scanhistory.checklist.entity.ScanHistoryEntity;
 import com.initcloud.scanhistory.checklist.repository.ScanHistoryRepository;
@@ -36,23 +37,33 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return toConvert(scanHistoryRepository.findTop10ByOrderByIdDesc());
 	}
 
-	public List<ScanHistoryDto> getPageHistoryList(Long cursorId, Pageable page) {
+	public CursorResultDto getPageHistoryList(Long cursorId, Pageable page) {
 		List<ScanHistoryDto> dtos = getPage(cursorId, page);
-		return dtos;
+		Long lastId = -1L;
+		if (!dtos.isEmpty()) {
+			dtos.get(dtos.size() - 1).getId();
+		}
+		return new CursorResultDto(dtos, hasNext(lastId));
 	}
 
-	private List<ScanHistoryDto> getPage(Long id, Pageable page){
-		if(id == null){
+	private List<ScanHistoryDto> getPage(Long id, Pageable page) {
+		if (id == null) {
 			return toConvert(scanHistoryRepository.findAllByOrderByIdDesc(page));
 		}
 		return toConvert(scanHistoryRepository.findByIdLessThanOrderByIdDesc(id, page));
 	}
 
-	private List<ScanHistoryDto> toConvert(List<ScanHistoryEntity> entities){
+	private List<ScanHistoryDto> toConvert(List<ScanHistoryEntity> entities) {
 		List<ScanHistoryDto> dtos = new ArrayList<>();
-		for(ScanHistoryEntity e : entities){
+		for (ScanHistoryEntity e : entities) {
 			dtos.add(new ScanHistoryDto(e));
 		}
 		return dtos;
+	}
+
+	private Boolean hasNext(Long id) {
+		if (id == null)
+			return false;
+		return scanHistoryRepository.existsByIdLessThan(id);
 	}
 }
