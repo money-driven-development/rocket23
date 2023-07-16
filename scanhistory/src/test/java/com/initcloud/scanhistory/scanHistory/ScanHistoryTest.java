@@ -43,7 +43,7 @@ public class ScanHistoryTest {
 		Integer unknown = 0;
 		Integer cveCount = 30;
 		Double score = 40.0;
-		scanHistoryRepository.save(ScanHistoryEntity.builder()
+		ScanHistoryEntity scanHistoryEntity = ScanHistoryEntity.builder()
 			.fileName(fileName)
 			.fileHash(fileHash)
 			.passed(passed)
@@ -55,7 +55,8 @@ public class ScanHistoryTest {
 			.unknown(unknown)
 			.cveCount(cveCount)
 			.score(score)
-			.build());
+			.build();
+		scanHistoryRepository.save(scanHistoryEntity);
 
 		//when
 		List<ScanHistoryDto> dtos = scanHistoryService.getFileHistoryList(fileHash);
