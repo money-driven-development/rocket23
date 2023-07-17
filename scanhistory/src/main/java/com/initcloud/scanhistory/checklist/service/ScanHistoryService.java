@@ -1,7 +1,8 @@
 package com.initcloud.scanhistory.checklist.service;
 
-import java.awt.print.Pageable;
 import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 
 import com.initcloud.scanhistory.checklist.dto.CursorResultDto;
 import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;

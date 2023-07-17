@@ -1,9 +1,9 @@
 package com.initcloud.scanhistory.checklist.service.Impl;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.initcloud.scanhistory.checklist.dto.CursorResultDto;
@@ -37,15 +37,28 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return toConvert(scanHistoryRepository.findTop10ByOrderByIdDesc());
 	}
 
+	/**
+	 * ID 기반의 Cursor-based pagination 구현
+	 * @param cursorId
+	 * @param page
+	 * @return page된 부분과 마지막의 id를 통해서 page 지점을 전달
+	 * TODO: 2023-07-17 일단 id 기반으로 구현했지만, 결국 user에 대한 정보를 통해서 pagination을 구현해야합니다. 추후 user 기능관 결합되면 이를 수정할 예정입니다.
+	 */
 	public CursorResultDto getPageHistoryList(Long cursorId, Pageable page) {
 		List<ScanHistoryDto> dtos = getPage(cursorId, page);
-		Long lastId = -1L;
+		Long lastId = null;
 		if (!dtos.isEmpty()) {
-			dtos.get(dtos.size() - 1).getId();
+			lastId = dtos.get(dtos.size() - 1).getId();
 		}
 		return new CursorResultDto(dtos, hasNext(lastId));
 	}
 
+	/**
+	 * id 값에 따른  Page 처리된
+	 * @param id
+	 * @param page
+	 * @return
+	 */
 	private List<ScanHistoryDto> getPage(Long id, Pageable page) {
 		if (id == null) {
 			return toConvert(scanHistoryRepository.findAllByOrderByIdDesc(page));
@@ -53,6 +66,11 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return toConvert(scanHistoryRepository.findByIdLessThanOrderByIdDesc(id, page));
 	}
 
+	/**
+	 * ScanHistoryEntity -> ScanHistoryDto 로 변환
+	 * @param entities
+	 * @return
+	 */
 	private List<ScanHistoryDto> toConvert(List<ScanHistoryEntity> entities) {
 		List<ScanHistoryDto> dtos = new ArrayList<>();
 		for (ScanHistoryEntity e : entities) {
@@ -61,6 +79,11 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return dtos;
 	}
 
+	/**
+	 * 다음 page가 있는 지를 확인하는 함수
+	 * @param id
+	 * @return
+	 */
 	private Boolean hasNext(Long id) {
 		if (id == null)
 			return false;
