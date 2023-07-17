@@ -1,6 +1,5 @@
 package com.initcloud.scanhistory.checklist.controller;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -30,7 +29,7 @@ public class ScanHistoryController {
 	 * get 방식을 통해 file scan history 내역을 최근 10개를 출력하도록함.
 	 *
 	 */
-	@GetMapping("/history")
+	@GetMapping("/history/recent")
 	public ResponseDto<List<ScanHistoryDto>> getHistoryList() {
 		List<ScanHistoryDto> dtos = scanHistoryService.getHistoryList();
 		return new ResponseDto<>(dtos);
@@ -52,7 +51,7 @@ public class ScanHistoryController {
 		@RequestParam(required = false) Integer size) {
 		if (size == null)
 			size = DEFAULT_SIZE;
-		CursorResultDto dtos = scanHistoryService.getPageHistoryList(cursorId, (Pageable)PageRequest.of(0, size));
+		CursorResultDto dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
 	}
 }
