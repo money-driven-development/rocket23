@@ -13,4 +13,6 @@ public interface ScanHistoryService {
 	List<ScanHistoryDto> getHistoryList();
 
 	CursorResultDto getPageHistoryList(Long cursorId, Pageable Page);
+
+	CursorResultDto getPageHistoryList(Long cursorId, Pageable Page,String[] fileType);
 }
