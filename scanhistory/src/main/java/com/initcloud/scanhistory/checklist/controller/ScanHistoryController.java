@@ -48,19 +48,15 @@ public class ScanHistoryController {
 
 	@GetMapping("/history")
 	public ResponseDto<CursorResultDto> getPageHistoryList(@RequestParam Long cursorId,
-		@RequestParam(required = false) Integer size) {
+		@RequestParam(required = false) Integer size, @RequestParam String... fileType) {
+		CursorResultDto dtos;
 		if (size == null)
 			size = DEFAULT_SIZE;
-		CursorResultDto dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
+		if (fileType == null) {
+			dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
+		} else {
+			dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size), fileType);
+		}
 		return new ResponseDto<>(dtos);
-	}
-
-	/**
-	 * 가변인자처럼 자유롭게 RequestParam을 받기
-	 * @return
-	 */
-	@GetMapping("/history/{type}")
-	public ResponseDto<CursorResultDto>	getPageHistoryListWithType(@RequestParam String ... fileType){
-
 	}
 }
