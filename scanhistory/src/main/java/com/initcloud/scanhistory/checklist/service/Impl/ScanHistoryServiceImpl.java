@@ -54,6 +54,13 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return new CursorResultDto(dtos, hasNext(lastId));
 	}
 
+	/*
+	todo fietype 배열을 통해서 선택적 출력이 가능한 JPA로직 구현 및 기능 구현.
+	 */
+	public CursorResultDto getPageHistoryList(Long cursorId, Pageable Page, String[] fileType) {
+		return new CursorResultDto();
+	}
+
 	/**
 	 * id 값에 따른  Page 처리된
 	 * @param id
@@ -65,22 +72,6 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 			return toConvert(scanHistoryRepository.findAllByOrderByIdDesc(page));
 		}
 		return toConvert(scanHistoryRepository.findByIdLessThanOrderByIdDesc(id, page));
-	}
-
-	/**
-	 * tf, dockerfile, yaml, yml 파일 확장자에 따라 조회하는 기능 구현.
-	 * @param id
-	 * @param page
-	 * @param type
-	 * @return
-	 */
-	private List<ScanHistoryDto> getPage(Long id, Pageable page, fileType type) {
-		if (id == null) {
-			return toConvert(
-				scanHistoryRepository.findAllByFileNameEndsWithIgnoreCaseByOrderByIdDesc(type.getType(), page));
-		}
-		return toConvert(scanHistoryRepository.findAllByFileNameEndsWithIgnoreCaseByIdLessThanOrderByIdDesc(id,
-			type.getType(), page));
 	}
 
 	/**
