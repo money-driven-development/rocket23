@@ -1,11 +1,14 @@
 package com.initcloud.rocket23.team.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.user.entity.User;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,20 +17,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team extends BaseEntity {
+public class Invite extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String teamCode;
-	private String name;
+	@OneToOne(fetch = FetchType.LAZY)
+	private User user;
 
-	private String logoUri;
+	@OneToOne(fetch = FetchType.LAZY)
+	private Team team;
 
-	public Team(Long id, String teamCode, String name, String logoUri) {
-		this.id = id;
-		this.teamCode = teamCode;
-		this.name = name;
-		this.logoUri = logoUri;
+	public Invite(User user, Team team) {
+		this.user = user;
+		this.team = team;
 	}
 }
