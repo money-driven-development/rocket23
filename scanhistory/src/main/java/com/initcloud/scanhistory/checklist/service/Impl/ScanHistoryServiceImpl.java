@@ -12,6 +12,7 @@ import com.initcloud.scanhistory.checklist.entity.ScanHistoryEntity;
 import com.initcloud.scanhistory.checklist.repository.ScanHistoryRepository;
 import com.initcloud.scanhistory.checklist.service.ScanHistoryService;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	}
 
 	/**
-	 * ID 기반의 Cursor-based pagination 구현
+	 * ID 기반의 Cursor-based pagination 구현, 최근 목록을 기준으로 pagination이 동작함.
 	 * @param cursorId
 	 * @param page
 	 * @return page된 부분과 마지막의 id를 통해서 page 지점을 전달
@@ -67,6 +68,22 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	}
 
 	/**
+	 * tf, dockerfile, yaml, yml 파일 확장자에 따라 조회하는 기능 구현.
+	 * @param id
+	 * @param page
+	 * @param type
+	 * @return
+	 */
+	private List<ScanHistoryDto> getPage(Long id, Pageable page, fileType type) {
+		if (id == null) {
+			return toConvert(
+				scanHistoryRepository.findAllByFileNameEndsWithIgnoreCaseByOrderByIdDesc(type.getType(), page));
+		}
+		return toConvert(scanHistoryRepository.findAllByFileNameEndsWithIgnoreCaseByIdLessThanOrderByIdDesc(id,
+			type.getType(), page));
+	}
+
+	/**
 	 * ScanHistoryEntity -> ScanHistoryDto 로 변환
 	 * @param entities
 	 * @return
@@ -88,5 +105,20 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		if (id == null)
 			return false;
 		return scanHistoryRepository.existsByIdLessThan(id);
+	}
+
+	private enum fileType {
+
+		TF(".tf"),
+		YAML(".yaml"),
+		DOCKERFILE("Dockerfile"),
+		JSON(".jsno"),
+		YML(".yml");
+		@Getter
+		private String type;
+
+		private fileType(String type) {
+			this.type = type;
+		}
 	}
 }

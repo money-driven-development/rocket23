@@ -54,4 +54,13 @@ public class ScanHistoryController {
 		CursorResultDto dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
 	}
+
+	/**
+	 * 가변인자처럼 자유롭게 RequestParam을 받기
+	 * @return
+	 */
+	@GetMapping("/history/{type}")
+	public ResponseDto<CursorResultDto>	getPageHistoryListWithType(@RequestParam String ... fileType){
+
+	}
 }
