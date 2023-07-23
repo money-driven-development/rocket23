@@ -55,7 +55,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	}
 
 	/*
-	todo fietype 배열을 통해서 선택적 출력이 가능한 JPA로직 구현 및 기능 구현.
+	todo filetype 배열을 통해서 선택적 출력이 가능한 JPA로직 구현 및 기능 구현.
 	 */
 	public CursorResultDto getPageHistoryList(Long cursorId, Pageable Page, String[] fileType) {
 		return new CursorResultDto();
@@ -103,7 +103,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		TF(".tf"),
 		YAML(".yaml"),
 		DOCKERFILE("Dockerfile"),
-		JSON(".jsno"),
+		JSON(".json"),
 		YML(".yml");
 		@Getter
 		private String type;
