@@ -37,12 +37,12 @@ public class ScanHistoryController {
 
 	/**
 	 * get 방식을 통해 url로 file의 uuid값을 전달받음
-	 * @param UUID path를 통해 전달받은 file의 uuid값
+	 * @param uuid path를 통해 전달받은 file의 uuid값
 	 * @return file에 해당하는 스캔내역
 	 */
 	@GetMapping("/history/{uuid}")
-	public ResponseDto<List<ScanHistoryDto>> getFileHistoryList(@PathVariable String UUID) {
-		List<ScanHistoryDto> dtos = scanHistoryService.getFileHistoryList(UUID);
+	public ResponseDto<List<ScanHistoryDto>> getFileHistoryList(@PathVariable String uuid) {
+		List<ScanHistoryDto> dtos = scanHistoryService.getFileHistoryList(uuid);
 		return new ResponseDto<>(dtos);
 	}
 
