@@ -11,11 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.team.dto.TeamMemberDto;
 import com.initcloud.rocket23.user.entity.User;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 @Getter
 @Entity
@@ -46,5 +48,33 @@ public class TeamWithUsers extends BaseEntity {
         this.authorities = authorities;
         this.team = team;
         this.user = user;
+    }
+
+    public static Page<TeamMemberDto.Summary> toPageDto(Page<TeamWithUsers> entities) throws NullPointerException {
+        return entities.map(entity -> toSummaryDto(entity));
+    }
+
+    public static TeamMemberDto.Summary toSummaryDto(TeamWithUsers entity) throws NullPointerException {
+        User user = entity.getUser();
+        return TeamMemberDto.Summary
+                .builder()
+                .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
+                .joinDate(entity.getCreatedAt().toLocalDate())
+                .build();
+    }
+
+    public static TeamMemberDto.Details toDetailsDto(TeamWithUsers entity) throws NullPointerException {
+        User user = entity.getUser();
+        return TeamMemberDto.Details
+                .builder()
+                .email(user.getEmail())
+                .profileImageUrl(user.getProfileImageUrl())
+                .joinDate(entity.getCreatedAt().toLocalDate())
+                .contact(user.getContact())
+                .lastLogin(user.getLastLogin())
+                .isAdmin(false) // Todo
+                .role(null)     // Todo
+                .build();
     }
 }

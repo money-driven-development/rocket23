@@ -4,31 +4,42 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamInviteDto {
 
-	@Getter
-	public static class Request {
-		private String email;
-		private String teamCode;
+    @Getter
+    public static class Request {
+        @Email @NotNull
+        private String email;
 
-		public Request(String email, String teamCode) {
-			this.email = email;
-			this.teamCode = teamCode;
-		}
-	}
+        @NotNull
+        private String teamCode;
 
-	@Getter
-	public static class Response {
-		private String email;
-		private String teamCode;
-		private Boolean join;
+        public Request(String email, String teamCode) {
+            this.email = email;
+            this.teamCode = teamCode;
+        }
+    }
 
-		public Response(String email, String teamCode, Boolean join) {
-			this.email = email;
-			this.teamCode = teamCode;
-			this.join = join;
-		}
-	}
+    @Getter
+    public static class Response {
+        @Email @NotNull
+        private String email;
+
+        @NotNull
+        private String teamCode;
+
+        @NotNull
+        private Boolean join;
+
+        public Response(String email, String teamCode, Boolean join) {
+            this.email = email;
+            this.teamCode = teamCode;
+            this.join = join;
+        }
+    }
 
 }

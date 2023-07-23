@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.user.enums.AuthProvider;
@@ -39,6 +40,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private String contact;
 
+    @Email
     private String email;
 
     public User(Long id, LocalDateTime lastLogin, String username, String password, String profileImageUrl, String contact, String email) {

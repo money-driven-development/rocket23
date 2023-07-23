@@ -21,31 +21,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamManageService {
 
-	private final TeamRepository teamRepository;
-	private final UserRepository userRepository;
-	private final InviteRepository inviteRepository;
-	private final TeamWithUsersRepository teamWithUsersRepository;
+    private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
+    private final InviteRepository inviteRepository;
+    private final TeamWithUsersRepository teamWithUsersRepository;
 
-	/**
-	 * 유저를 팀으로 초대
-	 * Todo - 현재는 DB로 관리하지만 만료 기한을 두고 캐시로 관리할 예정
-	 */
-	public String inviteUser(TeamInviteDto.Request dto) {
+    /**
+     * 유저를 팀으로 초대
+     * Todo - 현재는 DB로 관리하지만 만료 기한을 두고 캐시로 관리할 예정
+     */
+    public String inviteUser(String teamCode, TeamInviteDto.Request dto) {
 
-		Team team = teamRepository.findByTeamCode(dto.getTeamCode())
-			.orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
+        Team team = teamRepository.findByTeamCode(dto.getTeamCode())
+                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
-		Optional<User> user = userRepository.findUserByEmail(dto.getEmail());
+        Optional<User> user = userRepository.findUserByEmail(dto.getEmail());
 
-		if (user.isPresent()) {
-			Invite newInvite = new Invite(user.get(), team);
-			inviteRepository.save(newInvite);
-		}
+        if (user.isPresent()) {
+            Invite newInvite = new Invite(user.get(), team);
+            inviteRepository.save(newInvite);
+        }
 
-		return dto.getEmail();
-	}
+        return dto.getEmail();
+    }
 
-	public void withdrawalTeam() {
-		//Todo
-	}
+    public void leaveTeam() {
+        //Todo
+    }
 }

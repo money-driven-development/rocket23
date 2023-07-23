@@ -23,6 +23,7 @@ public enum ResponseCode {
 
 	/* 7: Team */
 	INVALID_TEAM(4701, HttpStatus.BAD_REQUEST, "Invalid Team."),
+	INVALID_USER_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid user in this team."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
