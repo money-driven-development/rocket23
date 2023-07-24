@@ -54,13 +54,6 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return new CursorResultDto(dtos, hasNext(lastId));
 	}
 
-	/*
-	todo filetype 배열을 통해서 선택적 출력이 가능한 JPA로직 구현 및 기능 구현.
-	 */
-	public CursorResultDto getPageHistoryList(Long cursorId, Pageable Page, String[] fileType) {
-		return new CursorResultDto();
-	}
-
 	/**
 	 * id 값에 따른  Page 처리된
 	 * @param id
@@ -98,18 +91,4 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return scanHistoryRepository.existsByIdLessThan(id);
 	}
 
-	private enum fileType {
-
-		TF(".tf"),
-		YAML(".yaml"),
-		DOCKERFILE("Dockerfile"),
-		JSON(".json"),
-		YML(".yml");
-		@Getter
-		private String type;
-
-		private fileType(String type) {
-			this.type = type;
-		}
-	}
 }

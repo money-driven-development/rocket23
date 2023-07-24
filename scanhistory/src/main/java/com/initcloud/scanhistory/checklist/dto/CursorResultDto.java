@@ -1,5 +1,6 @@
 package com.initcloud.scanhistory.checklist.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;

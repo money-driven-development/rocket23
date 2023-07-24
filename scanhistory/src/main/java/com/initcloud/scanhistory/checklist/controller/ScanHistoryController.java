@@ -48,15 +48,11 @@ public class ScanHistoryController {
 
 	@GetMapping("/history")
 	public ResponseDto<CursorResultDto> getPageHistoryList(@RequestParam Long cursorId,
-		@RequestParam(required = false) Integer size, @RequestParam String... fileType) {
+		@RequestParam(required = false) Integer size) {
 		CursorResultDto dtos;
 		if (size == null)
 			size = DEFAULT_SIZE;
-		if (fileType == null) {
-			dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
-		} else {
-			dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size), fileType);
-		}
+		dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
 	}
 }
