@@ -26,7 +26,7 @@ public class TeamManageController {
      *
      * @return
      */
-    @PostMapping("/{teamCode}/member")
+    @PostMapping("/{teamCode}/members")
     public ResponseDto<String> memberInvite(
             @PathVariable String teamCode,
             @RequestBody @Valid TeamInviteDto.Request request
@@ -41,8 +41,11 @@ public class TeamManageController {
      *
      * @return
      */
-    @PutMapping("/member")
-    public ResponseDto<Object> memberStatus() {
+    @PutMapping("/{teamCode}/members/{memberEmail}")
+    public ResponseDto<Object> memberStatus(
+            @PathVariable String teamCode,
+            @PathVariable String memberEmail
+    ) {
         //Todo
         return new ResponseDto<>(null);
     }
@@ -52,10 +55,14 @@ public class TeamManageController {
      *
      * @return
      */
-    @DeleteMapping("/member")
-    public ResponseDto<Object> memberRemove() {
-        //Todo
-        return new ResponseDto<>(null);
+    @DeleteMapping("/{teamCode}/members/{memberEmail}")
+    public ResponseDto<Object> memberRemove(
+            @PathVariable String teamCode,
+            @PathVariable String memberEmail
+    ) {
+        boolean response = teamManageService.removeMemberFromTeam(teamCode, memberEmail);
+
+        return new ResponseDto<>(response);
     }
 
     // ===============================
@@ -67,9 +74,12 @@ public class TeamManageController {
      *
      * @return
      */
-    @DeleteMapping
-    public ResponseDto<Object> teamRemove() {
-        //Todo
-        return new ResponseDto<>(null);
+    @DeleteMapping("/{teamCode}")
+    public ResponseDto<Object> teamRemove(
+            @PathVariable String teamCode
+    ) {
+        boolean response = teamManageService.removeTeam(teamCode);
+
+        return new ResponseDto<>(response);
     }
 }

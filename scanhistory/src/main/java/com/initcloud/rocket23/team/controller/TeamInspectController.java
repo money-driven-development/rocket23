@@ -20,7 +20,7 @@ public class TeamInspectController {
 
     private final TeamInspectService teamInspectService;
 
-    @GetMapping("/{teamCode}")
+    @GetMapping("/{teamCode}/members")
     public ResponseDto<Page<TeamMemberDto.Summary>> memberList(
             final Pageable pageable,
             @PathVariable String teamCode
@@ -37,6 +37,6 @@ public class TeamInspectController {
     ) {
         TeamMemberDto.Details response = teamInspectService.getTeamMemberDetails(teamCode, memberEmail);
 
-        return new ResponseDto<>(null);
+        return new ResponseDto<>(response);
     }
 }

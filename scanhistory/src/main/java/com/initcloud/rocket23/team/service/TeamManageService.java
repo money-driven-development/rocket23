@@ -2,6 +2,8 @@ package com.initcloud.rocket23.team.service;
 
 import java.util.Optional;
 
+import com.initcloud.rocket23.team.entity.TeamWithUsers;
+import com.initcloud.rocket23.user.enums.UserState;
 import org.springframework.stereotype.Service;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
@@ -27,8 +29,9 @@ public class TeamManageService {
     private final TeamWithUsersRepository teamWithUsersRepository;
 
     /**
-     * 유저를 팀으로 초대
-     * Todo - 현재는 DB로 관리하지만 만료 기한을 두고 캐시로 관리할 예정
+     * [String] 유저를 팀으로 초대
+     * Todo - 현재는 DB로 관리하지만 만료 기한을 두고 캐시로 관리 예정
+     * Todo - QueryDSL 또는 JPQL 로 단일 쿼리로 Join 하여 실행할 예정
      */
     public String inviteUser(String teamCode, TeamInviteDto.Request dto) {
 
@@ -45,7 +48,34 @@ public class TeamManageService {
         return dto.getEmail();
     }
 
-    public void leaveTeam() {
-        //Todo
+    /**
+     * [boolean] 멤버를 팀에서 탈퇴 시킴
+     * Todo - QueryDSL 또는 JPQL 로 단일 쿼리로 Join 하여 실행할 예정
+     */
+    public boolean removeMemberFromTeam(String teamCode, String memberEmail) {
+
+        Team team = teamRepository.findByTeamCode(teamCode)
+                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
+
+        Optional<User> user = userRepository.findUserByEmail(memberEmail);
+
+        if (user.isPresent()) {
+            Optional<TeamWithUsers> remove = teamWithUsersRepository.findTeamWithUsersByTeamAndUser(team, user.get());
+            if (remove.isPresent()) {
+                teamWithUsersRepository.delete(remove.get());
+            }
+
+            return remove.isPresent();
+        }
+
+        return false;
+    }
+
+    /**
+     * [boolean] 팀 해체
+     * Todo - 팀이 무조건적으로 해체되는 것이 아니라 해체되는 조건을 지정해야 함.
+     */
+    public boolean removeTeam(String teamCode) {
+        return teamRepository.deleteTeamByTeamCode(teamCode);
     }
 }

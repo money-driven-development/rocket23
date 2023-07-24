@@ -30,6 +30,8 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private UserState userState;
+
     private LocalDateTime lastLogin;
 
     private String username;
@@ -43,21 +45,12 @@ public class User extends BaseEntity implements UserDetails {
     @Email
     private String email;
 
-    public User(Long id, LocalDateTime lastLogin, String username, String password, String profileImageUrl, String contact, String email) {
-        this.id = id;
-        this.lastLogin = lastLogin;
-        this.username = username;
-        this.password = password;
-        this.profileImageUrl = profileImageUrl;
-        this.contact = contact;
-        this.email = email;
-    }
-
     /**
      * Constructor for Individual social User
      */
     public User(String username, String nickname, AuthProvider oAuthProvider, UserState userState) {
         this.lastLogin = LocalDateTime.now();
+        this.userState = userState;
         this.username = username;
         this.password = "";
         this.email = "";

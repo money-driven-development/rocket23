@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.initcloud.rocket23.team.entity.Team;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
+    Optional<Team> findByTeamCode(String teamCode);
 
-	Optional<Team> findByTeamCode(String teamCode);
+    boolean deleteTeamByTeamCode(String teamCode);
 }

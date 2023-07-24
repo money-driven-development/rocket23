@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.infra.repository;
 
 import com.initcloud.rocket23.team.entity.Team;
+import com.initcloud.rocket23.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,4 +16,5 @@ public interface TeamWithUsersRepository extends JpaRepository<TeamWithUsers, Lo
     Page<TeamWithUsers> findAllByTeam(Pageable pageable, Team team);
 
     Optional<TeamWithUsers> findTeamWithUsersByByTeam(Team team);
+    Optional<TeamWithUsers> findTeamWithUsersByTeamAndUser(Team team, User user);
 }
