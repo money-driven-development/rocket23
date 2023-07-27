@@ -55,7 +55,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	}
 
 	/**
-	 * id 값에 따른  Page 처리된
+	 * id 값에 따른  Page 처리된 	
 	 * @param id
 	 * @param page
 	 * @return
