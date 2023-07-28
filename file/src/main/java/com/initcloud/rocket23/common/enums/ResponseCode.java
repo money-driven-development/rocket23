@@ -12,6 +12,7 @@ public enum ResponseCode {
 	/* Invalid Request */
 	INVALID_REQUEST(4001, HttpStatus.BAD_REQUEST, "Invalid Request."),
 	DATA_MISSING(4002, HttpStatus.INTERNAL_SERVER_ERROR, "BAD_REQUEST"),
+	INVALID_USER(4008, HttpStatus.BAD_REQUEST, "Invalid User."),
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
 	SCAN_ERROR(5002, HttpStatus.INTERNAL_SERVER_ERROR, "Scan Error."),
