@@ -31,7 +31,7 @@ public class ScanHistory extends BaseEntity {
 	@Column(name = "history_id")
 	private Long historyId;
 
-	@OneToMany(mappedBy = "historySeq")
+	@OneToMany(mappedBy = "historyId")
 	private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
 
 	@OneToMany(mappedBy = "scanHistoryEntity")

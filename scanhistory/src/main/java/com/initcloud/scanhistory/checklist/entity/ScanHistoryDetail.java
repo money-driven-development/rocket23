@@ -30,10 +30,10 @@ public class ScanHistoryDetail extends BaseEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "history_seq", updatable = false)
-	private ScanHistory historySeq;
+	@JoinColumn(name = "history_id", updatable = false)
+	private ScanHistory historyId;
 
-	@Column(name = "CHECk_TYPE")
+	@Column(name = "CHECK_TYPE")
 	@NotNull
 	private String checkType;
 
@@ -56,7 +56,7 @@ public class ScanHistoryDetail extends BaseEntity {
 	@Builder
 	public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
 		String targetFile, String scanResult, String line, String code) {
-		this.historySeq = scanHistory;
+		this.historyId = scanHistory;
 		this.checkType = checkType;
 		this.targetFile = targetFile;
 		this.scanResult = scanResult;
