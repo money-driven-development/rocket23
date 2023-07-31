@@ -37,7 +37,7 @@ public class ScanHistoryController {
 	/**
 	 * get 방식을 통한 file pagination 기능 구현 teamId 와 historyseq를 통한 cursor 지정.
 	 */
-	@GetMapping("/{team}/projects/scans/{cursorId}")
+	@GetMapping("/{team}/projects/scans")
 	public ResponseDto<CursorResultDto> getPageHistoryList(@PathVariable("team") Long teamId,
 		@RequestParam(required = false) Long cursorId,
 		@RequestParam(required = false) Integer size) {
