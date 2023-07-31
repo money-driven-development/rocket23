@@ -37,6 +37,9 @@ public class ScanHistory extends BaseEntity {
 	@OneToMany(mappedBy = "scanHistoryEntity")
 	private List<FileVulnDetail> fileDetails = new ArrayList<>();
 
+	@Column(name = "team_id")
+	private String teamId;
+
 	@Column(name = "FILE_NAME")
 	@NotNull
 	private String fileName;
