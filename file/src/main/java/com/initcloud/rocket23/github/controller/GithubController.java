@@ -68,9 +68,9 @@ public class GithubController {
 		@ApiImplicitParam(name = "repo", value = "Github repository", required = true, dataTypeClass = String.class),
 		@ApiImplicitParam(name = "ref", paramType = "query", value = "Branch", dataTypeClass = String.class)})
 	@GetMapping("/repos/{user}/{repo}")
-	public ResponseDto<List<GithubDto.File>> repositoryDetails(@PathVariable("user") String user,
+	public ResponseDto<List<GithubDto.Contents>> repositoryDetails(@PathVariable("user") String user,
 		@PathVariable("repo") String repo, @Nullable @RequestParam("ref") String branch) {
-		List<GithubDto.File> dtos = githubService.getRepository(user, repo, branch);
+		List<GithubDto.Contents> dtos = githubService.getRepository(user, repo, branch);
 
 		return new ResponseDto<>(dtos);
 	}

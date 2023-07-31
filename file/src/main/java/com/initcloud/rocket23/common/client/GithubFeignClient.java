@@ -19,7 +19,7 @@ public interface GithubFeignClient {
 
 	/* Contents in Repository */
 	@GetMapping(value = "/repos/{USER}/{REPO}/contents")
-	List<GithubDto.File> getRepositoryDetails(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
+	List<GithubDto.Contents> getRepositoryDetails(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
 		@PathVariable("REPO") String repo, @RequestParam("ref") String branch);
 
 	@GetMapping(value = "/repos/{USER}/{REPO}/commits")
@@ -32,6 +32,6 @@ public interface GithubFeignClient {
 
 	/* Blobs from Repository */
 	@GetMapping(value = "/repos/{USER}/{REPO}/git/blobs/{HASH}")
-	void getFiles(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
+	List<GithubDto.File> getFiles(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
 		@PathVariable("REPO") String repo, @PathVariable("HASH") String hash, @RequestParam("ref") String branch);
 }

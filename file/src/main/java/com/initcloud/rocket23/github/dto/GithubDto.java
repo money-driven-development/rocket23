@@ -76,14 +76,14 @@ public class GithubDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class File {
+	public static class Contents {
 		private String type;
 		private String name;
 		private String sha;
 		private String path;
 		private String url;
 
-		public File(String type, String name, String sha, String path, String url) {
+		public Contents(String type, String name, String sha, String path, String url) {
 			this.type = type;
 			this.name = name;
 			this.sha = sha;
