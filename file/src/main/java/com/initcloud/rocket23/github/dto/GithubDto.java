@@ -1,5 +1,7 @@
 package com.initcloud.rocket23.github.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,10 +32,14 @@ public class GithubDto {
 		private String nodeId;
 		private String fullName;
 		private String visibility;
+		@JsonProperty("created_at")
 		private String createdAt;
+		@JsonProperty("updated_at")
 		private String updatedAt;
 		private String url;
+		@JsonProperty("downloads_url")
 		private String downloadsUrl;
+		@JsonProperty("default_branch")
 		private String defaultBranch;
 		private Permission permissions;
 
