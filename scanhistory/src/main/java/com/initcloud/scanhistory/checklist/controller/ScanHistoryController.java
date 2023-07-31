@@ -43,8 +43,8 @@ public class ScanHistoryController {
 		@RequestParam(required = false) Long cursorId,
 		@RequestParam(required = false) Integer size) {
 		CursorResultDto dtos;
-		// if (size == null)
-		// 	size = DEFAULT_SIZE;
+		if (size == null)
+			size = DEFAULT_SIZE;
 		dtos = scanHistoryService.getPageHistoryList(teamId, cursorId, PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
 	}
