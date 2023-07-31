@@ -30,13 +30,14 @@ public class ScanHistoryController {
 	 *
 	 */
 	@GetMapping("/{team}/projects/scans/recent")
-	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable Long teamId) {
+	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable("team") Long teamId) {
 		List<HistoryDto> dtos = scanHistoryService.getHistoryList(teamId);
 		return new ResponseDto<>(dtos);
 	}
 
 	@GetMapping("/{team}/projects/scans/{cursorId}")
-	public ResponseDto<CursorResultDto> getPageHistoryList(@PathVariable Long teamId,@PathVariable Long cursorId,
+	public ResponseDto<CursorResultDto> getPageHistoryList(@PathVariable("team") Long teamId,
+		@RequestParam(required = false) Long cursorId,
 		@RequestParam(required = false) Integer size) {
 		CursorResultDto dtos;
 		if (size == null)
