@@ -38,7 +38,7 @@ public class ScanHistory extends BaseEntity {
 	private List<FileVulnDetail> fileDetails = new ArrayList<>();
 
 	@Column(name = "team_id")
-	private String teamId;
+	private Long teamId;
 
 	@Column(name = "FILE_NAME")
 	@NotNull
