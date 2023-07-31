@@ -22,7 +22,7 @@ public class HistoryDto {
 	private Integer skipped;
 
 	public HistoryDto(ScanHistory entity) {
-		this.id = entity.getHistorySeq();
+		this.id = entity.getHistoryId();
 		this.fileName = entity.getFileName();
 		this.fileHash = entity.getFileHash();
 		this.scanDateTime = entity.getCreatedAt();
