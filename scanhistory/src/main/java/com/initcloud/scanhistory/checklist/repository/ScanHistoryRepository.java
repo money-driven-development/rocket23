@@ -12,15 +12,11 @@ import com.initcloud.scanhistory.checklist.entity.ScanHistory;
 @Repository
 public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> {
 
-	List<ScanHistory> findTop10ByTeamIdOrderByHistorySeqDesc(String teamId);
+	List<ScanHistory> findTop10ByTeamIdOrderByHistorySeqDesc(Long teamId);
 
-	/* TODO: 페이지네이션과 관련된 기능으로 추후 활용예정입니다.(23.07.30)
-	Optional<ScanHistory> findTop10ByFileHash(String fileHash);
+	List<ScanHistory> findAllByTeamIdOrderByHistorySeqDesc(Long teamId,Pageable page);
 
-	List<ScanHistory> findAllByOrderByHistorySeqDesc(Pageable page);
+	List<ScanHistory> findByTeamIdAndHistorySeqLessThanOrderByHistorySeqDesc(Long teamId, Long historyseq, Pageable page);
 
-	List<ScanHistory> findByHistorySeqLessThanOrderByHistorySeqDesc(Long id, Pageable page);
-
-	Boolean existsByHistorySeqLessThan(Long id);
-	 */
+	Boolean existsByTeamIdAndHistorySeqLessThan(Long teamId, Long historyseq);
 }

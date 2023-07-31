@@ -30,26 +30,18 @@ public class ScanHistoryController {
 	 *
 	 */
 	@GetMapping("/{team}/projects/scans/recent")
-	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable String teamId) {
+	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable Long teamId) {
 		List<HistoryDto> dtos = scanHistoryService.getHistoryList(teamId);
 		return new ResponseDto<>(dtos);
 	}
 
-	/* tODO
-	@GetMapping("/history/{uuid}")
-	public ResponseDto<List<HistoryDto>> getFileHistoryList(@PathVariable String uuid) {
-		List<HistoryDto> dtos = scanHistoryService.getFileHistoryList(uuid);
-		return new ResponseDto<>(dtos);
-	}
-
-	@GetMapping("/history")
-	public ResponseDto<CursorResultDto> getPageHistoryList(@RequestParam Long cursorId,
+	@GetMapping("/{team}/projects/scans/{cursorId}")
+	public ResponseDto<CursorResultDto> getPageHistoryList(@PathVariable Long teamId,@PathVariable Long cursorId,
 		@RequestParam(required = false) Integer size) {
 		CursorResultDto dtos;
 		if (size == null)
 			size = DEFAULT_SIZE;
-		dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
+		dtos = scanHistoryService.getPageHistoryList(teamId, cursorId, PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
-	}\
-	 */
+	}
 }
