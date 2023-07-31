@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.initcloud.scanhistory.checklist.dto.CursorResultDto;
-import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;
+import com.initcloud.scanhistory.checklist.dto.HistoryDto;
 import com.initcloud.scanhistory.checklist.service.ScanHistoryService;
 import com.initcloud.scanhistory.common.dto.ResponseDto;
 
@@ -29,20 +29,16 @@ public class ScanHistoryController {
 	 * get 방식을 통해 file scan history 내역을 최근 10개를 출력하도록함.
 	 *
 	 */
-	@GetMapping("/history/recent")
-	public ResponseDto<List<ScanHistoryDto>> getHistoryList() {
-		List<ScanHistoryDto> dtos = scanHistoryService.getHistoryList();
+	@GetMapping("/{team}/projects/scans/recent")
+	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable String teamId) {
+		List<HistoryDto> dtos = scanHistoryService.getHistoryList(teamId);
 		return new ResponseDto<>(dtos);
 	}
 
-	/**
-	 * get 방식을 통해 url로 file의 uuid값을 전달받음
-	 * @param uuid path를 통해 전달받은 file의 uuid값
-	 * @return file에 해당하는 스캔내역
-	 */
+	/* tODO
 	@GetMapping("/history/{uuid}")
-	public ResponseDto<List<ScanHistoryDto>> getFileHistoryList(@PathVariable String uuid) {
-		List<ScanHistoryDto> dtos = scanHistoryService.getFileHistoryList(uuid);
+	public ResponseDto<List<HistoryDto>> getFileHistoryList(@PathVariable String uuid) {
+		List<HistoryDto> dtos = scanHistoryService.getFileHistoryList(uuid);
 		return new ResponseDto<>(dtos);
 	}
 
@@ -54,5 +50,6 @@ public class ScanHistoryController {
 			size = DEFAULT_SIZE;
 		dtos = scanHistoryService.getPageHistoryList(cursorId, PageRequest.of(0, size));
 		return new ResponseDto<>(dtos);
-	}
+	}\
+	 */
 }
