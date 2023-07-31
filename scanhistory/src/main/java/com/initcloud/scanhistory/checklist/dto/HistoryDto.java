@@ -17,6 +17,9 @@ public class HistoryDto {
 	private String provider;
 	private LocalDateTime scanDateTime;
 	private Double score;
+	private Integer failed;
+	private Integer passed;
+	private Integer skipped;
 
 	public HistoryDto(ScanHistory entity) {
 		this.id = entity.getHistorySeq();
@@ -25,5 +28,8 @@ public class HistoryDto {
 		this.scanDateTime = entity.getCreatedAt();
 		this.provider = entity.getCsp();
 		this.score = entity.getScore();
+		this.failed = entity.getFailed();
+		this.passed = entity.getPassed();
+		this.skipped = entity.getSkipped();
 	}
 }
