@@ -24,8 +24,8 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 * 상위 10개의 파일 스캔 결과만 반영해줍니다.
 	 * @return ScanHistory에서 조회한 내여을 dto로 반환함.
 	 */
-	public List<HistoryDto> getHistoryList(Long teamId) {
-		return toConvert(scanHistoryRepository.findTop10ByTeamIdOrderByHistoryIdDesc(teamId));
+	public List<HistoryDto> getHistoryList(Long teamId, Long projectId) {
+		return toConvert(scanHistoryRepository.findTop10ByTeamIdAndProjectIdOrderByHistoryIdDesc(teamId, projectId));
 	}
 
 	/**

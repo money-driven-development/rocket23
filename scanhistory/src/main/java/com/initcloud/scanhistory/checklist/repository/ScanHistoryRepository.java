@@ -12,7 +12,7 @@ import com.initcloud.scanhistory.checklist.entity.ScanHistory;
 @Repository
 public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> {
 
-	List<ScanHistory> findTop10ByTeamIdOrderByHistoryIdDesc(Long teamId);
+	List<ScanHistory> findTop10ByTeamIdAndProjectIdOrderByHistoryIdDesc(Long teamId,Long projectId);
 
 	List<ScanHistory> findAllByTeamIdOrderByHistoryIdDesc(Long teamId,Pageable page);
 

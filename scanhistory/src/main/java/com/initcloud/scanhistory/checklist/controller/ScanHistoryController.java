@@ -30,9 +30,9 @@ public class ScanHistoryController {
 	 * get 방식을 통해 file scan history 내역을 최근 10개를 출력하도록함.
 	 *
 	 */
-	@GetMapping("/{team}/projects/scans/recent")
-	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable("team") Long teamId) {
-		List<HistoryDto> dtos = scanHistoryService.getHistoryList(teamId);
+	@GetMapping("/{team}/projects/{project}/scans/recent")
+	public ResponseDto<List<HistoryDto>> getHistoryList(@PathVariable("team") Long teamId,@PathVariable("project") Long projectId) {
+		List<HistoryDto> dtos = scanHistoryService.getHistoryList(teamId,projectId);
 		return new ResponseDto<>(dtos);
 	}
 	/**

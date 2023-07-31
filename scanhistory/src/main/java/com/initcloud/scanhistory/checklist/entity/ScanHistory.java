@@ -40,6 +40,9 @@ public class ScanHistory extends BaseEntity {
 	@Column(name = "team_id")
 	private Long teamId;
 
+	@Column(name = "project_id")
+	private Long projectId;
+
 	@Column(name = "FILE_NAME")
 	@NotNull
 	private String fileName;

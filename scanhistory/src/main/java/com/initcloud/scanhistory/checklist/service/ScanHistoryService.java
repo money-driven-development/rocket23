@@ -8,7 +8,7 @@ import com.initcloud.scanhistory.checklist.dto.CursorResultDto;
 import com.initcloud.scanhistory.checklist.dto.HistoryDto;
 
 public interface ScanHistoryService {
-	List<HistoryDto> getHistoryList(Long teamId);
+	List<HistoryDto> getHistoryList(Long teamId,Long projectId);
 
 	CursorResultDto getPageHistoryList(Long teamId, Long cursorId, Pageable Page);
 }
