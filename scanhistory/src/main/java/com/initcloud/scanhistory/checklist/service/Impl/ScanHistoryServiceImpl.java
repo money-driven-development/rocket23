@@ -25,7 +25,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 * @return ScanHistory에서 조회한 내여을 dto로 반환함.
 	 */
 	public List<HistoryDto> getHistoryList(Long teamId) {
-		return toConvert(scanHistoryRepository.findTop10ByTeamIdOrderByHistorySeqDesc(teamId));
+		return toConvert(scanHistoryRepository.findTop10ByTeamIdOrderByHistoryIdDesc(teamId));
 	}
 
 	/**
@@ -46,10 +46,10 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 
 	private List<HistoryDto> getPage(Long teamId, Long cursorId, Pageable page) {
 		if (cursorId == null) {
-			return toConvert(scanHistoryRepository.findAllByTeamIdOrderByHistorySeqDesc(teamId, page));
+			return toConvert(scanHistoryRepository.findAllByTeamIdOrderByHistoryIdDesc(teamId, page));
 		}
 		return toConvert(
-			scanHistoryRepository.findByTeamIdAndHistorySeqLessThanOrderByHistorySeqDesc(teamId, cursorId, page));
+			scanHistoryRepository.findByTeamIdAndHistoryIdLessThanOrderByHistoryIdDesc(teamId, cursorId, page));
 	}
 
 	private List<HistoryDto> toConvert(List<ScanHistory> entities) {
@@ -63,6 +63,6 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	private Boolean hasNext(Long teamId, Long cursorId) {
 		if (cursorId == null)
 			return false;
-		return scanHistoryRepository.existsByTeamIdAndHistorySeqLessThan(teamId, cursorId);
+		return scanHistoryRepository.existsByTeamIdAndHistoryIdLessThan(teamId, cursorId);
 	}
 }
