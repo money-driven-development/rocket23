@@ -91,4 +91,24 @@ public class GithubDto {
 			this.url = url.replace(GITHUB_API_BASE_URL, "");
 		}
 	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class File {
+		private String content;
+		private String encoding;
+		private String url;
+		private String sha;
+		private long size;
+		private String nodeId;
+
+		public File(String content, String encoding, String url, String sha, long size, String nodeId) {
+			this.content = content;
+			this.encoding = encoding;
+			this.sha = sha;
+			this.size = size;
+			this.nodeId = nodeId;
+			this.url = url.replace(GITHUB_API_BASE_URL, "");
+		}
+	}
 }

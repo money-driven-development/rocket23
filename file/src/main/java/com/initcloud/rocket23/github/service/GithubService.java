@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.github.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.initcloud.rocket23.common.client.GithubFeignClient;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.rocket23.file.dto.RedisFileDto;
 import com.initcloud.rocket23.github.dto.GithubDto;
+import com.initcloud.rocket23.github.entity.GithubEntity;
+import com.initcloud.rocket23.github.repository.GithubRepository;
+import com.initcloud.rocket23.redis.pubsub.RedisMessagePublisher;
 import com.initcloud.rocket23.security.dto.GithubToken;
 import com.initcloud.rocket23.security.provider.JwtTokenProvider;
 import com.initcloud.rocket23.user.Repository.OAuthTokenRepository;
@@ -27,6 +32,8 @@ public class GithubService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final UserRepository userRepository;
 	private final OAuthTokenRepository oAuthTokenRepository;
+	private final RedisMessagePublisher redisMessagePublisher;
+	private final GithubRepository githubRepository;
 
 	@Transactional
 	public GithubToken addToken(GithubToken tokens) {
@@ -52,7 +59,7 @@ public class GithubService {
 		return githubFeignClient.getRepositoryList(token, user);
 	}
 
-	public List<GithubDto.File> getRepository(String user, String repo, String branch) {
+	public List<GithubDto.Contents> getRepository(String user, String repo, String branch) {
 		String token = jwtTokenProvider.getToken();
 		return githubFeignClient.getRepositoryDetails(token, user, repo, branch);
 	}
@@ -70,6 +77,24 @@ public class GithubService {
 	public void getBlobsFromGit(String user, String repo, String hash, String branch) {
 		String token = jwtTokenProvider.getToken();
 		githubFeignClient.getFiles(token, user, repo, hash, branch);
-	}
 
+		List<GithubDto.File> files = githubFeignClient.getFiles(token, user, repo, hash, branch);
+
+		for (GithubDto.File file : files) {
+			String uuid =UUID.randomUUID().toString();
+			GithubEntity githubEntity = GithubEntity.builder()
+				.uuid(uuid)
+				.contents(file.getContent())
+				.encoding(file.getEncoding())
+				.url(file.getUrl())
+				.sha(file.getSha())
+				.size(file.getSize())
+				.nodeId(file.getNodeId())
+				.build();
+
+			redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
+			githubRepository.save(githubEntity);
+		}
+
+	}
 }
