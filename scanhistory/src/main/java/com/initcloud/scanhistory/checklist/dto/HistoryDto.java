@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.initcloud.scanhistory.checklist.entity.ScanHistory;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,19 @@ public class HistoryDto {
 		this.passed = entity.getPassed();
 		this.skipped = entity.getSkipped();
 	}
+
+	@Builder
+	public HistoryDto(Long id, String fileName, String fileHash, String provider, LocalDateTime scanDateTime,
+		Double score, Integer failed, Integer passed, Integer skipped) {
+		this.id = id;
+		this.fileName = fileName;
+		this.fileHash = fileHash;
+		this.provider = provider;
+		this.scanDateTime = scanDateTime;
+		this.score = score;
+		this.failed = failed;
+		this.passed = passed;
+		this.skipped = skipped;
+	}
+
 }
