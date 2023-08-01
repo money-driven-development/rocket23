@@ -3,6 +3,7 @@ package com.initcloud.scanhistory.checklist.service.Impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,25 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return toConvert(scanHistoryRepository.findTop10ByTeamIdAndProjectIdOrderByHistoryIdDesc(teamId, projectId));
 	}
 
+	public Page<HistoryDto> getOffsetPageHistoryList(Long teamId, Long projectId, Pageable page) {
+		Page<ScanHistory> pagies = scanHistoryRepository.findAllByTeamIdAndProjectId(teamId, projectId, page);
+		Page<HistoryDto> dtos = toDtoPage(pagies);
+		return dtos;
+	}
+
+	private Page<HistoryDto> toDtoPage(Page<ScanHistory> page) {
+		return page.map(m -> HistoryDto.builder()
+			.id(m.getHistoryId())
+			.fileName(m.getFileName())
+			.fileHash(m.getFileHash())
+			.scanDateTime(m.getCreatedAt())
+			.provider(m.getCsp())
+			.score(m.getScore())
+			.failed(m.getFailed())
+			.passed(m.getPassed())
+			.skipped(m.getSkipped()).build());
+	}
+
 	/**
 	 * ID 기반의 Cursor-based pagination 구현, 최근 목록을 기준으로 pagination이 동작함.
 	 * @param cursorId
@@ -35,7 +55,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 * @return page된 부분과 마지막의 id를 통해서 page 지점을 전달
 	 * TODO: 2023-07-17 일단 id 기반으로 구현했지만, 결국 user에 대한 정보를 통해서 pagination을 구현해야합니다. 추후 user 기능관 결합되면 이를 수정할 예정입니다.
 	 */
-	public CursorResultDto getPageHistoryList(Long teamId, Long cursorId, Pageable page) {
+	public CursorResultDto getCursorPageHistoryList(Long teamId, Long cursorId, Pageable page) {
 		List<HistoryDto> dtos = getPage(teamId, cursorId, page);
 		Long lastId = null;
 		if (!dtos.isEmpty()) {
