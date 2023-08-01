@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.initcloud.scanhistory.common.entity.BaseEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,32 +22,24 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "SCAN_HISTORY_DETAIL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScanHistoryDetailEntity {
+public class ScanHistoryDetail extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "SCANHISTORYDETAIL_ID")
+	@Column(name = "ID", updatable = false)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "HiSTORY_ID")
-	private ScanHistoryEntity scanHistoryEntity;
+	@JoinColumn(name = "history_id", updatable = false)
+	private ScanHistory historyId;
 
-	@Column(name = "CHECk_TYPE")
+	@Column(name = "CHECK_TYPE")
 	@NotNull
 	private String checkType;
 
-	@Column(name = "TARGET_FILE_NAME")
+	@Column(name = "TARGET_FILE")
 	@NotNull
-	private String targetFileName;
-
-	@Column(name = "APP_TYPE")
-	@NotNull
-	private String appType;
-
-	@Column(name = "PROVIDER")
-	@NotNull
-	private String provider;
+	private String targetFile;
 
 	@Column(name = "SCAN_RESULT")
 	@NotNull
@@ -60,16 +54,13 @@ public class ScanHistoryDetailEntity {
 	private String code;
 
 	@Builder
-	public ScanHistoryDetailEntity(ScanHistoryEntity scanHistoryEntity, String checkType,
-		String targetFileName, String appType, String provider, String scanResult, String line, String code) {
-		this.scanHistoryEntity = scanHistoryEntity;
+	public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
+		String targetFile, String scanResult, String line, String code) {
+		this.historyId = scanHistory;
 		this.checkType = checkType;
-		this.targetFileName = targetFileName;
-		this.appType = appType;
-		this.provider = provider;
+		this.targetFile = targetFile;
 		this.scanResult = scanResult;
 		this.line = line;
 		this.code = code;
-		scanHistoryEntity.getScanDetails().add(this);
 	}
 }

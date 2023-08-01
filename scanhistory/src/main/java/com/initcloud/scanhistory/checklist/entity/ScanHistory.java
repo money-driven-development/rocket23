@@ -1,6 +1,5 @@
 package com.initcloud.scanhistory.checklist.entity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.initcloud.scanhistory.common.entity.BaseEntity;
 
@@ -24,20 +24,37 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "SCAN_HISTORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScanHistoryEntity extends BaseEntity {
+public class ScanHistory extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "HISTORY_ID")
-	private Long id;
+	@Column(name = "history_id")
+	private Long historyId;
+
+	@OneToMany(mappedBy = "historyId")
+	private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
+
+	@OneToMany(mappedBy = "scanHistoryEntity")
+	private List<FileVulnDetail> fileDetails = new ArrayList<>();
+
+	@Column(name = "team_id")
+	private Long teamId;
+
+	@Column(name = "project_id")
+	private Long projectId;
 
 	@Column(name = "FILE_NAME")
 	@NotNull
 	private String fileName;
 
-	@Column(name = "FILE_HASH")
+	@Column(name = "FILE_HASH", updatable = false)
 	@NotNull
 	private String fileHash;
+
+	@Column(name = "CSP")
+	@NotNull
+	@Size(max = 16)
+	private String csp;
 
 	@Column(name = "PASSED")
 	@NotNull
@@ -75,19 +92,15 @@ public class ScanHistoryEntity extends BaseEntity {
 	@NotNull
 	private Double score;
 
-	@OneToMany(mappedBy = "scanHistoryEntity")
-	private List<ScanHistoryDetailEntity> scanDetails = new ArrayList<>();
-
-	@OneToMany(mappedBy = "scanHistoryEntity")
-	private List<FileVulnDetailEntity> fileDetails = new ArrayList<>();
-
 	@Builder
-	public ScanHistoryEntity(Long id, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed,
+	public ScanHistory(Long historyId, String fileName, String fileHash, String csp, Integer passed, Integer skipped,
+		Integer failed,
 		Integer high,
 		Integer medium, Integer low, Integer unknown, Integer cveCount, Double score) {
-		this.id = id;
+		this.historyId = historyId;
 		this.fileName = fileName;
 		this.fileHash = fileHash;
+		this.csp = csp;
 		this.passed = passed;
 		this.skipped = skipped;
 		this.failed = failed;
