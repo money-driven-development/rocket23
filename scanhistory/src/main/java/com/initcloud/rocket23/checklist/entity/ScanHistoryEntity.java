@@ -1,6 +1,5 @@
-package com.initcloud.scanhistory.checklist.entity;
+package com.initcloud.rocket23.checklist.entity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.initcloud.scanhistory.common.entity.BaseEntity;
+import com.initcloud.rocket23.common.entity.BaseEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

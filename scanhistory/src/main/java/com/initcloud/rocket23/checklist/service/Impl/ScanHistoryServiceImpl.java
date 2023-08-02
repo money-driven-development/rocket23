@@ -1,19 +1,19 @@
-package com.initcloud.scanhistory.checklist.service.Impl;
+package com.initcloud.rocket23.checklist.service.Impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
+import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import org.springframework.stereotype.Service;
 
-import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;
-import com.initcloud.scanhistory.checklist.entity.ScanHistoryEntity;
-import com.initcloud.scanhistory.checklist.repository.ScanHistoryRepository;
-import com.initcloud.scanhistory.checklist.service.ScanHistoryService;
+import com.initcloud.rocket23.checklist.dto.ScanHistoryDto;
+import com.initcloud.rocket23.checklist.entity.ScanHistoryEntity;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ScanHistoryServiceImpl implements ScanHistoryService {
 
 	private final ScanHistoryRepository scanHistoryRepository;
@@ -23,6 +23,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 * @param fileHash file의 uuid 정보를 입력받음
 	 * @return ScanHistory에서 조회한 내역을 dto로 반환함
 	 */
+	@Override
 	public List<ScanHistoryDto> getHistoryList(String fileHash) {
 		List<ScanHistoryDto> dtos = new ArrayList<>();
 		List<ScanHistoryEntity> scanHistoryEntities = scanHistoryRepository.findByFileHash(fileHash);

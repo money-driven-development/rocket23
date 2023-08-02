@@ -1,14 +1,8 @@
-package com.initcloud.scanhistory.checklist.dto;
+package com.initcloud.rocket23.checklist.dto;
 
-import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder;
-
-import com.initcloud.scanhistory.checklist.entity.ScanHistoryEntity;
-import com.initcloud.scanhistory.checklist.repository.ScanHistoryRepository;
+import com.initcloud.rocket23.checklist.entity.ScanHistoryEntity;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
