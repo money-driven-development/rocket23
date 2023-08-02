@@ -7,11 +7,11 @@ import java.util.List;
 
 @Getter
 public class CursorResultDto {
-	private List<HistoryDto> values = new ArrayList<>();
-	private Boolean hasNext;
+    private List<HistoryDto> values = new ArrayList<>();
+    private Boolean hasNext;
 
-	public CursorResultDto(List<HistoryDto> values, Boolean hasNext) {
-		this.values = values;
-		this.hasNext = hasNext;
-	}
+    public CursorResultDto(List<HistoryDto> values, Boolean hasNext) {
+        this.values = values;
+        this.hasNext = hasNext;
+    }
 }

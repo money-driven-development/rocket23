@@ -12,11 +12,13 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Getter
 @Table(name = "SCAN_HISTORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScanHistory extends BaseEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

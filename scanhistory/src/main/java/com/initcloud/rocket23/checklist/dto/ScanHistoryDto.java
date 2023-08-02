@@ -1,8 +1,10 @@
 package com.initcloud.rocket23.checklist.dto;
 
+
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 
 import lombok.AccessLevel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
