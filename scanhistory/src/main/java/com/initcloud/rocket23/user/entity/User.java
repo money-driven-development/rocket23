@@ -3,10 +3,7 @@ package com.initcloud.rocket23.user.entity;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 
 import com.initcloud.rocket23.security.dto.OAuthDto;
@@ -30,19 +27,26 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private UserState userState;
 
+    @Column
     private LocalDateTime lastLogin;
 
+    @Column
     private String username;
 
+    @Column
     private String password;
 
+    @Column
     private String profileImageUrl;
 
+    @Column
     private String contact;
 
     @Email
+    @Column
     private String email;
 
     /**

@@ -2,10 +2,7 @@ package com.initcloud.rocket23.role.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 
@@ -21,8 +18,10 @@ public class UserRole extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String roleName;
 
+    @Column
     private Integer rolePriority;
 
     public UserRole(Long id, String roleName, Integer rolePriority) {

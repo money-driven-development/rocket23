@@ -6,6 +6,7 @@ import com.initcloud.rocket23.team.dto.TeamMemberDto;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.initcloud.rocket23.infra.repository.TeamRepository;
@@ -13,8 +14,6 @@ import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.print.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class TeamInspectService {
         Team team = teamRepository.findByTeamCode(teamCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
-        Page<TeamWithUsers> users = teamWithUsersRepository.findAllByTeam(pageable, team);
+        Page<TeamWithUsers> users = teamWithUsersRepository.findByTeam(pageable, team);
 
         return TeamWithUsers.toPageDto(users);
     }
@@ -43,7 +42,7 @@ public class TeamInspectService {
         Team team = teamRepository.findByTeamCode(teamCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
-        TeamWithUsers teamWithUser = teamWithUsersRepository.findTeamWithUsersByByTeam(team)
+        TeamWithUsers teamWithUser = teamWithUsersRepository.findTeamWithUsersByTeam(team)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_USER_IN_TEAM));
 
         return TeamWithUsers.toDetailsDto(teamWithUser);

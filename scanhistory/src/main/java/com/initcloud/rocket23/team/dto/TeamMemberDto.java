@@ -33,7 +33,13 @@ public class TeamMemberDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Details extends Summary {
+    public static class Details {
+
+        @Email
+        @NotNull
+        private String email;
+        private String profileImageUrl;
+        private LocalDate joinDate;
         private LocalDateTime lastLogin;
         private String contact;
 
@@ -43,7 +49,9 @@ public class TeamMemberDto {
 
         @Builder
         public Details(String email, String profileImageUrl, LocalDate joinDate, LocalDateTime lastLogin, String contact, Boolean isAdmin, String role) {
-            super(email, profileImageUrl, joinDate);
+            this.email = email;
+            this.profileImageUrl = profileImageUrl;
+            this.joinDate = joinDate;
             this.lastLogin = lastLogin;
             this.contact = contact;
             this.isAdmin = isAdmin;
