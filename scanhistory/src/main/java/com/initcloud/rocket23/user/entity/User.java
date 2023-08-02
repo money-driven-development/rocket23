@@ -3,10 +3,8 @@ package com.initcloud.rocket23.user.entity;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.user.enums.AuthProvider;
@@ -29,33 +27,34 @@ public class User extends BaseEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private UserState userState;
+
+    @Column
     private LocalDateTime lastLogin;
 
+    @Column
     private String username;
 
+    @Column
     private String password;
 
+    @Column
     private String profileImageUrl;
 
+    @Column
     private String contact;
 
+    @Email
+    @Column
     private String email;
-
-    public User(Long id, LocalDateTime lastLogin, String username, String password, String profileImageUrl, String contact, String email) {
-        this.id = id;
-        this.lastLogin = lastLogin;
-        this.username = username;
-        this.password = password;
-        this.profileImageUrl = profileImageUrl;
-        this.contact = contact;
-        this.email = email;
-    }
 
     /**
      * Constructor for Individual social User
      */
     public User(String username, String nickname, AuthProvider oAuthProvider, UserState userState) {
         this.lastLogin = LocalDateTime.now();
+        this.userState = userState;
         this.username = username;
         this.password = "";
         this.email = "";

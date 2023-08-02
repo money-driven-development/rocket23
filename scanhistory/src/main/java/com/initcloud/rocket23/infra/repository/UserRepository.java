@@ -8,4 +8,6 @@ import com.initcloud.rocket23.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findUserByUsername(String username);
+
+	Optional<User> findUserByEmail(String email);
 }

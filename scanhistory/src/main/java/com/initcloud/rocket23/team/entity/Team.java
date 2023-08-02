@@ -1,33 +1,33 @@
 package com.initcloud.rocket23.team.entity;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import com.initcloud.rocket23.common.entity.BaseEntity;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String name;
+	@Column
+	private String teamCode;
 
-    private String logoUri;
+	@Column
+	private String name;
 
-    public Team(Long id, String name, String logoUri) {
-        this.id = id;
-        this.name = name;
-        this.logoUri = logoUri;
-    }
+	@Column
+	private String logoUri;
+
+	public Team(Long id, String teamCode, String name, String logoUri) {
+		this.id = id;
+		this.teamCode = teamCode;
+		this.name = name;
+		this.logoUri = logoUri;
+	}
 }

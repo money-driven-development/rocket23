@@ -11,7 +11,7 @@ public enum ResponseCode {
 
 	/* Invalid Request */
 	INVALID_REQUEST(4001, HttpStatus.BAD_REQUEST, "Invalid Request."),
-	DATA_MISSING(4002, HttpStatus.INTERNAL_SERVER_ERROR, "BAD_REQUEST"),
+	DATA_MISSING(4002, HttpStatus.BAD_REQUEST, "BAD_REQUEST"),
 	INVALID_TOKEN(4015, HttpStatus.UNAUTHORIZED, "Invalid Token signature."),
 	INVALID_TOKEN_FORMAT(4016, HttpStatus.UNAUTHORIZED, "Invalid Token format."),
 	UNSUPPORTED_TOKEN(4017, HttpStatus.UNAUTHORIZED, "Unsupported Token."),
@@ -20,6 +20,16 @@ public enum ResponseCode {
 	NULL_TOKEN(4020, HttpStatus.UNAUTHORIZED, "Token is null"),
 	INVALID_CREDENTIALS(4021, HttpStatus.UNAUTHORIZED, "Can not access OAuth"),
 	TOKEN_EXPIRED(4022, HttpStatus.UNAUTHORIZED, "Token Expired."),
+
+	/*Scan history Error. 5400*/
+
+	/*Redis Error. 5500*/
+	JSON_PROCESSING_ERROR(5501, HttpStatus.INTERNAL_SERVER_ERROR, "Redis Publish JSON 직렬화 오류입니다."),
+
+	/* 7: Team */
+	INVALID_TEAM(4701, HttpStatus.BAD_REQUEST, "Invalid Team."),
+	INVALID_USER_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid user in this team."),
+	INVALID_PROJECT_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid project in this team."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
