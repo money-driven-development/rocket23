@@ -8,7 +8,7 @@ import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import org.springframework.stereotype.Service;
 
 import com.initcloud.rocket23.checklist.dto.ScanHistoryDto;
-import com.initcloud.rocket23.checklist.entity.ScanHistoryEntity;
+import com.initcloud.rocket23.checklist.entity.ScanHistory;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +26,8 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	@Override
 	public List<ScanHistoryDto> getHistoryList(String fileHash) {
 		List<ScanHistoryDto> dtos = new ArrayList<>();
-		List<ScanHistoryEntity> scanHistoryEntities = scanHistoryRepository.findByFileHash(fileHash);
-		for (ScanHistoryEntity e : scanHistoryEntities) {
+		List<ScanHistory> scanHistoryEntities = scanHistoryRepository.findByFileHash(fileHash);
+		for (ScanHistory e : scanHistoryEntities) {
 			dtos.add(new ScanHistoryDto(e));
 		}
 		return dtos;

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "FILE_VULN_DETAIL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FileVulnDetailEntity {
+public class ProjectVulnDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class FileVulnDetailEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "HISTORY_ID")
-	private ScanHistoryEntity scanHistoryEntity;
+	private ScanHistory scanHistory;
 
 	@Column(name = "LINE")
 	@NotNull
@@ -60,16 +60,16 @@ public class FileVulnDetailEntity {
 	private Integer vulnScore;
 
 	@Builder
-	public FileVulnDetailEntity(ScanHistoryEntity scanHistoryEntity, String line, String isValid, String validContent,
-		String vulnTitle, String hasVuln, String vulnContent, Integer vulnScore) {
+	public ProjectVulnDetail(ScanHistory scanHistory, String line, String isValid, String validContent,
+							 String vulnTitle, String hasVuln, String vulnContent, Integer vulnScore) {
 		this.line = line;
-		this.scanHistoryEntity = scanHistoryEntity;
+		this.scanHistory = scanHistory;
 		this.isValid = isValid;
 		this.validContent = validContent;
 		this.vulnTitle = vulnTitle;
 		this.hasVuln = hasVuln;
 		this.vulnContent = vulnContent;
 		this.vulnScore = vulnScore;
-		scanHistoryEntity.getFileDetails().add(this);
+		scanHistory.getFileDetails().add(this);
 	}
 }

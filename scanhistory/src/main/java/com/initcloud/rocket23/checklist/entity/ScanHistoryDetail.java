@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "SCAN_HISTORY_DETAIL")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScanHistoryDetailEntity {
+public class ScanHistoryDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class ScanHistoryDetailEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "HiSTORY_ID")
-	private ScanHistoryEntity scanHistoryEntity;
+	private ScanHistory scanHistory;
 
 	@Column(name = "CHECk_TYPE")
 	@NotNull
@@ -60,9 +60,9 @@ public class ScanHistoryDetailEntity {
 	private String code;
 
 	@Builder
-	public ScanHistoryDetailEntity(ScanHistoryEntity scanHistoryEntity, String checkType,
-		String targetFileName, String appType, String provider, String scanResult, String line, String code) {
-		this.scanHistoryEntity = scanHistoryEntity;
+	public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
+							 String targetFileName, String appType, String provider, String scanResult, String line, String code) {
+		this.scanHistory = scanHistory;
 		this.checkType = checkType;
 		this.targetFileName = targetFileName;
 		this.appType = appType;
@@ -70,6 +70,6 @@ public class ScanHistoryDetailEntity {
 		this.scanResult = scanResult;
 		this.line = line;
 		this.code = code;
-		scanHistoryEntity.getScanDetails().add(this);
+		scanHistory.getScanDetails().add(this);
 	}
 }

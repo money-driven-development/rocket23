@@ -1,6 +1,6 @@
 package com.initcloud.rocket23.checklist.dto;
 
-import com.initcloud.rocket23.checklist.entity.ScanHistoryEntity;
+import com.initcloud.rocket23.checklist.entity.ScanHistory;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class ScanHistoryDto {
 	private Integer cveCount;
 	private Double score;
 
-	public ScanHistoryDto(ScanHistoryEntity entity) {
+	public ScanHistoryDto(ScanHistory entity) {
 		this.fileName = entity.getFileName();
 		this.fileHash = entity.getFileHash();
 		this.passed = entity.getPassed();
