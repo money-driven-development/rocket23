@@ -2,10 +2,7 @@ package com.initcloud.rocket23.role.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 
@@ -22,10 +19,13 @@ public class Features extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     private String featureType;
 
+    @Column
     private String featureName;
 
+    @Column
     private String featureUri;
 
     public Features(Long id, String featureType, String featureName, String featureUri) {

@@ -1,4 +1,4 @@
-package com.initcloud.scanhistory.checklist.entity;
+package com.initcloud.rocket23.checklist.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

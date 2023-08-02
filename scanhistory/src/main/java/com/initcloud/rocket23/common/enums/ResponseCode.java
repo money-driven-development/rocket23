@@ -21,9 +21,15 @@ public enum ResponseCode {
 	INVALID_CREDENTIALS(4021, HttpStatus.UNAUTHORIZED, "Can not access OAuth"),
 	TOKEN_EXPIRED(4022, HttpStatus.UNAUTHORIZED, "Token Expired."),
 
+	/*Scan history Error. 5400*/
+
+	/*Redis Error. 5500*/
+	JSON_PROCESSING_ERROR(5501, HttpStatus.INTERNAL_SERVER_ERROR, "Redis Publish JSON 직렬화 오류입니다."),
+
 	/* 7: Team */
 	INVALID_TEAM(4701, HttpStatus.BAD_REQUEST, "Invalid Team."),
 	INVALID_USER_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid user in this team."),
+	INVALID_PROJECT_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid project in this team."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),

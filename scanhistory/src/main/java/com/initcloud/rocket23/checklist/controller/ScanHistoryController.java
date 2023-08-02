@@ -1,15 +1,15 @@
-package com.initcloud.scanhistory.checklist.controller;
+package com.initcloud.rocket23.checklist.controller;
 
 import java.util.List;
 
+import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.initcloud.scanhistory.checklist.dto.ScanHistoryDto;
-import com.initcloud.scanhistory.checklist.service.ScanHistoryService;
-import com.initcloud.scanhistory.common.dto.ResponseDto;
+import com.initcloud.rocket23.checklist.dto.ScanHistoryDto;
+import com.initcloud.rocket23.common.dto.ResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
