@@ -29,7 +29,9 @@ public class GithubDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class RepositoryInfo {
 		private Long id;
+		@JsonProperty("node_id")
 		private String nodeId;
+		@JsonProperty("full_name")
 		private String fullName;
 		private String visibility;
 		@JsonProperty("created_at")
