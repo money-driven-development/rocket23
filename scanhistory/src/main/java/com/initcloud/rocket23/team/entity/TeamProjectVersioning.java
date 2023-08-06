@@ -25,7 +25,7 @@ public class TeamProjectVersioning {
     private TeamProject project;
 
     /**
-     * 이전 버전 프로젝트
+     * 이전 버전 프로젝트 - 파일 자체의 변경을 의미함.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
