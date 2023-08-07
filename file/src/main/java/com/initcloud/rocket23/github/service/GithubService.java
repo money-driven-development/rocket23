@@ -76,7 +76,7 @@ public class GithubService {
 
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		String token = jwtTokenProvider.getToken();
-		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
+		GithubDto.File file = githubFeignClient.getFiles(token, user, repo, hash, branch);
 
 		String uuid = UUID.randomUUID().toString();
 		GithubEntity githubEntity = GithubEntity.builder()
