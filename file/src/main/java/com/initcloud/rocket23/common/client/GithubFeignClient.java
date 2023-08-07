@@ -32,6 +32,6 @@ public interface GithubFeignClient {
 
 	/* Blobs from Repository */
 	@GetMapping(value = "/repos/{USER}/{REPO}/git/blobs/{HASH}")
-	List<GithubDto.File> getFiles(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
+	GithubDto.File getFiles(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
 		@PathVariable("REPO") String repo, @PathVariable("HASH") String hash, @RequestParam("ref") String branch);
 }
