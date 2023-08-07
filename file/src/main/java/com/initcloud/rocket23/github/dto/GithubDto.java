@@ -102,6 +102,7 @@ public class GithubDto {
 		private String url;
 		private String sha;
 		private long size;
+		@JsonProperty("node_id")
 		private String nodeId;
 
 		public File(String content, String encoding, String url, String sha, long size, String nodeId) {
