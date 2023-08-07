@@ -74,27 +74,25 @@ public class GithubService {
 		return githubFeignClient.getCommitDetails(token, user, repo, hash, branch);
 	}
 
-	public void getBlobsFromGit(String user, String repo, String hash, String branch) {
+	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		String token = jwtTokenProvider.getToken();
-		githubFeignClient.getFiles(token, user, repo, hash, branch);
+		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
 
-		List<GithubDto.File> files = githubFeignClient.getFiles(token, user, repo, hash, branch);
+		String uuid = UUID.randomUUID().toString();
+		GithubEntity githubEntity = GithubEntity.builder()
+			.uuid(uuid)
+			.contents(file.getContent())
+			.encoding(file.getEncoding())
+			.url(file.getUrl())
+			.sha(file.getSha())
+			.size(file.getSize())
+			.nodeId(file.getNodeId())
+			.build();
 
-		for (GithubDto.File file : files) {
-			String uuid =UUID.randomUUID().toString();
-			GithubEntity githubEntity = GithubEntity.builder()
-				.uuid(uuid)
-				.contents(file.getContent())
-				.encoding(file.getEncoding())
-				.url(file.getUrl())
-				.sha(file.getSha())
-				.size(file.getSize())
-				.nodeId(file.getNodeId())
-				.build();
+		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
+		githubRepository.save(githubEntity);
 
-			redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
-			githubRepository.save(githubEntity);
-		}
-
+		return file;
 	}
+
 }

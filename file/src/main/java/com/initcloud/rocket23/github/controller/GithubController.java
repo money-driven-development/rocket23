@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.github.dto.GithubDto;
+import com.initcloud.rocket23.github.entity.GithubEntity;
 import com.initcloud.rocket23.github.service.GithubService;
 import com.initcloud.rocket23.security.dto.GithubToken;
 
@@ -25,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @ApiOperation("Github access")
 @RestController
-@RequestMapping("/api/v1/app")
+@RequestMapping("/rocket23")
 @RequiredArgsConstructor
 public class GithubController {
 
@@ -115,9 +116,9 @@ public class GithubController {
 	@GetMapping("/repos/{user}/{repo}/git/blobs/{hash}")
 	public ResponseDto<?> gitFiles(@PathVariable("user") String user, @PathVariable("repo") String repo,
 		@PathVariable("hash") String hash, @Nullable @RequestParam("ref") String branch) {
-		githubService.getBlobsFromGit(user, repo, hash, branch);
+		GithubDto.File dtos =githubService.getBlobsFromGit(user, repo, hash, branch);
 
-		return new ResponseDto<>(null);
+		return new ResponseDto<>(dtos);
 	}
 
 }
