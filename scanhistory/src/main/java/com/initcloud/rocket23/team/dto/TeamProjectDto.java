@@ -3,6 +3,7 @@ package com.initcloud.rocket23.team.dto;
 import com.initcloud.rocket23.common.utils.UniqueUtils;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
+import com.initcloud.rocket23.team.entity.TeamProjectVersioning;
 import com.initcloud.rocket23.team.enums.ProjectType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,28 +35,22 @@ public class TeamProjectDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public class Details {
+    public static class Details {
         private ProjectType projectType;
         private String projectCode;
         private String projectName;
-        private String parentCode;
-        private String sha1;
-        private String sha2;
+        private String projectUrl;
         private LocalDateTime recentScanDateTime;
-        private List<Object> versionHistory = new ArrayList<>();
-        private List<Object> scanHistory = new ArrayList<>();
+        private List<TeamProjectDto.Version> versionHistory = new ArrayList<>();
 
         @Builder
-        public Details(ProjectType projectType, String projectCode, String projectName, String parentCode, String sha1, String sha2, LocalDateTime recentScanDateTime, List versionHistory, List scanHistory) {
+        public Details(ProjectType projectType, String projectCode, String projectName, String projectUrl, LocalDateTime recentScanDateTime, List<TeamProjectDto.Version> versionHistory) {
             this.projectType = projectType;
             this.projectCode = projectCode;
             this.projectName = projectName;
-            this.parentCode = parentCode;
-            this.sha1 = sha1;
-            this.sha2 = sha2;
+            this.projectUrl = projectUrl;
             this.recentScanDateTime = recentScanDateTime;
             this.versionHistory = versionHistory;
-            this.scanHistory = scanHistory;
         }
     }
 
@@ -78,6 +73,27 @@ public class TeamProjectDto {
 
         public TeamProject toCreateEntity(Team team) {
             return TeamProject.teamProjectCreateBuilder().team(team).projectCode(UniqueUtils.getUUID()).projectType(this.projectType).projectUrl(this.projectUrl).projectName(this.projectName).build();
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Version {
+        private String parentSha1;
+        private String parentSha2;
+        private String sha1;
+        private String sha2;
+
+        public Version(final TeamProjectVersioning version) {
+            if (version.getParent() == null) {
+                this.parentSha1 = null;
+                this.parentSha2 = null;
+            } else {
+                this.parentSha1 = version.getParent().getVersionHashSHA1();
+                this.parentSha2 = version.getParent().getVersionHashSHA2();
+            }
+            this.sha1 = version.getVersionHashSHA1();
+            this.sha2 = version.getVersionHashSHA2();
         }
     }
 }

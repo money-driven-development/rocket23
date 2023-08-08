@@ -1,6 +1,8 @@
 package com.initcloud.rocket23.checklist.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.team.entity.Team;
+import com.initcloud.rocket23.team.entity.TeamProject;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +26,14 @@ public class ScanHistory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "HISTORY_ID")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROJECT_ID")
+    private TeamProject project;
 
     @Column(name = "FILE_NAME")
     @NotNull
@@ -74,17 +84,17 @@ public class ScanHistory extends BaseEntity {
     @Size(max = 16)
     private String csp;
 
-    @OneToMany(mappedBy = "scanHistoryEntity")
+    @OneToMany(mappedBy = "scanHistory")
     private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "scanHistoryEntity")
+    @OneToMany(mappedBy = "scanHistory")
     private List<ProjectVulnDetail> fileDetails = new ArrayList<>();
 
     @Builder
-    public ScanHistory(Long id, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed,
-                       Integer high,
-                       Integer medium, Integer low, Integer unknown, Integer cveCount, Double score) {
+    public ScanHistory(Long id, Team team, TeamProject project, String fileName, String fileHash, Integer passed, Integer skipped, Integer failed, Integer high, Integer medium, Integer low, Integer unknown, Integer cveCount, Double score) {
         this.id = id;
+        this.team = team;
+        this.project = project;
         this.fileName = fileName;
         this.fileHash = fileHash;
         this.passed = passed;

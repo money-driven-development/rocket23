@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.team.entity;
 
+import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.enums.ProjectType;
@@ -10,6 +11,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -37,6 +41,12 @@ public class TeamProject extends BaseEntity {
     @Column
     private String projectName;
 
+    @OneToMany(mappedBy = "project")
+    private List<ScanHistory> scanHistories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project")
+    private List<TeamProjectVersioning> versions = new ArrayList<>();
+
 
     @Builder(builderClassName = "teamProjectBuilder", builderMethodName = "teamProjectCreateBuilder")
     public TeamProject(Team team, String projectCode, ProjectType projectType, String projectUrl, String projectName) {
@@ -49,5 +59,19 @@ public class TeamProject extends BaseEntity {
 
     public static Page<TeamProjectDto.Summary> toPageDto(Page<TeamProject> teamProjects) {
         return teamProjects.map(project -> new TeamProjectDto.Summary(project));
+    }
+
+    public TeamProjectDto.Details toDetailsDto() {
+        return TeamProjectDto.Details.builder()
+                .projectName(this.projectName)
+                .projectType(this.projectType)
+                .projectCode(this.projectCode)
+                .projectUrl(this.projectUrl)
+                .versionHistory(
+                        this.versions.stream()
+                                .map(TeamProjectDto.Version::new)
+                                .collect(Collectors.toList())
+                )
+                .build();
     }
 }
