@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rocket23/")
 @RequiredArgsConstructor
-public class  ScanHistoryController {
+public class ScanHistoryController {
 
 	private final ScanHistoryService scanHistoryService;
 
@@ -26,10 +26,10 @@ public class  ScanHistoryController {
 	/**
 	 * 단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
 	 */
-	@GetMapping("/{team}/proejcts/{project}/scans/history/{filehash}")
-	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("team") Long teamId,
-		@PathVariable("project") Long projectId, @PathVariable("filehash") String fileHash) {
-		ScanResultDto dto = scanHistoryService.getScanHistory(teamId, projectId, fileHash);
+	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}")
+	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") Long teamCode,
+		@PathVariable("projectCode") Long projectCode, @PathVariable("hashCode") String hashCode) {
+		ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dto);
 	}
 	/**
