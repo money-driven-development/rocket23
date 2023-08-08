@@ -22,7 +22,7 @@ public enum ResponseCode {
 	TOKEN_EXPIRED(4022, HttpStatus.UNAUTHORIZED, "Token Expired."),
 
 	/*Scan history Error. 5400*/
-
+	NO_SCAN_RESULT(5401, HttpStatus.INTERNAL_SERVER_ERROR, "조회할 수 있는 스캔 결과가 없습니다."),
 	/*Redis Error. 5500*/
 	JSON_PROCESSING_ERROR(5501, HttpStatus.INTERNAL_SERVER_ERROR, "Redis Publish JSON 직렬화 오류입니다."),
 
