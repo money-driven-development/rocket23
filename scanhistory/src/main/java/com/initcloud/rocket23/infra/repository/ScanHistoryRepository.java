@@ -17,13 +17,13 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> 
 	 */
 	ScanHistory findTopByTeamIdAndProjectIdAndFileHashOrderById(Long teamId, Long projectId, String fileHash);
 
-	List<ScanHistory> findTop10ByTeamIdAndProjectIdOrderByHistoryIdDesc(Long teamId, Long projectId);
+	List<ScanHistory> findTop10ByTeamIdAndProjectIdOrderByIdDesc(Long teamId, Long projectId);
 
 	Page<ScanHistory> findAllByTeamIdAndProjectId(Long teamId, Long projectId, Pageable page);
 
-	List<ScanHistory> findAllByTeamIdOrderByHistoryIdDesc(Long teamId, Pageable page);
+	List<ScanHistory> findAllByTeamIdOrderByIdDesc(Long teamId, Pageable page);
 
-	List<ScanHistory> findByTeamIdAndHistoryIdLessThanOrderByHistoryIdDesc(Long teamId, Long historyId, Pageable page);
+	List<ScanHistory> findByTeamIdAndIdLessThanOrderByIdDesc(Long teamId, Long Id, Pageable page);
 
-	Boolean existsByTeamIdAndHistoryIdLessThan(Long teamId, Long historyId);
+	Boolean existsByTeamIdAndIdLessThan(Long teamId, Long historyId);
 }
