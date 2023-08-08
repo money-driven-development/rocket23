@@ -82,10 +82,10 @@ public class ScanHistory extends BaseEntity {
 	@Size(max = 16)
 	private String csp;
 
-	@OneToMany(mappedBy = "scanHistoryEntity")
+	@OneToMany(mappedBy = "scanHistory")
 	private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
 
-	@OneToMany(mappedBy = "scanHistoryEntity")
+	@OneToMany(mappedBy = "scanHistory")
 	private List<ProjectVulnDetail> fileDetails = new ArrayList<>();
 
 	@Builder
