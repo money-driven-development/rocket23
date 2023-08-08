@@ -5,6 +5,8 @@ import com.initcloud.rocket23.checklist.dto.HistoryDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
+import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
 
 @RequiredArgsConstructor
 @Service
@@ -22,10 +27,14 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	private final ScanHistoryRepository scanHistoryRepository;
 
 	@Override
-	public ScanResultDto getScanHistory(Long teamId, Long projectId, String fileHash) {
-		ScanHistory scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(teamId,
-			projectId, fileHash);
-		return new ScanResultDto(scanHistory);
+	public ScanResultDto getScanHistory(Long teamCode, Long projectCode, String hashCode) {
+		Optional<ScanHistory> scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
+			teamCode,
+			projectCode, hashCode);
+		if (!scanHistory.isPresent()) {
+			throw new ApiException(ResponseCode.NO_SCAN_RESULT);
+		}
+		return new ScanResultDto(scanHistory.get());
 	}
 
 	// @Override

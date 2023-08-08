@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> {
@@ -15,7 +16,7 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> 
 	/**
 	 * 파일 hash와 일치하는 상위 1개의 목록만을 조회합니다.
 	 */
-	ScanHistory findTopByTeamIdAndProjectIdAndFileHashOrderById(Long teamId, Long projectId, String fileHash);
+	Optional<ScanHistory> findTopByTeamIdAndProjectIdAndFileHashOrderById(Long teamId, Long projectId, String fileHash);
 
 	List<ScanHistory> findTop10ByTeamIdAndProjectIdOrderByIdDesc(Long teamId, Long projectId);
 
