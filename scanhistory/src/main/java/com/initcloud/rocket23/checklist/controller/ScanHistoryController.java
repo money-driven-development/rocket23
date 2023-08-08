@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rocket23/")
 @RequiredArgsConstructor
-public class ScanHistoryController {
+public class  ScanHistoryController {
 
 	private final ScanHistoryService scanHistoryService;
 
