@@ -16,6 +16,9 @@ public class TeamProjectController {
 
     private TeamProjectService teamProjectService;
 
+    /**
+     * 프로젝트 목록 조회
+     */
     @GetMapping("/{teamCode}/projects")
     public ResponseDto<Page<TeamProjectDto.Summary>> projectList(
             final Pageable pageable,
@@ -26,6 +29,10 @@ public class TeamProjectController {
         return new ResponseDto<>(response);
     }
 
+    /**
+     *  프로젝트 조회
+     *  프로젝트 별 대시보드 성격을 갖게 될 것임.
+     */
     @GetMapping("/{teamCode}/projects/{projectCode}")
     public ResponseDto<TeamProjectDto.Details> projectDetails(
             @PathVariable String teamCode,

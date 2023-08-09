@@ -20,10 +20,10 @@ public class ScanHistoryDetail {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "HiSTORY_ID")
+    @JoinColumn(name = "HISTORY_ID")
     private ScanHistory scanHistory;
 
-    @Column(name = "CHECk_TYPE")
+    @Column(name = "CHECK_TYPE")
     @NotNull
     private String checkType;
 
