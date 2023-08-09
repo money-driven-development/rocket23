@@ -53,30 +53,33 @@ public class GithubService {
 		else
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);
 	}
+	/**
+	 * TODO: token 오류 수정 후 token 적용
+	 * */
 
 	public List<GithubDto.RepositoryInfo> getRepositories(@NonNull String user) {
-		String token = jwtTokenProvider.getToken();
-		return githubFeignClient.getRepositoryList(token, user);
+		//String token = jwtTokenProvider.getToken();
+		return githubFeignClient.getRepositoryList(user);
 	}
 
 	public List<GithubDto.Contents> getRepository(String user, String repo, String branch) {
-		String token = jwtTokenProvider.getToken();
-		return githubFeignClient.getRepositoryDetails(token, user, repo, branch);
+		//String token = jwtTokenProvider.getToken();
+		return githubFeignClient.getRepositoryDetails(user, repo, branch);
 	}
 
 	public List<Object> getCommits(String user, String repo, String branch) {
-		String token = jwtTokenProvider.getToken();
-		return githubFeignClient.getCommitList(token, user, repo, branch);
+		//String token = jwtTokenProvider.getToken();
+		return githubFeignClient.getCommitList(user, repo, branch);
 	}
 
 	public Object getCommit(String user, String repo, String hash, String branch) {
-		String token = jwtTokenProvider.getToken();
-		return githubFeignClient.getCommitDetails(token, user, repo, hash, branch);
+		//String token = jwtTokenProvider.getToken();
+		return githubFeignClient.getCommitDetails(user, repo, hash, branch);
 	}
 
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
-		String token = jwtTokenProvider.getToken();
-		GithubDto.File file = githubFeignClient.getFiles(token, user, repo, hash, branch);
+		//String token = jwtTokenProvider.getToken();
+		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
 
 		String uuid = UUID.randomUUID().toString();
 		GithubEntity githubEntity = GithubEntity.builder()

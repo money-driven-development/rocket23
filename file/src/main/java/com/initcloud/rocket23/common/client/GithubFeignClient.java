@@ -14,24 +14,34 @@ import com.initcloud.rocket23.github.dto.GithubDto;
 public interface GithubFeignClient {
 
 	@GetMapping(value = "/users/{USER}/repos")
-	List<GithubDto.RepositoryInfo> getRepositoryList(@RequestHeader("Authorization") String token,
+	List<GithubDto.RepositoryInfo> getRepositoryList(//@RequestHeader("Authorization") String token,
 		@PathVariable("USER") String user);
 
 	/* Contents in Repository */
 	@GetMapping(value = "/repos/{USER}/{REPO}/contents")
-	List<GithubDto.Contents> getRepositoryDetails(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
-		@PathVariable("REPO") String repo, @RequestParam("ref") String branch);
+	List<GithubDto.Contents> getRepositoryDetails(//@RequestHeader("Authorization") String token,
+		@PathVariable("USER") String user,
+		@PathVariable("REPO") String repo,
+		@RequestParam("ref") String branch);
 
 	@GetMapping(value = "/repos/{USER}/{REPO}/commits")
-	List<Object> getCommitList(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
-		@PathVariable("REPO") String repo, @RequestParam("ref") String branch);
+	List<Object> getCommitList(//@RequestHeader("Authorization") String token,
+		@PathVariable("USER") String user,
+		@PathVariable("REPO") String repo,
+		@RequestParam("ref") String branch);
 
 	@GetMapping(value = "/repos/{USER}/{REPO}/commits/{HASH}")
-	Object getCommitDetails(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
-		@PathVariable("REPO") String repo, @PathVariable("HASH") String hash, @RequestParam("ref") String branch);
+	Object getCommitDetails(//@RequestHeader("Authorization") String token,
+		@PathVariable("USER") String user,
+		@PathVariable("REPO") String repo,
+		@PathVariable("HASH") String hash,
+		@RequestParam("ref") String branch);
 
 	/* Blobs from Repository */
 	@GetMapping(value = "/repos/{USER}/{REPO}/git/blobs/{HASH}")
-	GithubDto.File getFiles(@RequestHeader("Authorization") String token, @PathVariable("USER") String user,
-		@PathVariable("REPO") String repo, @PathVariable("HASH") String hash, @RequestParam("ref") String branch);
+	GithubDto.File getFiles(//@RequestHeader("Authorization") String token,
+		@PathVariable("USER") String user,
+		@PathVariable("REPO") String repo,
+		@PathVariable("HASH") String hash,
+		@RequestParam("ref") String branch);
 }
