@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.github.dto.GithubDto;
-import com.initcloud.rocket23.github.entity.GithubEntity;
 import com.initcloud.rocket23.github.service.GithubService;
-import com.initcloud.rocket23.security.dto.GithubToken;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @ApiOperation("Github access")
@@ -31,23 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class GithubController {
 
 	private final GithubService githubService;
-
-	@ApiOperation(value = "Parse and Save OAuth Token", notes = "Parse and Save Token from callback.", response = ResponseDto.class)
-	@GetMapping("/token")
-	public ResponseDto<GithubToken> apiAccessToken(@NonNull @RequestParam(value = "access_token") String accessToken,
-		@Nullable @RequestParam(value = "refresh_token") String refreshToken,
-		@Nullable @RequestParam(value = "expires_in") Long expiresIn,
-		@Nullable @RequestParam(value = "refresh_token_expires_in") Long refreshTokenExpiresIn,
-		@Nullable @RequestParam(value = "scope") String scope,
-		@Nullable @RequestParam(value = "token_type") String tokenType) {
-
-		GithubToken dtos = new GithubToken(accessToken, refreshToken, expiresIn, refreshTokenExpiresIn, scope,
-			tokenType);
-
-		GithubToken response = githubService.addToken(dtos);
-
-		return new ResponseDto<>(response);
-	}
 
 	@ApiOperation(value = "Get Repository List", notes = "Get Repository List from Github.", response = ResponseDto.class)
 	@ApiImplicitParams({
@@ -116,7 +95,7 @@ public class GithubController {
 	@GetMapping("/repos/{user}/{repo}/git/blobs/{hash}")
 	public ResponseDto<?> gitFiles(@PathVariable("user") String user, @PathVariable("repo") String repo,
 		@PathVariable("hash") String hash, @Nullable @RequestParam("ref") String branch) {
-		GithubDto.File dtos =githubService.getBlobsFromGit(user, repo, hash, branch);
+		GithubDto.File dtos = githubService.getBlobsFromGit(user, repo, hash, branch);
 
 		return new ResponseDto<>(dtos);
 	}
