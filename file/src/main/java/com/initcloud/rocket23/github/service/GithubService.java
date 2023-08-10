@@ -26,7 +26,6 @@ public class GithubService {
 	private final RedisMessagePublisher redisMessagePublisher;
 	private final GithubRepository githubRepository;
 
-
 	public List<GithubDto.RepositoryInfo> getRepositories(@NonNull String user) {
 		return githubFeignClient.getRepositoryList(user);
 	}

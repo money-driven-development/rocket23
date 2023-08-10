@@ -40,13 +40,14 @@ public class GithubEntity extends BaseEntity {
 
 	@Column(name = "FILE_SHA")
 	private String sha;
-	@Column(name="FILE_SIZE")
+	@Column(name = "FILE_SIZE")
 	private Long size;
-	@Column(name="FILE_NODE")
+	@Column(name = "FILE_NODE")
 	private String nodeId;
 
 	@Builder
-	public GithubEntity(String uuid, String contents, String encoding, String url, String sha, Long size, String nodeId) {
+	public GithubEntity(String uuid, String contents, String encoding, String url, String sha, Long size,
+		String nodeId) {
 		this.uuid = uuid;
 		this.contents = contents;
 		this.encoding = encoding;
