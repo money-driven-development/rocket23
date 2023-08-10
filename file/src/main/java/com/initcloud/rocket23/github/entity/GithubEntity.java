@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 
@@ -38,7 +37,7 @@ public class GithubEntity extends BaseEntity {
 	@Column(name = "FILE_URL")
 	private String url;
 
-	@Column(name = "FILE_SHA")
+	@Column(name = "FILE_SHA1")
 	private String sha;
 	@Column(name = "FILE_SIZE")
 	private Long size;
