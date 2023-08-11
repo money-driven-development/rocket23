@@ -34,13 +34,10 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 */
 	@Override
 	public ScanResultDto getScanHistory(Long teamCode, Long projectCode, String hashCode) {
-		Optional<ScanHistory> scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
+		ScanHistory scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
 			teamCode,
-			projectCode, hashCode);
-		if (!scanHistory.isPresent()) {
-			throw new ApiException(ResponseCode.NO_SCAN_RESULT);
-		}
-		return new ScanResultDto(scanHistory.get());
+			projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
+		return new ScanResultDto(scanHistory);
 	}
 
 	/*
@@ -48,18 +45,15 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	 */
 	@Override
 	public ScanFailDetailDto getScanFailDetail(Long teamCode, Long projectCode, String hashCode) {
-		Optional<ScanHistory> scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
+		ScanHistory scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
 			teamCode,
-			projectCode, hashCode);
-		if (!scanHistory.isPresent()) {
-			throw new ApiException(ResponseCode.NO_SCAN_RESULT);
-		}
-		List<ScanHistoryDetail> scanHistoryDetails = scanHistory.get().getScanDetails()
+			projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
+		List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails()
 			.stream()
 			.filter(scanHistoryDetail -> "failed".equals(scanHistoryDetail.getScanResult()))
 			.collect(Collectors.toList());
 
-		return new ScanFailDetailDto(scanHistory.get(), scanHistoryDetails);
+		return new ScanFailDetailDto(scanHistory, scanHistoryDetails);
 	}
 	// @Override
 	// public List<HistoryDto> getHistoryList(Long teamId, Long projectId) {
