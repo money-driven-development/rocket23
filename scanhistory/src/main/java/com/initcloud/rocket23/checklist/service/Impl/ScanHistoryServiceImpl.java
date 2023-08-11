@@ -2,8 +2,10 @@ package com.initcloud.rocket23.checklist.service.Impl;
 
 import com.initcloud.rocket23.checklist.dto.CursorResultDto;
 import com.initcloud.rocket23.checklist.dto.HistoryDto;
+import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
+import com.initcloud.rocket23.checklist.entity.ScanHistoryDetail;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.swing.text.html.Option;
 
@@ -26,6 +29,9 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 
 	private final ScanHistoryRepository scanHistoryRepository;
 
+	/*
+		단일 스캔 내역 조회
+	 */
 	@Override
 	public ScanResultDto getScanHistory(Long teamCode, Long projectCode, String hashCode) {
 		Optional<ScanHistory> scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
@@ -37,6 +43,24 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return new ScanResultDto(scanHistory.get());
 	}
 
+	/*
+		단일 스캔에서 실패 내역 조회.
+	 */
+	@Override
+	public ScanFailDetailDto getScanFailDetail(Long teamCode, Long projectCode, String hashCode) {
+		Optional<ScanHistory> scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
+			teamCode,
+			projectCode, hashCode);
+		if (!scanHistory.isPresent()) {
+			throw new ApiException(ResponseCode.NO_SCAN_RESULT);
+		}
+		List<ScanHistoryDetail> scanHistoryDetails = scanHistory.get().getScanDetails()
+			.stream()
+			.filter(scanHistoryDetail -> "failed".equals(scanHistoryDetail.getScanResult()))
+			.collect(Collectors.toList());
+
+		return new ScanFailDetailDto(scanHistory.get(), scanHistoryDetails);
+	}
 	// @Override
 	// public List<HistoryDto> getHistoryList(Long teamId, Long projectId) {
 	// 	return null;
