@@ -2,10 +2,12 @@ package com.initcloud.rocket23.checklist.controller;
 
 import java.util.List;
 
+import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanHistoryDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.team.dto.TeamInviteDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +33,16 @@ public class ScanHistoryController {
 		@PathVariable("projectCode") Long projectCode, @PathVariable("hashCode") String hashCode) {
 		ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dto);
+	}
+
+	/*
+		단일 스캔 실패 내역에 대한 조회
+	 */
+	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}/fail")
+	public ResponseDto<ScanFailDetailDto> getScanFailDeatil(@PathVariable("teamCode") Long teamCode,
+		@PathVariable("projectCode") Long projectCode, @PathVariable("hashCode") String hashCode) {
+		ScanFailDetailDto dtos = scanHistoryService.getScanFailDetail(teamCode, projectCode, hashCode);
+		return new ResponseDto<>(dtos);
 	}
 	/**
 	 * get 방식을 통해 file scan history 내역을 최근 10개를 출력하도록함.
