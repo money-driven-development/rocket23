@@ -29,8 +29,8 @@ public class ScanHistoryController {
 	 * 단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
 	 */
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}")
-	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") Long teamCode,
-		@PathVariable("projectCode") Long projectCode, @PathVariable("hashCode") String hashCode) {
+	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") String teamCode,
+		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
 		ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dto);
 	}
@@ -39,8 +39,8 @@ public class ScanHistoryController {
 		단일 스캔 실패 내역에 대한 조회
 	 */
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}/fail")
-	public ResponseDto<ScanFailDetailDto> getScanFailDeatil(@PathVariable("teamCode") Long teamCode,
-		@PathVariable("projectCode") Long projectCode, @PathVariable("hashCode") String hashCode) {
+	public ResponseDto<ScanFailDetailDto> getScanFailDeatil(@PathVariable("teamCode") String teamCode,
+		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
 		ScanFailDetailDto dtos = scanHistoryService.getScanFailDetail(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dtos);
 	}

@@ -33,8 +33,8 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		단일 스캔 내역 조회
 	 */
 	@Override
-	public ScanResultDto getScanHistory(Long teamCode, Long projectCode, String hashCode) {
-		ScanHistory scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
+	public ScanResultDto getScanHistory(String teamCode, String projectCode, String hashCode) {
+		ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
 			teamCode,
 			projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
 		return new ScanResultDto(scanHistory);
@@ -44,8 +44,8 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		단일 스캔에서 실패 내역 조회.
 	 */
 	@Override
-	public ScanFailDetailDto getScanFailDetail(Long teamCode, Long projectCode, String hashCode) {
-		ScanHistory scanHistory = scanHistoryRepository.findTopByTeamIdAndProjectIdAndFileHashOrderById(
+	public ScanFailDetailDto getScanFailDetail(String teamCode, String projectCode, String hashCode) {
+		ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
 			teamCode,
 			projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
 		List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails()
@@ -56,17 +56,17 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		return new ScanFailDetailDto(scanHistory, scanHistoryDetails);
 	}
 	// @Override
-	// public List<HistoryDto> getHistoryList(Long teamId, Long projectId) {
+	// public List<HistoryDto> getHistoryList(String teamId, String projectId) {
 	// 	return null;
 	// }
 	//
 	// @Override
-	// public Page<HistoryDto> getOffsetPageHistoryList(Long teamId, Long projectId, Pageable page) {
+	// public Page<HistoryDto> getOffsetPageHistoryList(String teamId, String projectId, Pageable page) {
 	// 	return null;
 	// }
 	//
 	// @Override
-	// public CursorResultDto getCursorPageHistoryList(Long teamId, Long cursorId, Pageable Page) {
+	// public CursorResultDto getCursorPageHistoryList(String teamId, String cursorId, Pageable Page) {
 	// 	return null;
 	// }
 }
