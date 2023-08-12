@@ -2,6 +2,7 @@ package com.initcloud.rocket23.checklist.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.ScanHistoryDetail;
@@ -39,10 +40,9 @@ public class ScanFailDetailDto {
 		this.medium = scanHistory.getMedium();
 		this.unknown = scanHistory.getUnknown();
 		this.failResourceList = new ArrayList<>();
-		for (ScanHistoryDetail detail : scanHistoryDetails) {
-			failResourceList.add(
-				new FailResource(detail.getRuleName(), detail.getResource(), detail.getResourceName()));
-		}
+		failResourceList.addAll(scanHistoryDetails.stream()
+			.map(detail -> new FailResource(detail.getRuleName(), detail.getResource(), detail.getResourceName()))
+			.collect(Collectors.toList()));
 
 	}
 }
