@@ -7,13 +7,16 @@ import org.springframework.data.domain.Pageable;
 
 import com.initcloud.rocket23.checklist.dto.CursorResultDto;
 import com.initcloud.rocket23.checklist.dto.HistoryDto;
+import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 
 public interface ScanHistoryService {
-	ScanResultDto getScanHistory(Long teamId, Long projectId, String fileHash);
-	// List<HistoryDto> getHistoryList(Long teamId, Long projectId);
+	ScanResultDto getScanHistory(String teamCode, String projectCode, String fileHash);
+
+	ScanFailDetailDto getScanFailDetail(String teamCode, String projectCode, String fileHash);
+	// List<HistoryDto> getHistoryList(String teamCode, String projectCode,;
 	//
-	// Page<HistoryDto> getOffsetPageHistoryList(Long teamId, Long projectId, Pageable page);
+	// Page<HistoryDto> getOffsetPageHistoryList(String teamCode, String projectCode, Pageable page);
 	//
-	// CursorResultDto getCursorPageHistoryList(Long teamId, Long cursorId, Pageable Page);
+	// CursorResultDto getCursorPageHistoryList(String teamCode, String cursorId, Pageable Page);
 }
