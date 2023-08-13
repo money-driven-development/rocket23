@@ -39,7 +39,7 @@ public class ScanResultDto {
 		private Integer skipped;
 		private Integer failed;
 
-		public Summary(ScanHistory entity){
+		public Summary(ScanHistory entity) {
 			this.fileName = entity.getFileName();
 			this.passed = entity.getPassed();
 			this.skipped = entity.getSkipped();
