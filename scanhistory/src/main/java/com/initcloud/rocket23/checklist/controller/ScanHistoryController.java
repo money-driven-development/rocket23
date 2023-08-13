@@ -23,8 +23,8 @@ public class ScanHistoryController {
 
 	//private final int DEFAULT_SIZE = 10;
 
-	/**
-	 * 단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
+	/*
+		단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
 	 */
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}")
 	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") String teamCode,
@@ -33,7 +33,10 @@ public class ScanHistoryController {
 		return new ResponseDto<>(dto);
 	}
 
-	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/")
+	/*
+		단일 스캔 이력 Pagination
+	 */
+	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history")
 	public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(@PathVariable("teamCode") String teamCode,
 		@PathVariable("projectCode")
 		String projectCode, final Pageable pageable) {
