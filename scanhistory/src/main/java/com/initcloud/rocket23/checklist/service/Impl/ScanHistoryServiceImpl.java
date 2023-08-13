@@ -47,9 +47,6 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	public Page<ScanResultDto.Summary> getScanHistoryPaging(String teamCode, String projectCode, Pageable pageable) {
 		Page<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCode(pageable,
 			teamCode, projectCode);
-		if (scanHistories.isEmpty()) {
-			throw new ApiException(ResponseCode.NO_SCAN_RESULT);
-		}
 		return scanHistories.map(ScanResultDto.Summary::new);
 	}
 
