@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface TeamProjectRepository extends JpaRepository<TeamProject, Long> {
 
     Optional<TeamProject> findTeamProjectByTeamAndProjectCode(Team team, String projectCode);
+    Optional<TeamProject> findTeamProjectByTeam_TeamCodeAndProjectCode(String teamCode, String projectCode);
 
     Page<TeamProject> findTeamProjectsByTeam(Pageable pageable, Team team);
 

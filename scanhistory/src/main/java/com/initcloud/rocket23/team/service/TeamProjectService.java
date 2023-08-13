@@ -2,6 +2,7 @@ package com.initcloud.rocket23.team.service;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
 import com.initcloud.rocket23.infra.repository.TeamProjectRepository;
 import com.initcloud.rocket23.infra.repository.TeamProjectVersioningRepository;
 import com.initcloud.rocket23.infra.repository.TeamRepository;
@@ -20,6 +21,7 @@ public class TeamProjectService {
 
     private final TeamRepository teamRepository;
     private final TeamProjectRepository teamProjectRepository;
+    private final BasePolicyRepository basePolicyRepository;
     private final TeamProjectVersioningRepository teamProjectVersioningRepository;
 
     /**
