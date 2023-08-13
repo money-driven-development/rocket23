@@ -30,4 +30,20 @@ public class ScanResultDto {
 		this.failed = entity.getFailed();
 		this.skipped = entity.getSkipped();
 	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Summary {
+		private String fileName;
+		private Integer passed;
+		private Integer skipped;
+		private Integer failed;
+
+		public Summary(ScanHistory entity){
+			this.fileName = entity.getFileName();
+			this.passed = entity.getPassed();
+			this.skipped = entity.getSkipped();
+			this.failed = entity.getFailed();
+		}
+	}
 }
