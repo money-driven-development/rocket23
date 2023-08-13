@@ -41,6 +41,16 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 	}
 
 	/*
+		단일 스캔 내역 페이징 처리
+	 */
+	@Override
+	public Page<ScanResultDto.Summary> getScanHistoryPaging(String teamCode, String projectCode, Pageable pageable) {
+		Page<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCode(pageable,
+			teamCode, projectCode);
+		return scanHistories.map(ScanResultDto.Summary::new);
+	}
+
+	/*
 		단일 스캔에서 실패 내역 조회.
 	 */
 	@Override

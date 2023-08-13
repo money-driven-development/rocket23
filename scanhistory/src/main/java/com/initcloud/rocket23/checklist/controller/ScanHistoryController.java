@@ -1,16 +1,14 @@
 package com.initcloud.rocket23.checklist.controller;
 
-import java.util.List;
-
 import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
-import com.initcloud.rocket23.checklist.dto.ScanHistoryDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.dto.ResponseDto;
-import com.initcloud.rocket23.team.dto.TeamInviteDto;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,16 +21,27 @@ public class ScanHistoryController {
 
 	private final ScanHistoryService scanHistoryService;
 
-	private final int DEFAULT_SIZE = 10;
+	//private final int DEFAULT_SIZE = 10;
 
-	/**
-	 * 단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
+	/*
+		단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
 	 */
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}")
 	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") String teamCode,
 		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
 		ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dto);
+	}
+
+	/*
+		단일 스캔 이력 Pagination
+	 */
+	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history")
+	public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(@PathVariable("teamCode") String teamCode,
+		@PathVariable("projectCode")
+		String projectCode, final Pageable pageable) {
+		Page<ScanResultDto.Summary> dtos = scanHistoryService.getScanHistoryPaging(teamCode, projectCode, pageable);
+		return new ResponseDto<>(dtos);
 	}
 
 	/*
@@ -44,6 +53,7 @@ public class ScanHistoryController {
 		ScanFailDetailDto dtos = scanHistoryService.getScanFailDetail(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dtos);
 	}
+
 	/**
 	 * get 방식을 통해 file scan history 내역을 최근 10개를 출력하도록함.
 	 *
