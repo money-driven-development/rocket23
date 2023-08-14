@@ -69,20 +69,15 @@ public class GithubService {
 
 		if (zipResource != null) {
 			try (InputStream inputStream = zipResource.getInputStream()) {
-				// ZIP 파일 내용을 읽어와서 파일로 저장
 				Files.copy(inputStream, targetPath.resolve("downloaded.zip"), StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
 	}
 
 	public void getZip(String user, String repo) {
-		// Feign 클라이언트를 통해 ZIP 파일 내용 받아오기
 		ResponseEntity<Resource> responseEntity = githubFeignClient.getZipFiles(user, repo);
-
-		// 환경변수로 지정한 경로 가져오기
 		String targetPathStr = env.getProperty("CLIENT_PATH");
 
-		//서버 내 파일 저장
 		try {
 			Path targetPath = Paths.get(targetPathStr);
 			saveZipFileFromResponse(responseEntity, targetPath);
