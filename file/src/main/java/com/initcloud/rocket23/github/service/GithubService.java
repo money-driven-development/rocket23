@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +32,7 @@ public class GithubService {
 	private final GithubFeignClient githubFeignClient;
 	private final RedisMessagePublisher redisMessagePublisher;
 	private final GithubRepository githubRepository;
-
-	@Autowired
-	private Environment env;
+	private final Environment env;
 
 	public List<GithubDto.RepositoryInfo> getRepositories(@NonNull String user) {
 		return githubFeignClient.getRepositoryList(user);
