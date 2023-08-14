@@ -1,6 +1,9 @@
 package com.initcloud.rocket23.github.dto;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.initcloud.rocket23.github.entity.GithubEntity;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -112,6 +115,15 @@ public class GithubDto {
 			this.size = size;
 			this.nodeId = nodeId;
 			this.url = url.replace(GITHUB_API_BASE_URL, "");
+		}
+
+		public static GithubEntity convertToEntity(GithubDto.File file) {
+			String uuid = UUID.randomUUID().toString();
+
+			return GithubEntity.builder()
+				.uuid(uuid)
+				.url(file.getUrl())
+				.build();
 		}
 	}
 }

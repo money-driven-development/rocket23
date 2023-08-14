@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -57,13 +56,9 @@ public class GithubService {
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
 
-		String uuid = UUID.randomUUID().toString();
-		GithubEntity githubEntity = GithubEntity.builder()
-			.uuid(uuid)
-			.url(file.getUrl())
-			.build();
+		GithubEntity githubEntity = GithubDto.File.convertToEntity(file);
 
-		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
+		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(githubEntity.getUuid()));
 		githubRepository.save(githubEntity);
 
 		return file;
