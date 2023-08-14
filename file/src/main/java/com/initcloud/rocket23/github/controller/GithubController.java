@@ -17,7 +17,6 @@ import com.initcloud.rocket23.github.service.GithubService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
 import lombok.RequiredArgsConstructor;
 
 @ApiOperation("Github access")
@@ -98,6 +97,17 @@ public class GithubController {
 		GithubDto.File dtos = githubService.getBlobsFromGit(user, repo, hash, branch);
 
 		return new ResponseDto<>(dtos);
+	}
+
+	@Deprecated(forRemoval = false)
+	@ApiOperation(value = "Download Zip Files", notes = "Download zip files from Github repository", response = ResponseDto.class)
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "user", paramType = "path", value = "Github user or organization", required = true, dataTypeClass = String.class),
+		@ApiImplicitParam(name = "repo", paramType = "path", value = "Github repository", required = true, dataTypeClass = String.class)})
+	@GetMapping("/repos/{user}/{repo}/zipball")
+	public ResponseDto<?> getZip(@PathVariable("user") String user, @PathVariable("repo") String repo) {
+		githubService.getZip(user, repo);
+		return new ResponseDto<>(null);
 	}
 
 }
