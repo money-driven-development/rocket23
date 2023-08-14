@@ -28,32 +28,34 @@ public class GithubEntity extends BaseEntity {
 	@Column(name = "UUID")
 	private String uuid;
 
-	@Column(name = "FILE_CONTENTS")
-	private String contents;
+	@Column(name = "FILE_NAME")
+	private String name;
 
-	@Column(name = "FILE_ENCODING")
-	private String encoding;
+	@Column(name = "FILE_PATH")
+	private String path;
 
 	@Column(name = "FILE_URL")
 	private String url;
 
-	@Column(name = "FILE_SHA1")
-	private String sha;
-	@Column(name = "FILE_SIZE")
-	private Long size;
-	@Column(name = "FILE_NODE")
-	private String nodeId;
+	@Column(name = "FILE_STORAGE_TYPE")
+	private String storageType;
+
+	@Column(name = "FILE_SHA1_1")
+	private String sha1;
+
+	@Column(name = "FILE_SHA1_2")
+	private String sha2;
 
 	@Builder
-	public GithubEntity(String uuid, String contents, String encoding, String url, String sha, Long size,
-		String nodeId) {
+	public GithubEntity(String uuid, String name, String path, String url, String storageType, String sha1,
+		String sha2) {
 		this.uuid = uuid;
-		this.contents = contents;
-		this.encoding = encoding;
+		this.name = name;
+		this.path = path;
 		this.url = url;
-		this.sha = sha;
-		this.size = size;
-		this.nodeId = nodeId;
+		this.storageType = storageType;
+		this.sha1 = sha1;
+		this.sha2 = sha2;
 	}
 
 }
