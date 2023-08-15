@@ -41,11 +41,11 @@ public class GithubService {
 	public List<GithubDto.Contents> getRepository(String user, String repo, String branch) {
 		return githubFeignClient.getRepositoryDetails(user, repo, branch);
 	}
-	
+
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
 
-		GithubEntity githubEntity = GithubDto.File.convertToEntity(file);
+		GithubEntity githubEntity = file.convertToEntity();
 
 		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(githubEntity.getUuid()));
 		githubRepository.save(githubEntity);

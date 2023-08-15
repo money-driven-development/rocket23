@@ -117,12 +117,10 @@ public class GithubDto {
 			this.url = url.replace(GITHUB_API_BASE_URL, "");
 		}
 
-		public static GithubEntity convertToEntity(GithubDto.File file) {
-			String uuid = UUID.randomUUID().toString();
-
+		public GithubEntity convertToEntity() {
 			return GithubEntity.builder()
-				.uuid(uuid)
-				.url(file.getUrl())
+				.uuid(UUID.randomUUID().toString())
+				.url(this.getUrl())
 				.build();
 		}
 	}
