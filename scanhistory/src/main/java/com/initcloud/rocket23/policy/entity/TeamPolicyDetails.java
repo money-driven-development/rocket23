@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamProjectPolicyDetails extends BaseEntity {
+public class TeamPolicyDetails extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,16 +35,16 @@ public class TeamProjectPolicyDetails extends BaseEntity {
     private String solution;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PROJECT_POLICY_ID")
-    private TeamProjectPolicy teamProjectPolicy;
+    @JoinColumn(name = "TEAM_POLICY_ID")
+    private TeamPolicy teamPolicy;
 
-    public TeamProjectPolicyDetails(Long id, Language language, String description, String explanation, String possibleImpact, String solution, TeamProjectPolicy teamProjectPolicy) {
+    public TeamPolicyDetails(Long id, Language language, String description, String explanation, String possibleImpact, String solution, TeamPolicy teamPolicy) {
         this.id = id;
         this.language = language;
         this.description = description;
         this.explanation = explanation;
         this.possibleImpact = possibleImpact;
         this.solution = solution;
-        this.teamProjectPolicy = teamProjectPolicy;
+        this.teamPolicy = teamPolicy;
     }
 }

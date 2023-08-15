@@ -3,7 +3,6 @@ package com.initcloud.rocket23.policy.entity;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.common.enums.Policy;
 import com.initcloud.rocket23.team.entity.Team;
-import com.initcloud.rocket23.team.entity.TeamProject;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamProjectPolicy extends BaseEntity {
+public class TeamPolicy extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +25,6 @@ public class TeamProjectPolicy extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Team team;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private TeamProject teamProject;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(updatable = false)
@@ -60,6 +55,9 @@ public class TeamProjectPolicy extends BaseEntity {
     private boolean isModifiable;
 
     @Column
+    private String memo;
+
+    @Column
     private String insecureExample;
 
     @Column
@@ -68,13 +66,18 @@ public class TeamProjectPolicy extends BaseEntity {
     @Column
     private String code;
 
-    @OneToMany(mappedBy = "teamProjectPolicy")
-    private List<TeamProjectPolicyDetails> details = new ArrayList<>();
+    @Column
+    private String customDetails;
+
+    @OneToMany(mappedBy = "teamPolicy")
+    private List<TeamPolicyDetails> details = new ArrayList<>();
+
+    @OneToMany(mappedBy = "teamPolicy")
+    private List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
 
     @Builder(builderClassName = "policyBuilder", builderMethodName = "policyCreateBuilder")
-    public TeamProjectPolicy(Team team, TeamProject teamProject, BasePolicy basePolicy, String policyName, String basePolicyName, Policy.Provider policyProvider, Policy.Type policyType, Policy.Target policyTarget, boolean isBasePolicy, boolean isModifiable, String insecureExample, String secureExample, String code) {
+    public TeamPolicy(Team team, BasePolicy basePolicy, String policyName, String basePolicyName, Policy.Provider policyProvider, Policy.Type policyType, Policy.Target policyTarget, boolean isBasePolicy, boolean isModifiable, String memo, String insecureExample, String secureExample, String code, String customDetails) {
         this.team = team;
-        this.teamProject = teamProject;
         this.basePolicy = basePolicy;
         this.policyName = policyName;
         this.basePolicyName = basePolicyName;
@@ -83,8 +86,10 @@ public class TeamProjectPolicy extends BaseEntity {
         this.policyTarget = policyTarget;
         this.isBasePolicy = isBasePolicy;
         this.isModifiable = isModifiable;
+        this.memo = memo;
         this.insecureExample = insecureExample;
         this.secureExample = secureExample;
         this.code = code;
+        this.customDetails = customDetails;
     }
 }

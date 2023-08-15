@@ -2,6 +2,7 @@ package com.initcloud.rocket23.policy.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.policy.dto.PolicyDto;
+import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.service.PolicyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,26 +16,95 @@ public class PolicyController {
 
     private final PolicyService policyService;
 
-    @GetMapping("/{teamCode}/projects/{projectCode}/policies")
-    public ResponseDto<Page<PolicyDto.Summary>> projectPolicies( // Todo 어떻게 표현할건지?
-         final Pageable pageable,
-         @PathVariable String teamCode,
-         @PathVariable String projectCode
+    /**
+     * ===== Team Policy =====
+     */
+
+    @GetMapping("/{teamCode}/policies")
+    public ResponseDto<Page<PolicyDto.Summary>> teamPolicies( // Todo 어떻게 표현할건지?
+        final Pageable pageable,
+        @PathVariable String teamCode
     ) {
-        Page<PolicyDto.Summary> response = policyService.getProjectPolicyList(pageable, teamCode, projectCode);
+        Page<PolicyDto.Summary> response = policyService.getTeamPolicyList(pageable, teamCode);
 
         return new ResponseDto<>(response);
     }
 
-    @GetMapping("/{teamCode}/projects/{projectCode}/policies/{policyName}")
-    public ResponseDto<?> projectPolicyDetails(
+    @PostMapping("/{teamCode}/policies")
+    public ResponseDto<String> teamPolicyAdd(
+        @PathVariable String teamCode,
+        @RequestBody PolicyDto.Create dto
+    ) {
+        String response = policyService.createTeamPolicy(teamCode, dto);
+
+        return new ResponseDto<>(response);
+    }
+
+    @GetMapping("/{teamCode}/policies/{policyName}")
+    public ResponseDto<PolicyDto.Details> teamPolicyDetails(
             @PathVariable String teamCode,
-            @PathVariable String projectCode,
             @PathVariable String policyName
     ) {
+        PolicyDto.Details response = policyService.getTeamPolicyDetails(teamCode, policyName);
 
-        PolicyDto.Details response = policyService.getProjectPolicyDetails(teamCode, projectCode, policyName);
+        return new ResponseDto<>(response);
+    }
+
+    @PutMapping("/{teamCode}/policies/{policyName}")
+    public ResponseDto<String> teamPolicyModify(
+            @PathVariable String teamCode,
+            @RequestBody PolicyDto.Create dto
+    ) {
+        String response = policyService.createTeamPolicy(teamCode, dto);
+
+        return new ResponseDto<>(response);
+    }
+
+    @DeleteMapping("/{teamCode}/policies/{policyName}")
+    public ResponseDto<String> teamPolicyDelete(
+            @PathVariable String teamCode,
+            @RequestBody PolicyDto.Create dto
+    ) {
+        String response = policyService.createTeamPolicy(teamCode, dto);
+
+        return new ResponseDto<>(response);
+    }
+
+    /**
+     * ===== Team PolicySet =====
+     */
+
+    @PostMapping("/{teamCode}/policysets")
+    public ResponseDto<?> policySetAdd(
+        @PathVariable String teamCode,
+        @RequestBody PolicySetDto.Create dto
+    ) {
+        String response = policyService.createTeamPolicySet(teamCode, dto);
+
+        return new ResponseDto<>(response);
+    }
+
+
+    @PutMapping("/{teamCode}/policysets/{policySet}")
+    public ResponseDto<?> policySetModify(
+        @PathVariable String teamCode,
+        @PathVariable String policySet,
+        @RequestBody PolicySetDto.Modify dto
+    ) {
+        String response = policyService.modifyTeamPolicySet(teamCode, policySet, dto);
+
+        return new ResponseDto<>(response);
+    }
+
+    @DeleteMapping("/{teamCode}/policysets/{policySet}")
+    public ResponseDto<?> policySetDelete(
+            @PathVariable String teamCode,
+            @PathVariable String policySet
+    ) {
+        boolean response = policyService.deleteTeamPolicySet(teamCode, policySet);
 
         return new ResponseDto<>(response);
     }
 }
+
+

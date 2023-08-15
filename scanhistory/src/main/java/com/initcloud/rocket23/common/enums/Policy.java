@@ -21,6 +21,7 @@ public class Policy {
         TERRAFORM, CLOUDFORMATION,
         ANSIBLE,
         K8S, DOCKERFILE, DOCKER_COMPOSE,
+
         NONE
     }
 

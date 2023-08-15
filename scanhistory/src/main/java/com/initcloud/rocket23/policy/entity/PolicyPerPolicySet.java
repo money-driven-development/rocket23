@@ -23,12 +23,12 @@ public class PolicyPerPolicySet extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private TeamProjectPolicy policy;
+    private TeamPolicy policy;
 
     @Column
     private boolean isActivated;
 
-    public PolicyPerPolicySet(Long id, PolicySet policySet, TeamProjectPolicy policy, boolean isActivated) {
+    public PolicyPerPolicySet(Long id, PolicySet policySet, TeamPolicy policy, boolean isActivated) {
         this.id = id;
         this.policySet = policySet;
         this.policy = policy;
