@@ -49,7 +49,7 @@ public class TeamPolicy extends BaseEntity {
     private Policy.Target policyTarget;
 
     @Column(updatable = false)
-    private boolean isBasePolicy;
+    private boolean isBase;
 
     @Column(updatable = false)
     private boolean isModifiable;
@@ -84,7 +84,7 @@ public class TeamPolicy extends BaseEntity {
         this.policyProvider = policyProvider;
         this.policyType = policyType;
         this.policyTarget = policyTarget;
-        this.isBasePolicy = isBasePolicy;
+        this.isBase = isBasePolicy;
         this.isModifiable = isModifiable;
         this.memo = memo;
         this.insecureExample = insecureExample;

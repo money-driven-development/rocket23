@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,6 +21,10 @@ public class PolicySet extends BaseEntity {
     @Column(name = "POLICY_SET_ID")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn()
+    private Team team;
+
     @Column
     private String name;
 
@@ -38,4 +43,10 @@ public class PolicySet extends BaseEntity {
     @ManyToMany(mappedBy = "policySets")
     @JoinTable(name = "POLICY_SET_PER_PROJECT")
     private List<TeamProject> projects = new ArrayList<>();
+
+    public PolicySet(Team team, String name, String description) {
+        this.team = team;
+        this.name = name;
+        this.description = description;
+    }
 }

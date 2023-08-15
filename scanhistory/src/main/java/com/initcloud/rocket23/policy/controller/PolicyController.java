@@ -55,7 +55,7 @@ public class PolicyController {
             @PathVariable String teamCode,
             @RequestBody PolicyDto.Create dto
     ) {
-        String response = policyService.createTeamPolicy(teamCode, dto);
+        String response = policyService.modifyTeamPolicy(teamCode, dto);
 
         return new ResponseDto<>(response);
     }
@@ -63,9 +63,9 @@ public class PolicyController {
     @DeleteMapping("/{teamCode}/policies/{policyName}")
     public ResponseDto<String> teamPolicyDelete(
             @PathVariable String teamCode,
-            @RequestBody PolicyDto.Create dto
+            @RequestBody String policyName
     ) {
-        String response = policyService.createTeamPolicy(teamCode, dto);
+        String response = policyService.deleteTeamPolicy(teamCode, policyName);
 
         return new ResponseDto<>(response);
     }
@@ -77,7 +77,7 @@ public class PolicyController {
     @PostMapping("/{teamCode}/policysets")
     public ResponseDto<?> policySetAdd(
         @PathVariable String teamCode,
-        @RequestBody PolicySetDto.Create dto
+        @RequestBody PolicySetDto dto
     ) {
         String response = policyService.createTeamPolicySet(teamCode, dto);
 
@@ -89,7 +89,7 @@ public class PolicyController {
     public ResponseDto<?> policySetModify(
         @PathVariable String teamCode,
         @PathVariable String policySet,
-        @RequestBody PolicySetDto.Modify dto
+        @RequestBody PolicySetDto dto
     ) {
         String response = policyService.modifyTeamPolicySet(teamCode, policySet, dto);
 
