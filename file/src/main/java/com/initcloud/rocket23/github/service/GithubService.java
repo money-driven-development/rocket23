@@ -41,15 +41,7 @@ public class GithubService {
 	public List<GithubDto.Contents> getRepository(String user, String repo, String branch) {
 		return githubFeignClient.getRepositoryDetails(user, repo, branch);
 	}
-
-	public List<Object> getCommits(String user, String repo, String branch) {
-		return githubFeignClient.getCommitList(user, repo, branch);
-	}
-
-	public Object getCommit(String user, String repo, String hash, String branch) {
-		return githubFeignClient.getCommitDetails(user, repo, hash, branch);
-	}
-
+	
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
 

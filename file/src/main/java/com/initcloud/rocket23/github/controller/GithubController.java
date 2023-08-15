@@ -54,35 +54,6 @@ public class GithubController {
 		return new ResponseDto<>(dtos);
 	}
 
-	@ApiOperation(value = "Get Commit List", notes = "Get Commit List from Github repository, branch.", response = ResponseDto.class)
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "user", paramType = "path", value = "Github user or organization", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "repo", paramType = "path", value = "Github repository", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "ref", paramType = "query", value = "Branch", dataTypeClass = String.class)})
-	@GetMapping("/repos/{user}/{repo}/commits")
-	public ResponseDto<List<Object>> commitList(@PathVariable("user") String user, @PathVariable("repo") String repo,
-		@Nullable @RequestParam("ref") String branch) {
-		List<Object> dtos = githubService.getCommits(user, repo, branch);
-
-		return new ResponseDto<>(dtos);
-	}
-
-	@ApiOperation(value = "Get Commit Details", notes = "Get Commit Details from Github repository, branch.", response = ResponseDto.class)
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "user", paramType = "path", value = "Github user or organization", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "repo", paramType = "path", value = "Github repository", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "hash", paramType = "path", value = "Commit Hash", required = true, dataTypeClass = String.class),
-		@ApiImplicitParam(name = "ref", paramType = "query", value = "Branch", dataTypeClass = String.class)})
-	@GetMapping("/repos/{user}/{repo}/commits/{hash}")
-	public ResponseDto<Object> commitDetails(@PathVariable("user") String user, @PathVariable("repo") String repo,
-		@PathVariable("hash") String hash, @Nullable @RequestParam("ref") String branch) {
-		Object dtos = githubService.getCommit(user, repo, hash, branch);
-
-		return new ResponseDto<>(dtos);
-	}
-
 	@Deprecated(forRemoval = false)
 	@ApiOperation(value = "Download Blobs", notes = "Download zip files from Github repository, branch.", response = ResponseDto.class)
 	@ApiImplicitParams({

@@ -24,14 +24,6 @@ public interface GithubFeignClient {
 	List<GithubDto.Contents> getRepositoryDetails(@PathVariable("USER") String user, @PathVariable("REPO") String repo,
 		@RequestParam("ref") String branch);
 
-	@GetMapping(value = "/repos/{USER}/{REPO}/commits")
-	List<Object> getCommitList(@PathVariable("USER") String user, @PathVariable("REPO") String repo,
-		@RequestParam("ref") String branch);
-
-	@GetMapping(value = "/repos/{USER}/{REPO}/commits/{HASH}")
-	Object getCommitDetails(@PathVariable("USER") String user, @PathVariable("REPO") String repo,
-		@PathVariable("HASH") String hash, @RequestParam("ref") String branch);
-
 	/* Blobs from Repository */
 	@GetMapping(value = "/repos/{USER}/{REPO}/git/blobs/{HASH}")
 	GithubDto.File getFiles(@PathVariable("USER") String user, @PathVariable("REPO") String repo,
