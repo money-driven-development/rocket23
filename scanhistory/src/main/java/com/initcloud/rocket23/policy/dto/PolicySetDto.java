@@ -13,6 +13,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PolicySetDto {
 
+    private boolean isNameModified;
+    private boolean isDescriptionModified;
     private String policySetName;
     private String description;
     private List<PolicyState> policyState = new ArrayList<>();
@@ -28,7 +30,9 @@ public class PolicySetDto {
         }
     }
 
-    public PolicySetDto(String policySetName, String description, List<PolicyState> policyState) {
+    public PolicySetDto(boolean isNameModified, boolean isDescriptionModified, String policySetName, String description, List<PolicyState> policyState) {
+        this.isNameModified = isNameModified;
+        this.isDescriptionModified = isDescriptionModified;
         this.policySetName = policySetName;
         this.description = description;
         this.policyState = policyState;

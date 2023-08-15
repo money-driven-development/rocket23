@@ -25,13 +25,8 @@ public class PolicyPerPolicySet extends BaseEntity {
     @JoinColumn
     private TeamPolicy policy;
 
-    @Column
-    private boolean isActivated;
-
-    public PolicyPerPolicySet(Long id, PolicySet policySet, TeamPolicy policy, boolean isActivated) {
-        this.id = id;
+    public PolicyPerPolicySet(PolicySet policySet, TeamPolicy policy) {
         this.policySet = policySet;
         this.policy = policy;
-        this.isActivated = isActivated;
     }
 }

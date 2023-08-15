@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/team")
@@ -21,11 +23,20 @@ public class PolicyController {
      */
 
     @GetMapping("/{teamCode}/policies")
-    public ResponseDto<Page<PolicyDto.Summary>> teamPolicies( // Todo 어떻게 표현할건지?
+    public ResponseDto<Page<PolicyDto.Summary>> teamPagedPolicies( // Todo 어떻게 표현할건지?
         final Pageable pageable,
         @PathVariable String teamCode
     ) {
-        Page<PolicyDto.Summary> response = policyService.getTeamPolicyList(pageable, teamCode);
+        Page<PolicyDto.Summary> response = policyService.getPagedTeamPolicyList(pageable, teamCode);
+
+        return new ResponseDto<>(response);
+    }
+
+    @GetMapping("/{teamCode}/policies/all")
+    public ResponseDto<List<PolicyDto.Summary>> teamPolicies( // Todo 어떻게 표현할건지?
+       @PathVariable String teamCode
+    ) {
+        List<PolicyDto.Summary> response = policyService.getTeamPolicyList(teamCode);
 
         return new ResponseDto<>(response);
     }

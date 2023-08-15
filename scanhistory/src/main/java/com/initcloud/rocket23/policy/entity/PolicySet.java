@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import lombok.AccessLevel;
@@ -34,7 +35,7 @@ public class PolicySet extends BaseEntity {
     /**
      * 정책 셋
      */
-    @OneToMany(mappedBy = "policySet")
+    @OneToMany(mappedBy = "policySet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
 
     /**
@@ -48,5 +49,13 @@ public class PolicySet extends BaseEntity {
         this.team = team;
         this.name = name;
         this.description = description;
+    }
+
+    public void updatePolicySet(PolicySetDto dto) {
+        if(dto.isNameModified())
+            this.name = dto.getPolicySetName();
+
+        if(dto.isDescriptionModified())
+            this.description = dto.getDescription();
     }
 }

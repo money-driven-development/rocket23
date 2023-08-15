@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
     Page<TeamPolicy> findTeamPoliciesByTeam_TeamCode(Pageable pageable, String teamCode);
+    List<TeamPolicy> findTeamPoliciesByTeam_TeamCode(String teamCode);
 
     List<TeamPolicy> findTeamPoliciesByTeamAndPolicyNameIn(Team team, List<String> policyNames);
 
@@ -19,5 +20,5 @@ public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
     Optional<TeamPolicy> findTeamPolicyByTeam_TeamCodeAndBasePolicyName(String teamCode, String basePolicyName);
 
-    void deleteTeamProjectTeamPolicyByBaseFalseAndTeam_TeamCodeAndPolicyName(String teamCode, String policyName);
+    void deleteTeamPolicyByBaseFalseAndTeam_TeamCodeAndPolicyName(String teamCode, String policyName);
 }
