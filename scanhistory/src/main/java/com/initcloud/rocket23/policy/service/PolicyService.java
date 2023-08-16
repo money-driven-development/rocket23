@@ -121,7 +121,7 @@ public class PolicyService {
         PolicySet policySet = teamPolicySetRepository.save(dto.toEntity(team));
 
         // 4. 정책 셋의 정책 목록에 정책 추가
-        if(!dto.getPolicyState().isEmpty()) {
+        if (!dto.getPolicyState().isEmpty()) {
             List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
             for (TeamPolicy policy : teamPolicies) {
                 policiesPerPolicySet.add(new PolicyPerPolicySet(policySet, policy));
