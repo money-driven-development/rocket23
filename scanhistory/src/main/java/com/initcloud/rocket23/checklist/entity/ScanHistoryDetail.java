@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 
@@ -61,9 +62,15 @@ public class ScanHistoryDetail extends BaseEntity {
 	@NotNull
 	private String ruleName;
 
+	@Column(name = "CSP")
+	@NotNull
+	@Size(max = 16)
+	private String csp;
+
 	@Builder
 	public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
-		String targetFileName, String appType, String scanResult, String line, String code, String resource, String resourceName,String ruleName) {
+		String targetFileName, String appType, String scanResult, String line, String code, String resource,
+		String resourceName, String ruleName, String csp) {
 		this.scanHistory = scanHistory;
 		this.checkType = checkType;
 		this.targetFileName = targetFileName;
@@ -74,6 +81,7 @@ public class ScanHistoryDetail extends BaseEntity {
 		this.resource = resource;
 		this.resourceName = resourceName;
 		this.ruleName = ruleName;
+		this.csp = csp;
 		scanHistory.getScanDetails().add(this);
 	}
 }
