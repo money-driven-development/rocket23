@@ -30,6 +30,8 @@ public enum ResponseCode {
 	INVALID_TEAM(4701, HttpStatus.BAD_REQUEST, "Invalid Team."),
 	INVALID_USER_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid user in this team."),
 	INVALID_PROJECT_IN_TEAM(4703, HttpStatus.BAD_REQUEST, "Invalid project in this team."),
+	INVALID_POLICY_IN_TEAM(4704, HttpStatus.BAD_REQUEST, "Invalid policy in this team."),
+	INVALID_POLICY_SET_IN_TEAM(4705, HttpStatus.BAD_REQUEST, "Invalid policy set in this team."),
 
 	/* Server Error. */
 	SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),

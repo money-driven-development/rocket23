@@ -1,10 +1,9 @@
 package com.initcloud.rocket23.infra.repository;
 
+import com.initcloud.rocket23.policy.entity.BasePolicy;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.initcloud.rocket23.role.entity.UserAuthorityOfRole;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserAuthorityOfRoleRepository extends JpaRepository<UserAuthorityOfRole, Long> {
+public interface BasePolicyRepository extends JpaRepository<BasePolicy, Long> {
 }

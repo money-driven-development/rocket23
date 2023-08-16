@@ -2,6 +2,7 @@ package com.initcloud.rocket23.team.entity;
 
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.policy.entity.PolicySet;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.enums.ProjectType;
 import lombok.AccessLevel;
@@ -46,6 +47,10 @@ public class TeamProject extends BaseEntity {
 
     @OneToMany(mappedBy = "project")
     private List<TeamProjectVersioning> versions = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "projects")
+    @JoinTable(name = "POLICY_SET_PER_PROJECT")
+    private List<PolicySet> policySets = new ArrayList<>();
 
 
     @Builder(builderClassName = "teamProjectBuilder", builderMethodName = "teamProjectCreateBuilder")
