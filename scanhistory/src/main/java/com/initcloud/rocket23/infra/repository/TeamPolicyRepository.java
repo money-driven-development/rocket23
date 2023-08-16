@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
     Page<TeamPolicy> findTeamPoliciesByTeam_TeamCode(Pageable pageable, String teamCode);
+
     List<TeamPolicy> findTeamPoliciesByTeam_TeamCode(String teamCode);
 
     List<TeamPolicy> findTeamPoliciesByTeamAndPolicyNameIn(Team team, List<String> policyNames);
