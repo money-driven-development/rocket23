@@ -20,5 +20,7 @@ public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
     Optional<TeamPolicy> findTeamPolicyByTeam_TeamCodeAndBasePolicyName(String teamCode, String basePolicyName);
 
+    Optional<TeamPolicy> findTeamPolicyByTeam_TeamCodeAndBaseFalseAndModifiableTrueAndBasePolicyName(String teamCode, String basePolicyName);
+
     void deleteTeamPolicyByBaseFalseAndTeam_TeamCodeAndPolicyName(String teamCode, String policyName);
 }
