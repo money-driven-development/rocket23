@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.checklist.dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class ScanResultDto {
 	private Integer passed;
 	private Integer failed;
 	private Integer skipped;
+	private LocalDateTime created;
 	private List<Detail> scanResultDetailList = new ArrayList<>();
 
 	@Builder
@@ -37,6 +39,7 @@ public class ScanResultDto {
 		this.passed = scanHistory.getPassed();
 		this.failed = scanHistory.getFailed();
 		this.skipped = scanHistory.getSkipped();
+		this.created = scanHistory.getCreatedAt();
 		//todo 좀더 이쁘게 dto를 처리하는 방법...
 		if (scanHistoryDetails != null) {
 			this.scanResultDetailList.addAll(scanHistoryDetails.stream()
