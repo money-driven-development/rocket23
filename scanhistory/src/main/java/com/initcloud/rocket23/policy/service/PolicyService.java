@@ -83,7 +83,7 @@ public class PolicyService {
      */
     @Transactional
     public String modifyTeamPolicy(final String teamCode, final String policyName, final PolicyDto.Create dto) {
-        TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndBaseFalseAndModifiableTrueAndBasePolicyName(teamCode, policyName)
+        TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndOriginFalseAndModifiableTrueAndBasePolicyName(teamCode, policyName)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
         teamPolicyRepository.save(
@@ -97,7 +97,7 @@ public class PolicyService {
      * 팀 정책 삭제
      */
     public String deleteTeamPolicy(final String teamCode, final String policyName) {
-        teamPolicyRepository.deleteTeamPolicyByBaseFalseAndTeam_TeamCodeAndPolicyName(teamCode, policyName);
+        teamPolicyRepository.deleteTeamPolicyByOriginFalseAndTeam_TeamCodeAndPolicyName(teamCode, policyName);
 
         return policyName;
     }
@@ -160,7 +160,7 @@ public class PolicyService {
     /**
      * 팀 정책 셋 삭제
      */
-    public boolean deleteTeamPolicySet(final String teamCode, final String policySet) {
-        return teamPolicySetRepository.deleteTeamPolicySetByTeam_TeamCodeAndName(teamCode, policySet);
+    public void deleteTeamPolicySet(final String teamCode, final String policySet) {
+        teamPolicySetRepository.deleteTeamPolicySetByTeam_TeamCodeAndName(teamCode, policySet);
     }
 }

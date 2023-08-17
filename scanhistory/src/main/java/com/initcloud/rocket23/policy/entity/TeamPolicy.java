@@ -48,11 +48,11 @@ public class TeamPolicy extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Policy.Target policyTarget;
 
-    @Column(updatable = false)
-    private boolean isBase;
+    @Column(name = "IS_BASE_POLICY", updatable = false)
+    private boolean origin;
 
     @Column(updatable = false)
-    private boolean isModifiable;
+    private boolean modifiable;
 
     @Column
     private String memo;
@@ -76,7 +76,7 @@ public class TeamPolicy extends BaseEntity {
     private List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
 
     @Builder(builderClassName = "policyBuilder", builderMethodName = "policyCreateBuilder")
-    public TeamPolicy(Team team, BasePolicy basePolicy, String policyName, String basePolicyName, Policy.Provider policyProvider, Policy.Type policyType, Policy.Target policyTarget, boolean isBasePolicy, boolean isModifiable, String memo, String insecureExample, String secureExample, String code, String customDetails) {
+    public TeamPolicy(Team team, BasePolicy basePolicy, String policyName, String basePolicyName, Policy.Provider policyProvider, Policy.Type policyType, Policy.Target policyTarget, boolean isOrigin, boolean isModifiable, String memo, String insecureExample, String secureExample, String code, String customDetails) {
         this.team = team;
         this.basePolicy = basePolicy;
         this.policyName = policyName;
@@ -84,8 +84,8 @@ public class TeamPolicy extends BaseEntity {
         this.policyProvider = policyProvider;
         this.policyType = policyType;
         this.policyTarget = policyTarget;
-        this.isBase = isBasePolicy;
-        this.isModifiable = isModifiable;
+        this.origin = isOrigin;
+        this.modifiable = isModifiable;
         this.memo = memo;
         this.insecureExample = insecureExample;
         this.secureExample = secureExample;

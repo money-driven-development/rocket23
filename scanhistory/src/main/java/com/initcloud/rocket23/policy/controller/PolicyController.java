@@ -156,13 +156,13 @@ public class PolicyController {
             @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "policySet", paramType = "path", value = "Unique policy set name", required = true, dataTypeClass = String.class)})
     @DeleteMapping("/{teamCode}/policysets/{policySet}")
-    public ResponseDto<Boolean> policySetRemove(
+    public ResponseDto policySetRemove(
             @PathVariable String teamCode,
             @PathVariable String policySet
     ) {
-        boolean response = policyService.deleteTeamPolicySet(teamCode, policySet);
+        policyService.deleteTeamPolicySet(teamCode, policySet);
 
-        return new ResponseDto<>(response);
+        return new ResponseDto<>(null);
     }
 }
 

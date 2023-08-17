@@ -11,5 +11,5 @@ public interface TeamPolicySetRepository extends JpaRepository<PolicySet,Long> {
 
     Optional<PolicySet> findPolicySetByTeam_TeamCodeAndName(String teamCode, String name);
 
-    boolean deleteTeamPolicySetByTeam_TeamCodeAndName(String teamCode, String name);
+    void deleteTeamPolicySetByTeam_TeamCodeAndName(String teamCode, String name);
 }
