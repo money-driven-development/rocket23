@@ -5,6 +5,9 @@ import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.dto.ResponseDto;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -14,8 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@ApiOperation("Scan History API")
 @RestController
-@RequestMapping("/rocket23/")
+@RequestMapping("/history/")
 @RequiredArgsConstructor
 public class ScanHistoryController {
 
@@ -26,6 +30,13 @@ public class ScanHistoryController {
 	/*
 		단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
 	 */
+
+	@ApiOperation(value = "Get a scan-history", notes = "Retrieve a scan-history.", response = ResponseDto.class)
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "hashCode", paramType = "path", value = "History unique code", required = true, dataTypeClass = String.class)})
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}")
 	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") String teamCode,
 		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
@@ -36,6 +47,12 @@ public class ScanHistoryController {
 	/*
 		단일 스캔 이력 Pagination
 	 */
+	@ApiOperation(value = "Get paged scan-history list", notes = "Retrieve paged scan-history list.", response = ResponseDto.class)
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "pageable", paramType = "query", value = "paging value", required = true, dataTypeClass = Pageable.class)})
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history")
 	public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(@PathVariable("teamCode") String teamCode,
 		@PathVariable("projectCode")
@@ -47,6 +64,12 @@ public class ScanHistoryController {
 	/*
 		단일 스캔 실패 내역에 대한 조회
 	 */
+	@ApiOperation(value = "Get a failed-scan-history", notes = "Retrieve a failed-scan-history.", response = ResponseDto.class)
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "hashCode", paramType = "path", value = "History unique code", required = true, dataTypeClass = String.class)})
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}/fail")
 	public ResponseDto<ScanFailDetailDto> getScanFailDeatil(@PathVariable("teamCode") String teamCode,
 		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {

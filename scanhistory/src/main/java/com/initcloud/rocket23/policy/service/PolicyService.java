@@ -82,8 +82,8 @@ public class PolicyService {
      * 팀 정책 수정
      */
     @Transactional
-    public String modifyTeamPolicy(final String teamCode, final PolicyDto.Create dto) {
-        TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndBaseFalseAndModifiableTrueAndBasePolicyName(teamCode, dto.getBasePolicyName())
+    public String modifyTeamPolicy(final String teamCode, final String policyName, final PolicyDto.Create dto) {
+        TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndBaseFalseAndModifiableTrueAndBasePolicyName(teamCode, policyName)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
         teamPolicyRepository.save(
