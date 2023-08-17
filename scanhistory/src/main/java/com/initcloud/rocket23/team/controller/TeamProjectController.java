@@ -18,7 +18,7 @@ import com.initcloud.rocket23.common.dto.ResponseDto;
 @RequestMapping("/team")
 public class TeamProjectController {
 
-    private TeamProjectService teamProjectService;
+    private final TeamProjectService teamProjectService;
 
     /**
      * 프로젝트 목록 조회
