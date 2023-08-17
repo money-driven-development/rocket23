@@ -34,6 +34,16 @@ public class ScanHistoryController {
 	}
 
 	/*
+		단일 스캔 전체 내역 조회
+	 */
+	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}/total")
+	public ResponseDto<ScanResultDto> getScanHistoryTotal(@PathVariable("teamCode") String teamCode,
+		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
+		ScanResultDto dto = scanHistoryService.getScanHistoryTotal(teamCode, projectCode, hashCode);
+		return new ResponseDto<>(dto);
+	}
+
+	/*
 		단일 스캔 이력 Pagination
 	 */
 	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history")

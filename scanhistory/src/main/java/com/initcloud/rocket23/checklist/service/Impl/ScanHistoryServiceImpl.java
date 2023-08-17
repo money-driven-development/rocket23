@@ -37,7 +37,24 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
 		ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
 			teamCode,
 			projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
-		return new ScanResultDto(scanHistory);
+		return ScanResultDto.builder()
+			.scanHistory(scanHistory)
+			.build();
+	}
+
+	/*
+		단일 스캔 전체 내역 조회
+	 */
+	@Override
+	public ScanResultDto getScanHistoryTotal(String teamCode, String projectCode, String hashCode) {
+		ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
+			teamCode, projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
+		List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails();
+
+		return ScanResultDto.builder()
+			.scanHistory(scanHistory)
+			.scanHistoryDetails(scanHistoryDetails)
+			.build();
 	}
 
 	/*

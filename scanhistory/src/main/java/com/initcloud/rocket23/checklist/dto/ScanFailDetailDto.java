@@ -18,7 +18,7 @@ public class ScanFailDetailDto {
 	private int low;
 	private int medium;
 	private int unknown;
-	private List<FailResource> failResourceList;
+	private List<FailResource> failResourceList = new ArrayList<>();
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -39,7 +39,6 @@ public class ScanFailDetailDto {
 		this.low = scanHistory.getLow();
 		this.medium = scanHistory.getMedium();
 		this.unknown = scanHistory.getUnknown();
-		this.failResourceList = new ArrayList<>();
 		failResourceList.addAll(scanHistoryDetails.stream()
 			.map(detail -> new FailResource(detail.getRuleName(), detail.getResource(), detail.getResourceName()))
 			.collect(Collectors.toList()));
