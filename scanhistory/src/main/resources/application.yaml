@@ -1,12 +1,16 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: ${SPRING_DATASOURCE_URL}
-    username: ${MARIA_DB_ID}
-    password: ${MARIA_DB_PASSWORD}
+    username: ${ROCKET_DB_ID}
+    password: ${ROCKET_DB_PASSWORD}
 
   jpa:
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
 
@@ -15,6 +19,4 @@ spring:
       pageable:
         default-page-size: 10
 
-  mvc:
-    pathmatch:
-      matching-strategy: ANT_PATH_MATCHER
+
