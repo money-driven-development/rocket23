@@ -1,31 +1,31 @@
 spring:
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${SPRING_DATASOURCE_URL}
     username: ${DBID}
     password: ${DBPW}
+
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
       location: ${filepath}
+
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDB10Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     show-sql: true
+
   profiles:
     active: dev, db-maria
+
   redis:
     host: ${REDIS_DATASOURCE_URL}
     port: ${REDIS_PORT}
-cloud:
-  aws:
-    stack:
-      auto: false
-    region:
-      static: ${S3region}
-    credentials:
-      accessKey: ${S3access}
-      secretKey: ${S3private}
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
