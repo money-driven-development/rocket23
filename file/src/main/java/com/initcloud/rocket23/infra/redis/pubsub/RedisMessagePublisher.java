@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.redis.pubsub;
+package com.initcloud.rocket23.infra.redis.pubsub;
 
 import org.redisson.api.RTopic;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
-import com.initcloud.rocket23.file.dto.RedisFileDto;
+import com.initcloud.rocket23.project.dto.RedisFileDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

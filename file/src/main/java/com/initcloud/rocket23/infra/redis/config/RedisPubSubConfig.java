@@ -1,13 +1,11 @@
-package com.initcloud.rocket23.redis.config;
+package com.initcloud.rocket23.infra.redis.config;
 
+import com.initcloud.rocket23.infra.redis.enums.Channels;
+import lombok.RequiredArgsConstructor;
 import org.redisson.api.RTopic;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.initcloud.rocket23.redis.enums.Channels;
-
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor

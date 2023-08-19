@@ -1,4 +1,17 @@
-package com.initcloud.rocket23.github.service;
+package com.initcloud.rocket23.project.service;
+
+import com.initcloud.rocket23.common.client.GithubFeignClient;
+import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.rocket23.infra.redis.pubsub.RedisMessagePublisher;
+import com.initcloud.rocket23.project.dto.GithubDto;
+import com.initcloud.rocket23.project.dto.RedisFileDto;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,30 +21,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import com.initcloud.rocket23.common.client.GithubFeignClient;
-import com.initcloud.rocket23.common.enums.ResponseCode;
-import com.initcloud.rocket23.common.exception.ApiException;
-import com.initcloud.rocket23.file.dto.RedisFileDto;
-import com.initcloud.rocket23.github.dto.GithubDto;
-import com.initcloud.rocket23.github.entity.GithubEntity;
-import com.initcloud.rocket23.github.repository.GithubRepository;
-import com.initcloud.rocket23.redis.pubsub.RedisMessagePublisher;
-
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class GithubService {
 
 	private final GithubFeignClient githubFeignClient;
 	private final RedisMessagePublisher redisMessagePublisher;
-	private final GithubRepository githubRepository;
 	private final Environment env;
 
 	public List<GithubDto.RepositoryInfo> getRepositories(@NonNull String user) {
@@ -44,12 +39,7 @@ public class GithubService {
 
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
-
-		GithubEntity githubEntity = file.convertToEntity();
-
-		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(githubEntity.getUuid()));
-		githubRepository.save(githubEntity);
-
+		redisMessagePublisher.publishFileMessage(new RedisFileDto(repo));
 		return file;
 	}
 

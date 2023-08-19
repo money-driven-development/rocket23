@@ -1,7 +1,6 @@
-package com.initcloud.rocket23.file.dto;
+package com.initcloud.rocket23.project.dto;
 
-import com.initcloud.rocket23.file.entity.FileEntity;
-import com.initcloud.rocket23.file.enums.ServerType;
+import com.initcloud.rocket23.project.enums.ServerType;
 
 import lombok.*;
 
@@ -26,16 +25,6 @@ public class FileDto {
 	public static FileDto toDto(String name, String uuid, String path, ServerType serverType) {
 		return FileDto.builder()
 			.fileName(name)
-			.uuid(uuid)
-			.path(path)
-			.serverType(serverType)
-			.build();
-	}
-
-	public FileEntity toEntity() {
-		return FileEntity.builder()
-			.id(id)
-			.fileName(fileName)
 			.uuid(uuid)
 			.path(path)
 			.serverType(serverType)

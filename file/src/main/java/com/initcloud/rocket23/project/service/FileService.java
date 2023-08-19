@@ -1,11 +1,10 @@
-package com.initcloud.rocket23.file.service;
+package com.initcloud.rocket23.project.service;
+
+import com.initcloud.rocket23.project.enums.ServerType;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
-
-import org.springframework.web.multipart.MultipartFile;
-
-import com.initcloud.rocket23.file.enums.ServerType;
 
 public interface FileService {
 	void init(Path path);

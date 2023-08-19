@@ -1,17 +1,12 @@
-package com.initcloud.rocket23.file.service.Impl;
+package com.initcloud.rocket23.project.service.Impl;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
-import com.initcloud.rocket23.file.dto.FileDto;
-import com.initcloud.rocket23.file.dto.RedisFileDto;
-import com.initcloud.rocket23.file.entity.FileEntity;
-import com.initcloud.rocket23.file.enums.ServerType;
-import com.initcloud.rocket23.file.repository.FileRepository;
-import com.initcloud.rocket23.file.service.FileService;
-import com.initcloud.rocket23.redis.pubsub.RedisMessagePublisher;
-
+import com.initcloud.rocket23.project.dto.RedisFileDto;
+import com.initcloud.rocket23.project.enums.ServerType;
+import com.initcloud.rocket23.project.service.FileService;
+import com.initcloud.rocket23.infra.redis.pubsub.RedisMessagePublisher;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +27,6 @@ import java.util.zip.ZipInputStream;
 @Service
 public class FileServiceImpl implements FileService {
 
-	private final FileRepository fileRepository;
 	private final RedisMessagePublisher redisMessagePublisher;
 
 	private String check = "zip";
@@ -118,10 +112,9 @@ public class FileServiceImpl implements FileService {
 	 */
 	@Override
 	public void save(MultipartFile file, ServerType type, String uploadPath) {
-		String name = file.getOriginalFilename();
-		String uuid = UUID.randomUUID().toString();
-		fileRepository.save(new FileEntity(name, uuid, uploadPath, type));
-		redisMessagePublisher.publishFileMessage(RedisFileDto.toDto(uuid));
+		redisMessagePublisher.publishFileMessage(
+				new RedisFileDto(file.getOriginalFilename())
+		);
 	}
 
 	/**

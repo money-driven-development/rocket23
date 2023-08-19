@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.file.enums;
+package com.initcloud.rocket23.project.enums;
 
 /**
  * Server type에 대한 enum 클래스
