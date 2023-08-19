@@ -1,23 +1,17 @@
 package com.initcloud.rocket23.github.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.github.dto.GithubDto;
 import com.initcloud.rocket23.github.service.GithubService;
-
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApiOperation("Github access")
 @RestController
@@ -54,7 +48,6 @@ public class GithubController {
 		return new ResponseDto<>(dtos);
 	}
 
-	@Deprecated(forRemoval = false)
 	@ApiOperation(value = "Download Blobs", notes = "Download zip files from Github repository, branch.", response = ResponseDto.class)
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
