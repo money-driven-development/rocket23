@@ -1,15 +1,9 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${DBID}
-    password: ${DBPW}
-
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-      location: ${filepath}
+      location: ${UPLOAD_PATH:./nas}
 
   jpa:
     properties:
@@ -20,12 +14,3 @@ spring:
 
   profiles:
     active: dev, db-maria
-
-  redis:
-    host: ${REDIS_DATASOURCE_URL}
-    port: ${REDIS_PORT}
-
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
