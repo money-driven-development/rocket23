@@ -43,7 +43,7 @@ public class GithubService {
 		return file;
 	}
 
-	public void saveZipFileFromResponse(ResponseEntity<Resource> responseEntity, Path targetPath) throws IOException {
+	public void saveZipFileFromResponse(ResponseEntity<Resource> responseEntity, Path targetPath, String repo) throws IOException {
 		Resource zipResource = responseEntity.getBody();
 
 		if (zipResource != null) {
@@ -51,6 +51,8 @@ public class GithubService {
 				Files.copy(inputStream, targetPath.resolve("downloaded.zip"), StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
+
+		redisMessagePublisher.publishFileMessage(new RedisFileDto(repo));
 	}
 
 	public void getZip(String user, String repo) {
@@ -59,7 +61,7 @@ public class GithubService {
 
 		try {
 			Path targetPath = Paths.get(targetPathStr);
-			saveZipFileFromResponse(responseEntity, targetPath);
+			saveZipFileFromResponse(responseEntity, targetPath, repo);
 
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);

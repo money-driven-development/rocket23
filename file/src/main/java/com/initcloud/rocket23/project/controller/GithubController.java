@@ -40,7 +40,7 @@ public class GithubController {
 	}
 
 	@GetMapping("/repos/{user}/{repo}/git/blobs/{hash}")
-	public ResponseDto<?> gitFiles(
+	public ResponseDto<GithubDto.File> gitFiles(
             @PathVariable("user") String user,
             @PathVariable("repo") String repo,
 		    @PathVariable("hash") String hash,
@@ -53,7 +53,10 @@ public class GithubController {
 
 
 	@GetMapping("/repos/{user}/{repo}/zipball")
-	public ResponseDto<?> getZip(@PathVariable("user") String user, @PathVariable("repo") String repo) {
+	public ResponseDto getZip(
+			@PathVariable("user") String user,
+			@PathVariable("repo") String repo
+	) {
 		githubService.getZip(user, repo);
 		return new ResponseDto<>(null);
 	}
