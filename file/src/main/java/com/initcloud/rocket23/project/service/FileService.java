@@ -7,15 +7,15 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface FileService {
-	void init(Path path);
+    void init(Path path);
 
-	//Local 저장
-	void store(MultipartFile file);
+    //Local 저장
+    void store(MultipartFile file);
 
-	void storeFile(MultipartFile file, Path path,boolean check) throws IOException;
+    void storeFile(MultipartFile file, Path path, String uuid, boolean check) throws IOException;
 
-	void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
+    void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
-	//DB 저장
-	void save(MultipartFile file, ServerType type, String uploadPath);
+    //DB 저장
+    void save(MultipartFile file, ServerType type, String uuid, String uploadPath);
 }

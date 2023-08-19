@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +40,14 @@ public class GithubService {
 
 	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
 		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
-		redisMessagePublisher.publishFileMessage(new RedisFileDto(repo));
+		String uuid = UUID.randomUUID().toString();
+		redisMessagePublisher.publishFileMessage(new RedisFileDto(uuid, repo));
 		return file;
 	}
 
 	public void saveZipFileFromResponse(ResponseEntity<Resource> responseEntity, Path targetPath, String repo) throws IOException {
 		Resource zipResource = responseEntity.getBody();
+		String uuid = UUID.randomUUID().toString();
 
 		if (zipResource != null) {
 			try (InputStream inputStream = zipResource.getInputStream()) {
@@ -52,7 +55,7 @@ public class GithubService {
 			}
 		}
 
-		redisMessagePublisher.publishFileMessage(new RedisFileDto(repo));
+		redisMessagePublisher.publishFileMessage(new RedisFileDto(uuid, repo));
 	}
 
 	public void getZip(String user, String repo) {

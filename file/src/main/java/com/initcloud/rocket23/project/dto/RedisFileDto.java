@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -24,12 +23,6 @@ public class RedisFileDto {
 
 	public RedisFileDto(String uuid, String originName) {
 		this.uuid = uuid;
-		this.originName = originName;
-		this.createdAt = LocalDateTime.now();
-	}
-
-	public RedisFileDto(String originName) {
-		this.uuid = UUID.randomUUID().toString();
 		this.originName = originName;
 		this.createdAt = LocalDateTime.now();
 	}
