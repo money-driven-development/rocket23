@@ -19,6 +19,7 @@ public class TeamProjectVersioning {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "VERSION_ID")
     private Long id;
 
     /**

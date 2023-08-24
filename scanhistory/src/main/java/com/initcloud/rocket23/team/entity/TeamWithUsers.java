@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class TeamWithUsers extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TEAM_WITH_USER_ID")
     private Long id;
 
     @Column

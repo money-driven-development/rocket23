@@ -1,22 +1,19 @@
 package com.initcloud.rocket23.user.entity;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-
+import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.user.enums.AuthProvider;
 import com.initcloud.rocket23.user.enums.UserState;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.initcloud.rocket23.common.entity.BaseEntity;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Getter
 @Entity
@@ -25,6 +22,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID")
     private Long id;
 
     @Column
