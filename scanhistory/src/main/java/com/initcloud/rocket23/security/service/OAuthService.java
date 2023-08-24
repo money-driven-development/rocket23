@@ -7,6 +7,7 @@ import com.initcloud.rocket23.security.config.SecurityProperties;
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.security.dto.Token;
 import com.initcloud.rocket23.security.facade.OAuthRequestFacade;
+import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import com.initcloud.rocket23.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,21 +20,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class OAuthService implements AuthService {
+public class OAuthService {
 
     private final UserRepository userRepository;
     private final OAuthRequestFacade oauthRequestFacade;
     private final SecurityProperties properties;
-
-    @Override
-    public Token getUserAccessToken(String code) {
-        String tokenResponse = oauthRequestFacade.requestGithubOAuthToken(code);
-        OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(tokenResponse);
-
-        User user = getUserIfExist(userDetail);
-
-        return oauthRequestFacade.createSocialUserToken(user.getUsername());
-    }
 
     public void redirectGithub(HttpServletResponse response, String redirect) {
         try {
@@ -42,6 +33,15 @@ public class OAuthService implements AuthService {
         } catch (IOException e) {
             throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
         }
+    }
+
+    public Token getUserAccessToken(AuthRequestDto code) {
+        String tokenResponse = oauthRequestFacade.requestGithubOAuthToken(code.getCode());
+        OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(tokenResponse);
+
+        User user = getUserIfExist(userDetail);
+
+        return oauthRequestFacade.createSocialUserToken(user.getUsername());
     }
 
     /**
@@ -67,6 +67,5 @@ public class OAuthService implements AuthService {
 
         return socialUser;
     }
-
 
 }
