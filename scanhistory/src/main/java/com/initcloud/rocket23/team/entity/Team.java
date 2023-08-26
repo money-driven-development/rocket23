@@ -2,6 +2,8 @@ package com.initcloud.rocket23.team.entity;
 
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.common.utils.UniqueUtils;
+import com.initcloud.rocket23.team.dto.TeamDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +38,11 @@ public class Team extends BaseEntity {
 		this.teamCode = teamCode;
 		this.name = name;
 		this.logoUri = logoUri;
+	}
+
+	public Team(final TeamDto team) {
+		this.teamCode = UniqueUtils.getUUID();
+		this.name = team.getTeamName();
+		this.logoUri = team.getLogoUri();
 	}
 }
