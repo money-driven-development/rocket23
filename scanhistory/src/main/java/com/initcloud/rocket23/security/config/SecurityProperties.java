@@ -31,6 +31,18 @@ public class SecurityProperties {
 	@Getter
 	private String redirectUri;
 
+	@Getter
+	private String githubAppId;
+
+	@Getter
+	private String githubAppSecret;
+
+	@Getter
+	private String githubPrivKeyPath;
+
+	@Getter
+	private String tmpToken;
+
 	@PostConstruct
 	public void initSecurityProperties() {
 		this.secret = environment.getProperty("JWT_SECRET");
@@ -38,6 +50,12 @@ public class SecurityProperties {
 		this.githubClientSecret = environment.getProperty("GITHUB_CLIENT_SECRET");
 		this.githubRedirectUri = environment.getProperty("GITHUB_CALLBACK");
 		this.redirectUri = environment.getProperty("REDIRECT_URI");
+
+		this.githubAppId = environment.getProperty("GITHUB_APP_CLIENT_ID");
+		this.githubAppSecret = environment.getProperty("GITHUB_APP_CLIENT_SECRET");
+		this.githubPrivKeyPath = environment.getProperty("GITHUB_APP_KEY_PATH");
+
+		this.tmpToken = environment.getProperty("TMP_TOKEN");
 		log.info("[PROPERTIES] initialized.");
 	}
 }

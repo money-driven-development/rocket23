@@ -72,7 +72,13 @@ public class TeamProjectDto {
         }
 
         public TeamProject toCreateEntity(Team team) {
-            return TeamProject.teamProjectCreateBuilder().team(team).projectCode(UniqueUtils.getUUID()).projectType(this.projectType).projectUrl(this.projectUrl).projectName(this.projectName).build();
+            return TeamProject.teamProjectCreateBuilder()
+                    .team(team)
+                    .projectCode(UniqueUtils.getUUID())
+                    .projectType(this.projectType)
+                    .projectUrl(this.projectUrl)
+                    .projectName(this.projectName)
+                    .build();
         }
     }
 

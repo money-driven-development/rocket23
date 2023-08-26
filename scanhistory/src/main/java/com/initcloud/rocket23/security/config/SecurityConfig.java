@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth/**", "/demo/**", "/rocket/**").permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();

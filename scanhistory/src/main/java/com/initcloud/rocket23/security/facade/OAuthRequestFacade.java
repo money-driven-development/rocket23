@@ -48,7 +48,7 @@ public class OAuthRequestFacade {
      * @return user detail in OAuthDto.GithubUserDetail
      */
     public OAuthDto.GithubUserDetail requestGithubUserDetail(String accessToken) {
-        return infoFeignClient.requestGithubUserDetail("Bearer " + accessToken.split("=")[1]);
+        return infoFeignClient.getGithubUserDetail("Bearer " + accessToken.split("=")[1]);
     }
 
     /**
