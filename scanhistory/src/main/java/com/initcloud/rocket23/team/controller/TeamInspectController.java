@@ -19,7 +19,7 @@ import com.initcloud.rocket23.common.dto.ResponseDto;
 @ApiOperation("Team Inspect API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/team")
+@RequestMapping("/rocket/team")
 public class TeamInspectController {
 
     private final TeamInspectService teamInspectService;

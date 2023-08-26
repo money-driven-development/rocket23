@@ -13,6 +13,7 @@ import com.initcloud.rocket23.common.dto.ResponseDto;
 
 import javax.servlet.http.HttpServletResponse;
 
+@ApiOperation("Auth (Login/Register)")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor

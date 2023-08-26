@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -19,4 +20,6 @@ public interface TeamWithUsersRepository extends JpaRepository<TeamWithUsers, Lo
 
     Optional<TeamWithUsers> findTeamWithUsersByTeam(Team team);
     Optional<TeamWithUsers> findTeamWithUsersByTeamAndUser(Team team, User user);
+
+    List<TeamWithUsers> findTeamWithUsersByUser(User user);
 }

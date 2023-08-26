@@ -15,7 +15,7 @@ import com.initcloud.rocket23.common.dto.ResponseDto;
 @ApiOperation("Team Project API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/team")
+@RequestMapping("/rocket/team")
 public class TeamProjectController {
 
     private final TeamProjectService teamProjectService;

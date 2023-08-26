@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @ApiOperation("Scan History API")
 @RestController
-@RequestMapping("/history/")
+@RequestMapping("/rocket/history/")
 @RequiredArgsConstructor
 public class ScanHistoryController {
 

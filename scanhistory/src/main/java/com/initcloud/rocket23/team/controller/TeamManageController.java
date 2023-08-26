@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.team.controller;
 
+import com.initcloud.rocket23.team.dto.TeamDto;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
 @ApiOperation("Team Manage API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/team")
+@RequestMapping("/rocket/team")
 public class TeamManageController {
 
     private final TeamManageService teamManageService;
@@ -81,6 +82,22 @@ public class TeamManageController {
     // ===============================
     // ========== 팀 정보 관리 ==========
     // ===============================
+
+    /**
+     * 팀 생성
+     */
+    @ApiOperation(value = "Remove team", notes = "Remove a team.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "request", paramType = "body", value = "Team Create Dto", required = true, dataTypeClass = TeamDto.class)})
+    @PostMapping("/")
+    public ResponseDto<String> teamRemove(
+            @RequestBody TeamDto request
+    ) {
+        String response = teamManageService.addTeam(request);
+
+        return new ResponseDto<>(response);
+    }
 
     /**
      * 팀 해체
