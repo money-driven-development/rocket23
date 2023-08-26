@@ -17,7 +17,7 @@ import java.util.List;
 @ApiOperation("Team Policy and Policy-set API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/team")
+@RequestMapping("/rocket/team")
 public class PolicyController {
 
     private final PolicyService policyService;
@@ -32,8 +32,8 @@ public class PolicyController {
             @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
     @GetMapping("/{teamCode}/policies")
     public ResponseDto<Page<PolicyDto.Summary>> teamPagedPolicies( // Todo 어떻게 표현할건지?
-                                                                   final Pageable pageable,
-                                                                   @PathVariable String teamCode
+            final Pageable pageable,
+            @PathVariable String teamCode
     ) {
         Page<PolicyDto.Summary> response = policyService.getPagedTeamPolicyList(pageable, teamCode);
 
@@ -46,7 +46,7 @@ public class PolicyController {
             @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
     @GetMapping("/{teamCode}/policies/all")
     public ResponseDto<List<PolicyDto.Summary>> teamPolicies( // Todo 어떻게 표현할건지?
-                                                              @PathVariable String teamCode
+            @PathVariable String teamCode
     ) {
         List<PolicyDto.Summary> response = policyService.getTeamPolicyList(teamCode);
 
@@ -117,6 +117,20 @@ public class PolicyController {
     /**
      * ===== Team PolicySet =====
      */
+
+    @ApiOperation(value = "Get policy-set List", notes = "Show policy-set List.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @GetMapping("/{teamCode}/policysets")
+    public ResponseDto<List<String>> policySetList(
+            @PathVariable String teamCode
+    ) {
+        List<String> response = policyService.getTeamPolicySetList(teamCode);
+
+        return new ResponseDto<>(response);
+    }
+
 
     @ApiOperation(value = "Add a policy set", notes = "Add a policy set.", response = ResponseDto.class)
     @ApiImplicitParams({

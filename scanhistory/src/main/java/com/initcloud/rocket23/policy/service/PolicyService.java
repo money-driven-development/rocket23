@@ -102,6 +102,19 @@ public class PolicyService {
         return policyName;
     }
 
+    /* ========== 팀 정책 셋 ========== */
+
+    /**
+     * 팀 정책 셋 목록 조회
+     */
+    public List<String> getTeamPolicySetList(final String teamCode) {
+        List<PolicySet> policySets = teamPolicySetRepository.findPolicySetByTeam_TeamCode(teamCode);
+
+        return policySets.stream()
+                .map(PolicySet::getName)
+                .collect(Collectors.toList());
+    }
+
     /**
      * 팀 정책 셋 추가
      * Todo - 리팩토링 예정
