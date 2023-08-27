@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.team.controller;
 
+import com.initcloud.rocket23.team.dto.TeamProjectCreateDto;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.service.TeamProjectService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -61,11 +62,11 @@ public class TeamProjectController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "request", paramType = "body", value = "Create-Project Info", readOnly = true, dataTypeClass = TeamProjectDto.Create.class)})
+            @ApiImplicitParam(name = "request", paramType = "body", value = "Create-Project Info", readOnly = true, dataTypeClass = TeamProjectCreateDto.class)})
     @PostMapping("/{teamCode}/projects")
     public ResponseDto<String> projectAdd(
             @PathVariable String teamCode,
-            @RequestBody TeamProjectDto.Create request
+            @RequestBody TeamProjectCreateDto request
     ) {
         String response = teamProjectService.createTeamProject(teamCode, request);
 

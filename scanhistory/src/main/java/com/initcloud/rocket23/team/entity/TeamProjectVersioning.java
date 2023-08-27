@@ -26,7 +26,7 @@ public class TeamProjectVersioning {
      * 버저닝 대상 프로젝트
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "PROJECT_ID")
     private TeamProject project;
 
     /**

@@ -1,7 +1,5 @@
 package com.initcloud.rocket23.team.dto;
 
-import com.initcloud.rocket23.common.utils.UniqueUtils;
-import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import com.initcloud.rocket23.team.entity.TeamProjectVersioning;
 import com.initcloud.rocket23.team.enums.ProjectType;
@@ -10,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +21,14 @@ public class TeamProjectDto {
         private ProjectType projectType;
         private String projectCode;
         private String projectName;
+        private String description;
 
         @Builder
         public Summary(TeamProject teamProject) {
             this.projectType = teamProject.getProjectType();
             this.projectCode = teamProject.getProjectCode();
             this.projectName = teamProject.getProjectName();
+            this.description = "DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO.";
         }
     }
 
@@ -40,6 +39,7 @@ public class TeamProjectDto {
         private String projectCode;
         private String projectName;
         private String projectUrl;
+        private String description;
         private LocalDateTime recentScanDateTime;
         private List<TeamProjectDto.Version> versionHistory = new ArrayList<>();
 
@@ -51,34 +51,7 @@ public class TeamProjectDto {
             this.projectUrl = projectUrl;
             this.recentScanDateTime = recentScanDateTime;
             this.versionHistory = versionHistory;
-        }
-    }
-
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public class Create {
-        @NotNull
-        private String projectName;
-
-        @NotNull
-        private ProjectType projectType;
-
-        private String projectUrl;
-
-        public Create(final String projectName, final ProjectType projectType, final String projectUrl) {
-            this.projectName = projectName;
-            this.projectType = projectType;
-            this.projectUrl = projectUrl;
-        }
-
-        public TeamProject toCreateEntity(Team team) {
-            return TeamProject.teamProjectCreateBuilder()
-                    .team(team)
-                    .projectCode(UniqueUtils.getUUID())
-                    .projectType(this.projectType)
-                    .projectUrl(this.projectUrl)
-                    .projectName(this.projectName)
-                    .build();
+            this.description = "DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO.";
         }
     }
 

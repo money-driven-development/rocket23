@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @ApiOperation("Github Apps API")
 @RestController
@@ -33,11 +34,10 @@ public class TeamGithubProjectController {
     }
 
     @GetMapping("/{owner}")
-    public ResponseDto<GithubRepositoryDto> githubRepositoryList(
-            @PathVariable String owner,
-            @PathVariable String name
+    public ResponseDto<List<GithubRepositoryDto>> githubRepositoryList(
+            @PathVariable String owner
     ) {
-        GithubRepositoryDto response = appService.getRepository(owner, name);
+        List<GithubRepositoryDto> response = appService.getRepository(owner);
 
         return new ResponseDto<>(response);
     }

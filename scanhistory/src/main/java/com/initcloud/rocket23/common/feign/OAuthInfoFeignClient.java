@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,13 +26,13 @@ public interface OAuthInfoFeignClient {
     );
 
     @GetMapping(value = "/orgs/{owner}/repos")
-    GithubRepositoryDto getRepositoriesFromOrgs(
+    List<GithubRepositoryDto> getRepositoriesFromOrgs(
             @RequestHeader("Authorization") String token,
             @PathVariable String owner
     );
 
     @GetMapping(value = "/users/{owner}/repos")
-    GithubRepositoryDto getRepositoriesFromUsers(
+    List<GithubRepositoryDto> getRepositoriesFromUsers(
             @RequestHeader("Authorization") String token,
             @PathVariable String owner
     );

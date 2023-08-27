@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -53,14 +54,16 @@ public class GithubAppService {
         return getAccessTokenFromGithubApp(owner);
     }
 
-    public GithubRepositoryDto getRepository(String owner, String repoName) {
+    public List<GithubRepositoryDto> getRepository(String owner) {
         //String accessToken = getAccessTokenFromGithubApp(owner);
-        String accessToken = properties.getTmpToken();
-        GithubRepositoryDto apiResponse = githubApiFeignClient.getRepositoriesFromOrgs("Bearer " + accessToken, owner);
+        try {
+            String accessToken = properties.getTmpToken();
+            List<GithubRepositoryDto> apiResponse = githubApiFeignClient.getRepositoriesFromOrgs("Bearer " + accessToken, owner);
 
-        if(apiResponse.getMessage() != null)
             return apiResponse;
-
-        throw new ApiException(ResponseCode.INVALID_OWNER);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiException(ResponseCode.INVALID_OWNER);
+        }
     }
 }
