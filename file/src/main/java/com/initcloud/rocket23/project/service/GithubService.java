@@ -60,7 +60,7 @@ public class GithubService {
 
 	public void getZip(String user, String repo) {
 		ResponseEntity<Resource> responseEntity = githubFeignClient.getZipFiles(user, repo);
-		String targetPathStr = env.getProperty("CLIENT_PATH");
+		String targetPathStr = env.getProperty("UPLOAD_PATH");
 
 		try {
 			Path targetPath = Paths.get(targetPathStr);
