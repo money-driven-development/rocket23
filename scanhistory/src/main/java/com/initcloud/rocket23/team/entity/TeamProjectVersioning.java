@@ -19,13 +19,14 @@ public class TeamProjectVersioning {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "VERSION_ID")
     private Long id;
 
     /**
      * 버저닝 대상 프로젝트
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "PROJECT_ID")
     private TeamProject project;
 
     /**

@@ -41,8 +41,11 @@ public class PolicySet extends BaseEntity {
     /**
      * 이 정책 셋을 사용하는 프로젝트
      */
-    @ManyToMany(mappedBy = "policySets")
-    @JoinTable(name = "POLICY_SET_PER_PROJECT")
+    @ManyToMany
+    @JoinTable(name = "POLICY_SET_PER_PROJECT",
+            joinColumns = @JoinColumn(name = "PROJECT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "POLICY_SET_ID")
+    )
     private List<TeamProject> projects = new ArrayList<>();
 
     public PolicySet(Team team, String name, String description) {

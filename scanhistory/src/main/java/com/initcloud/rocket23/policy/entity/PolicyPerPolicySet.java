@@ -22,11 +22,11 @@ public class PolicyPerPolicySet extends BaseEntity {
     private PolicySet policySet;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private TeamPolicy policy;
+    @JoinColumn(name = "POLICY_ID")
+    private TeamPolicy teamPolicy;
 
-    public PolicyPerPolicySet(PolicySet policySet, TeamPolicy policy) {
+    public PolicyPerPolicySet(PolicySet policySet, TeamPolicy teamPolicy) {
         this.policySet = policySet;
-        this.policy = policy;
+        this.teamPolicy = teamPolicy;
     }
 }

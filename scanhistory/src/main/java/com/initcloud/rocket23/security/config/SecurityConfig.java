@@ -1,5 +1,8 @@
 package com.initcloud.rocket23.security.config;
 
+import com.initcloud.rocket23.security.entrypoint.TokenGlobalEntryPoint;
+import com.initcloud.rocket23.security.provider.JwtProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,13 +11,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.initcloud.rocket23.security.entrypoint.TokenGlobalEntryPoint;
-import com.initcloud.rocket23.security.filter.TokenAuthenticationFilter;
-import com.initcloud.rocket23.security.provider.JwtProvider;
-
-import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -32,16 +28,15 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .and()
                 .authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers("/auth/**", "/demo/**", "/rocket/**").permitAll()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(tokenGlobalEntryPoint)
-                .and()
-                .addFilterBefore(
-                        new TokenAuthenticationFilter(jwtProvider, securityProperties),
-                        UsernamePasswordAuthenticationFilter.class);
+                .authorizeRequests()
+                .anyRequest().authenticated();
 
         return http.build();
     }

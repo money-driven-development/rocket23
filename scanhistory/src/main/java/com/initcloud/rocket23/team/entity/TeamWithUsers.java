@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class TeamWithUsers extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TEAM_WITH_USER_ID")
     private Long id;
 
     @Column
@@ -28,11 +29,11 @@ public class TeamWithUsers extends BaseEntity {
     private String authorities;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     public TeamWithUsers(Long id, Boolean isAdmin, String roleType, String authorities, Team team, User user) {

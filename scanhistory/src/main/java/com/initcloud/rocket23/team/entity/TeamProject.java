@@ -23,10 +23,11 @@ public class TeamProject extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PROJECT_ID")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
 
     @Column
@@ -48,8 +49,11 @@ public class TeamProject extends BaseEntity {
     @OneToMany(mappedBy = "project")
     private List<TeamProjectVersioning> versions = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "projects")
-    @JoinTable(name = "POLICY_SET_PER_PROJECT")
+    @ManyToMany
+    @JoinTable(name = "POLICY_SET_PER_PROJECT",
+            joinColumns = @JoinColumn(name = "POLICY_SET_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PROJECT_ID")
+    )
     private List<PolicySet> policySets = new ArrayList<>();
 
 

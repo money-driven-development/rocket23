@@ -6,6 +6,7 @@ import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
 import com.initcloud.rocket23.infra.repository.TeamProjectRepository;
 import com.initcloud.rocket23.infra.repository.TeamProjectVersioningRepository;
 import com.initcloud.rocket23.infra.repository.TeamRepository;
+import com.initcloud.rocket23.team.dto.TeamProjectCreateDto;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
@@ -57,7 +58,7 @@ public class TeamProjectService {
      * [String] 팀 프로젝트 추가
      */
     @Transactional
-    public String createTeamProject(final String teamCode, final TeamProjectDto.Create request) {
+    public String createTeamProject(final String teamCode, final TeamProjectCreateDto request) {
 
         Team team = teamRepository.findByTeamCode(teamCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));

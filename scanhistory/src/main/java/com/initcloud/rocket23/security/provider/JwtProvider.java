@@ -1,29 +1,34 @@
 package com.initcloud.rocket23.security.provider;
 
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.exception.ApiAuthException;
+import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.rocket23.security.config.SecurityProperties;
+import com.initcloud.rocket23.security.dto.Token;
+import com.initcloud.rocket23.security.dto.UsernameToken;
+import com.initcloud.rocket23.security.service.CustomUserDetailsService;
+import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.initcloud.rocket23.common.enums.ResponseCode;
-import com.initcloud.rocket23.common.exception.ApiAuthException;
-import com.initcloud.rocket23.security.dto.Token;
-import com.initcloud.rocket23.security.dto.UsernameToken;
-import com.initcloud.rocket23.security.service.CustomUserDetailsService;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+import java.io.Reader;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.PrivateKey;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtProvider implements TokenProvider {
 
     private final CustomUserDetailsService userDetailsService;
+    private final SecurityProperties properties;
 
     public Token create(String username, String key) {
         Date now = new Date();
@@ -110,5 +116,47 @@ public class JwtProvider implements TokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token, key));
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public String createJwtToken() {
+        try {
+            // Load and parse private key
+            PrivateKey privateKey = loadPrivateKey();
+
+            // Create JWT token
+            Instant now = Instant.now();
+            Date expirationTime = Date.from(now.plus(Duration.ofMinutes(10)));
+            JwtBuilder jwtBuilder = Jwts.builder()
+                    .setIssuer(properties.getGithubAppId())
+                    .setIssuedAt(Date.from(now))
+                    .setExpiration(expirationTime)
+                    .signWith(SignatureAlgorithm.HS256, privateKey);
+
+            return jwtBuilder.compact();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiException(ResponseCode.DATA_MISSING);
+        }
+    }
+
+    private PrivateKey loadPrivateKey() throws Exception {
+        String privateKey = readKeyString();
+        Reader pemReader = new StringReader(privateKey);
+
+        PEMParser pemParser = new PEMParser(pemReader);
+        PEMKeyPair object = (PEMKeyPair)pemParser.readObject();
+        pemReader.close();
+
+        JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+        return converter.getKeyPair(object).getPrivate();
+    }
+
+    private String readKeyString() {
+        try {
+            byte[] encoded = Files.readAllBytes(Paths.get(properties.getGithubPrivKeyPath()));
+            return new String(encoded);
+        } catch (Exception e) {
+            throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
+        }
     }
 }

@@ -1,7 +1,11 @@
 package com.initcloud.rocket23.team.controller;
 
+import com.initcloud.rocket23.team.dto.TeamProjectCreateDto;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.service.TeamProjectService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,16 +13,22 @@ import org.springframework.web.bind.annotation.*;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
 
+@ApiOperation("Team Project API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/team")
+@RequestMapping("/rocket/team")
 public class TeamProjectController {
 
-    private TeamProjectService teamProjectService;
+    private final TeamProjectService teamProjectService;
 
     /**
      * 프로젝트 목록 조회
      */
+    @ApiOperation(value = "Get Project list with Page", notes = "Retrieve paged list of projects.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "pageable", paramType = "query", value = "paging value", required = true, dataTypeClass = Pageable.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
     @GetMapping("/{teamCode}/projects")
     public ResponseDto<Page<TeamProjectDto.Summary>> projectList(
             final Pageable pageable,
@@ -30,9 +40,14 @@ public class TeamProjectController {
     }
 
     /**
-     *  프로젝트 조회
-     *  프로젝트 별 대시보드 성격을 갖게 될 것임.
+     * 프로젝트 조회
+     * 프로젝트 별 대시보드 성격을 갖게 될 것임.
      */
+    @ApiOperation(value = "Get Project details", notes = "Retrieve a project.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class)})
     @GetMapping("/{teamCode}/projects/{projectCode}")
     public ResponseDto<TeamProjectDto.Details> projectDetails(
             @PathVariable String teamCode,
@@ -43,17 +58,27 @@ public class TeamProjectController {
         return new ResponseDto<>(response);
     }
 
+    @ApiOperation(value = "Add project", notes = "Add a project to team.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "request", paramType = "body", value = "Create-Project Info", readOnly = true, dataTypeClass = TeamProjectCreateDto.class)})
     @PostMapping("/{teamCode}/projects")
     public ResponseDto<String> projectAdd(
             @PathVariable String teamCode,
-            @RequestBody TeamProjectDto.Create request
+            @RequestBody TeamProjectCreateDto request
     ) {
         String response = teamProjectService.createTeamProject(teamCode, request);
 
         return new ResponseDto<>(response);
     }
 
-    @DeleteMapping("/{teamCode}/projects")
+    @ApiOperation(value = "Remove project", notes = "Remove a project from team.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class)})
+    @DeleteMapping("/{teamCode}/projects/{projectCode}")
     public ResponseDto projectRemove(
             @PathVariable String teamCode,
             @PathVariable String projectCode

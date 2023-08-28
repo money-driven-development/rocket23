@@ -1,23 +1,21 @@
 package com.initcloud.rocket23.team.service;
 
-import java.util.Optional;
-
-import com.initcloud.rocket23.team.entity.TeamWithUsers;
-import com.initcloud.rocket23.user.enums.UserState;
-import org.springframework.stereotype.Service;
-
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.InviteRepository;
 import com.initcloud.rocket23.infra.repository.TeamRepository;
 import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
 import com.initcloud.rocket23.infra.repository.UserRepository;
+import com.initcloud.rocket23.team.dto.TeamDto;
 import com.initcloud.rocket23.team.dto.TeamInviteDto;
 import com.initcloud.rocket23.team.entity.Invite;
 import com.initcloud.rocket23.team.entity.Team;
+import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import com.initcloud.rocket23.user.entity.User;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,6 +67,15 @@ public class TeamManageService {
         }
 
         return false;
+    }
+
+    /**
+     * []
+     */
+    public String addTeam(TeamDto dto) {
+        Team team = teamRepository.save(new Team(dto));
+
+        return team.getTeamCode();
     }
 
     /**

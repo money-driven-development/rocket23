@@ -97,7 +97,7 @@ public class PolicyDto {
                     .secureExample(basePolicy.getSecureExample())
                     .insecureExample(basePolicy.getInsecureExample())
 
-                    .isBasePolicy(false)
+                    .isOrigin(false)
 
                     // Todo
                     .policyProvider(Policy.Provider.NONE)
