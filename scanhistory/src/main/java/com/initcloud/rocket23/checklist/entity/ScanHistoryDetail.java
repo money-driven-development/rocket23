@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.checklist.entity;
 
+import com.initcloud.rocket23.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,9 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import com.initcloud.rocket23.common.entity.BaseEntity;
 
 @Getter
 @Entity
@@ -17,71 +15,65 @@ import com.initcloud.rocket23.common.entity.BaseEntity;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ScanHistoryDetail extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "SCANHISTORY_DETAIL_ID")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "SCANHISTORY_DETAIL_ID")
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "HISTORY_ID")
-	private ScanHistory scanHistory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "HISTORY_ID")
+    private ScanHistory scanHistory;
 
-	@Column(name = "CHECK_TYPE")
-	@NotNull
-	private String checkType;
+    @Column(name = "CHECK_TYPE")
+    @NotNull
+    private String checkType;
 
-	@Column(name = "APP_TYPE")
-	@NotNull
-	private String appType;
+    @Column(name = "APP_TYPE")
+    @NotNull
+    private String appType;
 
-	@Column(name = "SCAN_RESULT")
-	@NotNull
-	private String scanResult;
+    @Column(name = "SCAN_RESULT")
+    @NotNull
+    private String scanResult;
 
-	@Column(name = "TARGET_FILE_NAME")
-	@NotNull
-	private String targetFileName;
+    @Column(name = "TARGET_FILE_NAME")
+    @NotNull
+    private String targetFileName;
 
-	@Column(name = "LINE")
-	@NotNull
-	private String line;
+    @Column(name = "RESOURCE")
+    @NotNull
+    private String resource;
 
-	@Column(name = "CODE")
-	@NotNull
-	private String code;
+    @Column(name = "RESOURCE_NAME")
+    @NotNull
+    private String resourceName;
 
-	@Column(name = "RESOURCE")
-	@NotNull
-	private String resource;
+    @Column(name = "RULE_NAME")
+    @NotNull
+    private String ruleName;
 
-	@Column(name = "RESOURCE_NAME")
-	@NotNull
-	private String resourceName;
+    @Column(name = "LINE")
+    @NotNull
+    private String line;
 
-	@Column(name = "RULE_NAME")
-	@NotNull
-	private String ruleName;
+    @Column(name = "CODE")
+    @NotNull
+    private String code;
 
-	@Column(name = "CSP")
-	@NotNull
-	@Size(max = 16)
-	private String csp;
-
-	@Builder
-	public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
-		String targetFileName, String appType, String scanResult, String line, String code, String resource,
-		String resourceName, String ruleName, String csp) {
-		this.scanHistory = scanHistory;
-		this.checkType = checkType;
-		this.targetFileName = targetFileName;
-		this.appType = appType;
-		this.scanResult = scanResult;
-		this.line = line;
-		this.code = code;
-		this.resource = resource;
-		this.resourceName = resourceName;
-		this.ruleName = ruleName;
-		this.csp = csp;
-		scanHistory.getScanDetails().add(this);
-	}
+    @Builder
+    public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
+                             String targetFileName, String appType, String scanResult, String line, String code, String resource,
+                             String resourceName, String ruleName) {
+        this.scanHistory = scanHistory;
+        this.checkType = checkType;
+        this.targetFileName = targetFileName;
+        this.appType = appType;
+        this.scanResult = scanResult;
+        this.line = line;
+        this.code = code;
+        this.resource = resource;
+        this.resourceName = resourceName;
+        this.ruleName = ruleName;
+        scanHistory.getScanDetails().add(this);
+    }
 }
