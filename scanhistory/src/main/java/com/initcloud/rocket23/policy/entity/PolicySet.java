@@ -23,7 +23,7 @@ public class PolicySet extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn()
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
 
     @Column
