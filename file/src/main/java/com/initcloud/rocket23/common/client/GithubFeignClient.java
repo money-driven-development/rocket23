@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.initcloud.rocket23.github.dto.GithubDto;
+import com.initcloud.rocket23.project.dto.GithubDto;
 
 import feign.Headers;
 
