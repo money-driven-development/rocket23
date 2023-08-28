@@ -86,12 +86,12 @@ public class TeamManageController {
     /**
      * 팀 생성
      */
-    @ApiOperation(value = "Remove team", notes = "Remove a team.", response = ResponseDto.class)
+    @ApiOperation(value = "Create team", notes = "Create a team.", response = ResponseDto.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "request", paramType = "body", value = "Team Create Dto", required = true, dataTypeClass = TeamDto.class)})
     @PostMapping("/")
-    public ResponseDto<String> teamRemove(
+    public ResponseDto<String> teamCreate(
             @RequestBody TeamDto request
     ) {
         String response = teamManageService.addTeam(request);

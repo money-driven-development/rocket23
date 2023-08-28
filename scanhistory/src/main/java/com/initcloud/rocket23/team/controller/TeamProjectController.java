@@ -76,8 +76,9 @@ public class TeamProjectController {
     @ApiOperation(value = "Remove project", notes = "Remove a project from team.", response = ResponseDto.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
-    @DeleteMapping("/{teamCode}/projects")
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class)})
+    @DeleteMapping("/{teamCode}/projects/{projectCode}")
     public ResponseDto projectRemove(
             @PathVariable String teamCode,
             @PathVariable String projectCode
