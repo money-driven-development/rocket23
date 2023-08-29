@@ -6,6 +6,7 @@ import com.initcloud.rocket23.infra.repository.PolicyPerPolicySetRepository;
 import com.initcloud.rocket23.infra.repository.TeamPolicyRepository;
 import com.initcloud.rocket23.infra.repository.TeamPolicySetRepository;
 import com.initcloud.rocket23.infra.repository.TeamRepository;
+import com.initcloud.rocket23.policy.dto.PolicyCreateDto;
 import com.initcloud.rocket23.policy.dto.PolicyDto;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.entity.PolicyPerPolicySet;
@@ -67,7 +68,7 @@ public class PolicyService {
      * 팀 정책 추가
      */
     @Transactional
-    public String createTeamPolicy(final String teamCode, final PolicyDto.Create dto) {
+    public String createTeamPolicy(final String teamCode, final PolicyCreateDto dto) {
         TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndBasePolicyName(teamCode, dto.getBasePolicyName())
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
@@ -82,7 +83,7 @@ public class PolicyService {
      * 팀 정책 수정
      */
     @Transactional
-    public String modifyTeamPolicy(final String teamCode, final String policyName, final PolicyDto.Create dto) {
+    public String modifyTeamPolicy(final String teamCode, final String policyName, final PolicyCreateDto dto) {
         TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndOriginFalseAndModifiableTrueAndBasePolicyName(teamCode, policyName)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
