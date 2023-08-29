@@ -19,27 +19,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @ApiOperation("Scan History API")
 @RestController
-@RequestMapping("/rocket/history/")
+@RequestMapping("/rocket/team/")
 @RequiredArgsConstructor
 public class ScanHistoryController {
 
 	private final ScanHistoryService scanHistoryService;
 
-	//private final int DEFAULT_SIZE = 10;
-
 	/*
 		단일 스캔 이력 조회(검출통계[성공, 실패, 스킵, 전체스캔])
 	 */
-
 	@ApiOperation(value = "Get a scan-history", notes = "Retrieve a scan-history.", response = ResponseDto.class)
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "hashCode", paramType = "path", value = "History unique code", required = true, dataTypeClass = String.class)})
-	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}")
-	public ResponseDto<ScanResultDto> getScanHistory(@PathVariable("teamCode") String teamCode,
-		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
+	@GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}")
+	public ResponseDto<ScanResultDto> getScanHistory(
+			@PathVariable("teamCode") String teamCode,
+			@PathVariable("projectCode") String projectCode,
+			@PathVariable("hashCode") String hashCode
+	) {
 		ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dto);
 	}
@@ -47,9 +47,12 @@ public class ScanHistoryController {
 	/*
 		단일 스캔 전체 내역 조회
 	 */
-	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}/total")
-	public ResponseDto<ScanResultDto> getScanHistoryTotal(@PathVariable("teamCode") String teamCode,
-		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
+	@GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}/total")
+	public ResponseDto<ScanResultDto> getScanHistoryTotal(
+			@PathVariable("teamCode") String teamCode,
+			@PathVariable("projectCode") String projectCode,
+			@PathVariable("hashCode") String hashCode
+	) {
 		ScanResultDto dto = scanHistoryService.getScanHistoryTotal(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dto);
 	}
@@ -63,10 +66,12 @@ public class ScanHistoryController {
 			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "pageable", paramType = "query", value = "paging value", required = true, dataTypeClass = Pageable.class)})
-	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history")
-	public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(@PathVariable("teamCode") String teamCode,
-		@PathVariable("projectCode")
-		String projectCode, final Pageable pageable) {
+	@GetMapping("/{teamCode}/projects/{projectCode}")
+	public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(
+			@PathVariable("teamCode") String teamCode,
+			@PathVariable("projectCode") String projectCode,
+			final Pageable pageable
+	) {
 		Page<ScanResultDto.Summary> dtos = scanHistoryService.getScanHistoryPaging(teamCode, projectCode, pageable);
 		return new ResponseDto<>(dtos);
 	}
@@ -80,9 +85,12 @@ public class ScanHistoryController {
 			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "hashCode", paramType = "path", value = "History unique code", required = true, dataTypeClass = String.class)})
-	@GetMapping("/{teamCode}/projects/{projectCode}/scans/history/{hashCode}/fail")
-	public ResponseDto<ScanFailDetailDto> getScanFailDeatil(@PathVariable("teamCode") String teamCode,
-		@PathVariable("projectCode") String projectCode, @PathVariable("hashCode") String hashCode) {
+	@GetMapping("/{teamCode}/projects/{projectCode}/{hashCode}/fail")
+	public ResponseDto<ScanFailDetailDto> getScanFailDetail(
+			@PathVariable("teamCode") String teamCode,
+			@PathVariable("projectCode") String projectCode,
+			@PathVariable("hashCode") String hashCode
+	) {
 		ScanFailDetailDto dtos = scanHistoryService.getScanFailDetail(teamCode, projectCode, hashCode);
 		return new ResponseDto<>(dtos);
 	}
