@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScanHistoryDto {
-	private String fileName;
-	private String fileHash;
+	private String projectName;
+	private String projectCode;
+	private String projectHash;
 	private Integer passed;
 	private Integer skipped;
 	private Integer failed;
@@ -23,8 +24,9 @@ public class ScanHistoryDto {
 	private Double score;
 
 	public ScanHistoryDto(ScanHistory entity) {
-		this.fileName = entity.getFileName();
-		this.fileHash = entity.getFileHash();
+		this.projectName = entity.getProjectName();
+		this.projectCode = entity.getProjectCode();
+		this.projectHash  = entity.getProjectHash();
 		this.passed = entity.getPassed();
 		this.failed = entity.getFailed();
 		this.skipped = entity.getSkipped();

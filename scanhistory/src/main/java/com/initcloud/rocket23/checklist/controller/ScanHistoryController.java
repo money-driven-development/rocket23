@@ -66,7 +66,7 @@ public class ScanHistoryController {
 			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "pageable", paramType = "query", value = "paging value", required = true, dataTypeClass = Pageable.class)})
-	@GetMapping("/{teamCode}/projects/{projectCode}")
+	@GetMapping("/{teamCode}/projects/{projectCode}/history")
 	public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(
 			@PathVariable("teamCode") String teamCode,
 			@PathVariable("projectCode") String projectCode,
@@ -85,7 +85,7 @@ public class ScanHistoryController {
 			@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class),
 			@ApiImplicitParam(name = "hashCode", paramType = "path", value = "History unique code", required = true, dataTypeClass = String.class)})
-	@GetMapping("/{teamCode}/projects/{projectCode}/{hashCode}/fail")
+	@GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}/fail")
 	public ResponseDto<ScanFailDetailDto> getScanFailDetail(
 			@PathVariable("teamCode") String teamCode,
 			@PathVariable("projectCode") String projectCode,

@@ -13,8 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HistoryDto {
 	private Long id;
-	private String fileName;
-	private String fileHash;
+	private String projectName;
+	private String projectCode;
+	private String projectHash;
 	private LocalDateTime scanDateTime;
 	private Double score;
 	private Integer failed;
@@ -23,8 +24,9 @@ public class HistoryDto {
 
 	public HistoryDto(ScanHistory entity) {
 		this.id = entity.getId();
-		this.fileName = entity.getFileName();
-		this.fileHash = entity.getFileHash();
+		this.projectName = entity.getProjectName();
+		this.projectCode = entity.getProjectCode();
+		this.projectHash = entity.getProjectHash();
 		this.scanDateTime = entity.getCreatedAt();
 		this.score = entity.getScore();
 		this.failed = entity.getFailed();
@@ -33,11 +35,12 @@ public class HistoryDto {
 	}
 
 	@Builder
-	public HistoryDto(Long id, String fileName, String fileHash, String provider, LocalDateTime scanDateTime,
+	public HistoryDto(Long id, String projectName, String projectCode, String projectHash, String provider, LocalDateTime scanDateTime,
 		Double score, Integer failed, Integer passed, Integer skipped) {
 		this.id = id;
-		this.fileName = fileName;
-		this.fileHash = fileHash;
+		this.projectName = projectName;
+		this.projectCode = projectCode;
+		this.projectHash = projectHash;
 		this.scanDateTime = scanDateTime;
 		this.score = score;
 		this.failed = failed;
