@@ -70,6 +70,10 @@ public class TeamProject extends BaseEntity {
         return teamProjects.map(project -> new TeamProjectDto.Summary(project));
     }
 
+    public static List<TeamProjectDto.Summary> toDto(List<TeamProject> teamProjects) {
+        return teamProjects.stream().map(TeamProjectDto.Summary::new).collect(Collectors.toList());
+    }
+
     public TeamProjectDto.Details toDetailsDto() {
         return TeamProjectDto.Details.builder()
                 .projectName(this.projectName)

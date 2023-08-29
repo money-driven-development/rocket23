@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TeamProjectService {
@@ -29,13 +31,23 @@ public class TeamProjectService {
      * [Page<TeamProjectDto.Summary>] 팀 프로젝트 목록 조회, 페이징 적용
      */
     @Transactional(readOnly = true)
-    public Page<TeamProjectDto.Summary> getTeamProjects(final Pageable pageable, String teamCode) {
+    public Page<TeamProjectDto.Summary> getPagedTeamProjects(final Pageable pageable, String teamCode) {
         Team team = teamRepository.findByTeamCode(teamCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
         Page<TeamProject> teamProject = teamProjectRepository.findTeamProjectsByTeam(pageable, team);
 
         return TeamProject.toPageDto(teamProject);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TeamProjectDto.Summary> getTeamProjects(final String teamCode) {
+        Team team = teamRepository.findByTeamCode(teamCode)
+                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
+
+        List<TeamProject> teamProject = teamProjectRepository.findTeamProjectsByTeam(team);
+
+        return TeamProject.toDto(teamProject);
     }
 
     /**
