@@ -30,6 +30,13 @@ public class PolicySetDto {
         }
     }
 
+    public PolicySetDto(final PolicySet policySet) {
+        this.isNameModified = false;
+        this.isDescriptionModified = false;
+        this.policySetName = policySet.getName();
+        this.description = policySet.getDescription();
+    }
+
     public PolicySetDto(boolean isNameModified, boolean isDescriptionModified, String policySetName, String description, List<PolicyState> policyState) {
         this.isNameModified = isNameModified;
         this.isDescriptionModified = isDescriptionModified;

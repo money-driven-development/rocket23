@@ -2,6 +2,7 @@ package com.initcloud.rocket23.team.entity;
 
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.entity.PolicySet;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.enums.ProjectType;
@@ -83,6 +84,11 @@ public class TeamProject extends BaseEntity {
                 .versionHistory(
                         this.versions.stream()
                                 .map(TeamProjectDto.Version::new)
+                                .collect(Collectors.toList())
+                )
+                .policySets(
+                        this.policySets.stream()
+                                .map(PolicySetDto::new)
                                 .collect(Collectors.toList())
                 )
                 .build();

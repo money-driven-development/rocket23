@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.team.dto;
 
+import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import com.initcloud.rocket23.team.entity.TeamProjectVersioning;
 import com.initcloud.rocket23.team.enums.ProjectType;
@@ -46,9 +47,20 @@ public class TeamProjectDto {
         private LocalDateTime projectCreatedAt;
         private LocalDateTime projectModifiedAt;
         private List<TeamProjectDto.Version> versionHistory = new ArrayList<>();
+        private List<PolicySetDto> policySets = new ArrayList<>();
 
         @Builder
-        public Details(ProjectType projectType, String projectCode, String projectName, String projectUrl, LocalDateTime recentScanDateTime, LocalDateTime projectCreatedAt, LocalDateTime projectModifiedAt, List<TeamProjectDto.Version> versionHistory) {
+        public Details(
+                ProjectType projectType,
+                String projectCode,
+                String projectName,
+                String projectUrl,
+                LocalDateTime recentScanDateTime,
+                LocalDateTime projectCreatedAt,
+                LocalDateTime projectModifiedAt,
+                List<TeamProjectDto.Version> versionHistory,
+                List<PolicySetDto> policySets
+        ) {
             this.projectType = projectType;
             this.projectCode = projectCode;
             this.projectName = projectName;
@@ -57,6 +69,7 @@ public class TeamProjectDto {
             this.projectCreatedAt = projectCreatedAt;
             this.projectModifiedAt = projectModifiedAt;
             this.versionHistory = versionHistory;
+            this.policySets = policySets;
             this.description = "DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO.";
         }
     }
