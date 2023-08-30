@@ -3,7 +3,6 @@ package com.initcloud.rocket23.policy.entity;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.team.entity.Team;
-import com.initcloud.rocket23.team.entity.TeamProject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,12 +40,8 @@ public class PolicySet extends BaseEntity {
     /**
      * 이 정책 셋을 사용하는 프로젝트
      */
-    @ManyToMany
-    @JoinTable(name = "POLICY_SET_PER_PROJECT",
-            joinColumns = @JoinColumn(name = "PROJECT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "POLICY_SET_ID")
-    )
-    private List<TeamProject> projects = new ArrayList<>();
+    @OneToMany(mappedBy = "policySet")
+    private List<PolicyPerPolicySet> projects = new ArrayList<>();
 
     public PolicySet(Team team, String name, String description) {
         this.team = team;

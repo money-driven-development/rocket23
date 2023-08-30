@@ -64,7 +64,6 @@ public class TeamProjectService {
         TeamProject teamProject = teamProjectRepository.findTeamProjectByTeamAndProjectCode(team, projectCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
-
         return teamProject.toDetailsDto();
     }
 

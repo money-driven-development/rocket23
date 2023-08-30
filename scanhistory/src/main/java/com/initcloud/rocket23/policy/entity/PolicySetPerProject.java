@@ -27,6 +27,10 @@ public class PolicySetPerProject extends BaseEntity {
     @JoinColumn(name = "PROJECT_ID")
     private TeamProject project;
 
+    /**
+     * Todo - 정책 셋, 프로젝트 코드 같이 여기서 관리
+     */
+
     public PolicySetPerProject(PolicySet policySet, TeamProject project) {
         this.id = id;
         this.policySet = policySet;
