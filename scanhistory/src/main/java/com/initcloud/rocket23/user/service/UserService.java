@@ -37,8 +37,9 @@ public class UserService {
      * 사용자 상세 정보 조회
      */
     public UserDto.Profile getUserDetails() {
+        User user = loadUser();
 
-        return null;
+        return new UserDto.Profile(user);
     }
 
     /**

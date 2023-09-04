@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.user.dto;
 
 import com.initcloud.rocket23.team.entity.Team;
+import com.initcloud.rocket23.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,11 @@ public class UserDto {
     }
 
     @Getter
-    public class Profile {
+    public static class Profile {
         private String email;
 
-        public Profile(String email) {
-            this.email = email;
+        public Profile(User user) {
+            this.email = user.getEmail();
         }
     }
 }
