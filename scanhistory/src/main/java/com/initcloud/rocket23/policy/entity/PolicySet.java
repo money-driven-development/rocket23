@@ -56,4 +56,8 @@ public class PolicySet extends BaseEntity {
         if(dto.isDescriptionModified())
             this.description = dto.getDescription();
     }
+
+    public PolicySetDto toPolicySetDto() {
+        return new PolicySetDto(this);
+    }
 }

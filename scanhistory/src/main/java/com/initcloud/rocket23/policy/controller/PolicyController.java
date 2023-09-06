@@ -132,6 +132,21 @@ public class PolicyController {
         return new ResponseDto<>(response);
     }
 
+    @ApiOperation(value = "Get policy-set", notes = "Show policy-set.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "policyset", paramType = "path", value = "policy-set code", required = true, dataTypeClass = String.class)})
+    @GetMapping("/{teamCode}/policysets/{policyset}")
+    public ResponseDto<PolicySetDto> policySetDetails(
+            @PathVariable String teamCode,
+            @PathVariable String policyset
+    ) {
+        PolicySetDto response = policyService.getTeamPolicySetDetails(teamCode, policyset);
+
+        return new ResponseDto<>(response);
+    }
+
 
     @ApiOperation(value = "Add a policy set", notes = "Add a policy set.", response = ResponseDto.class)
     @ApiImplicitParams({

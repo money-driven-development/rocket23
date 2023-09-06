@@ -117,6 +117,17 @@ public class PolicyService {
     }
 
     /**
+     * 팀 정책 셋 세부 조회
+     */
+    public PolicySetDto getTeamPolicySetDetails(final String teamCode, final String policySetName) {
+        PolicySet policySet = teamPolicySetRepository.findPolicySetByTeam_TeamCodeAndName(teamCode, policySetName)
+                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
+
+        return policySet.toPolicySetDto();
+    }
+
+
+    /**
      * 팀 정책 셋 추가
      * Todo - 리팩토링 예정
      */
@@ -138,7 +149,7 @@ public class PolicyService {
         if (!dto.getPolicyState().isEmpty()) {
             List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
             for (TeamPolicy policy : teamPolicies) {
-                policiesPerPolicySet.add(new PolicyPerPolicySet(policySet, policy));
+                policiesPerPolicySet.add(new PolicyPerPolicySet(policySet, policy, true));
             }
 
             policyPerPolicySetRepository.saveAll(policiesPerPolicySet);

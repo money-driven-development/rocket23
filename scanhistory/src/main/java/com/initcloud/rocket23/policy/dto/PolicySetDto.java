@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.policy.dto;
 
 import com.initcloud.rocket23.policy.entity.PolicySet;
+import com.initcloud.rocket23.policy.entity.TeamPolicy;
 import com.initcloud.rocket23.team.entity.Team;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,6 +37,13 @@ public class PolicySetDto {
         this.isDescriptionModified = false;
         this.policySetName = policySet.getName();
         this.description = policySet.getDescription();
+        this.policyState = policySet.getPoliciesPerPolicySet()
+                .stream()
+                .map(policyPerPolicySet -> {
+                    TeamPolicy policy = policyPerPolicySet.getTeamPolicy();
+                    return new PolicyState(policy.getPolicyName(), policyPerPolicySet.isState());
+                })
+                .collect(Collectors.toList());
     }
 
     public PolicySetDto(boolean isNameModified, boolean isDescriptionModified, String policySetName, String description, List<PolicyState> policyState) {
@@ -43,6 +52,10 @@ public class PolicySetDto {
         this.policySetName = policySetName;
         this.description = description;
         this.policyState = policyState;
+    }
+
+    public static PolicySetDto cannotModifyingPolicySetDto(String policySetName, String description, List<PolicyState> policyState) {
+        return new PolicySetDto(false, false, policySetName, description, policyState);
     }
 
     public PolicySet toEntity(final Team team) {
