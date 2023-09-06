@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.security.config;
 
 import com.initcloud.rocket23.security.entrypoint.TokenGlobalEntryPoint;
+import com.initcloud.rocket23.security.filter.TokenAuthenticationFilter;
 import com.initcloud.rocket23.security.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -36,7 +38,12 @@ public class SecurityConfig {
                 .antMatchers("/auth/**", "/demo/**", "/rocket/**").permitAll()
                 .and()
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(tokenGlobalEntryPoint)
+                .and()
+                .addFilterBefore(new TokenAuthenticationFilter(jwtProvider, securityProperties),
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
