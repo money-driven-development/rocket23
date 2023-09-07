@@ -19,15 +19,15 @@ public class TeamPolicy extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PROJECT_POLICY_ID")
+    @Column(name = "TEAM_POLICY_ID")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(updatable = false)
+    @JoinColumn(updatable = false, name = "BASE_POLICY_ID")
     private BasePolicy basePolicy;
 
     @Column

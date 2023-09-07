@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.team.entity.TeamProject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,27 +11,29 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PolicyPerPolicySet extends BaseEntity {
+public class PolicySetPerProject extends BaseEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "POLICY_PER_POLICY_SET_ID")
+    @Column(name = "POLICY_SET_PER_PROJECT_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POLICY_SET_ID")
     private PolicySet policySet;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEAM_POLICY_ID")
-    private TeamPolicy teamPolicy;
+    @JoinColumn(name = "PROJECT_ID")
+    private TeamProject project;
 
-    @Column
-    private boolean state;
+    /**
+     * Todo - 정책 셋, 프로젝트 코드 같이 여기서 관리
+     */
 
-    public PolicyPerPolicySet(PolicySet policySet, TeamPolicy teamPolicy, boolean state) {
+    public PolicySetPerProject(PolicySet policySet, TeamProject project) {
+        this.id = id;
         this.policySet = policySet;
-        this.teamPolicy = teamPolicy;
-        this.state = state;
+        this.project = project;
     }
 }

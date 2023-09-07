@@ -4,7 +4,7 @@ spring:
       matching-strategy: ant_path_matcher
 
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: ${DB_DATASOURCE_DRIVER:com.mysql.cj.jdbc.Driver}
     url: ${SPRING_DATASOURCE_URL}
     username: ${ROCKET_DB_ID}
     password: ${ROCKET_DB_PASSWORD}
@@ -13,6 +13,11 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
+
+  redis:
+    host: ${REDIS_DATASOURCE_URL:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:dev}
 
   data:
     web:

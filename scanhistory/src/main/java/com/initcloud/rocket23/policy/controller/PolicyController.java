@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.policy.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.policy.dto.PolicyCreateDto;
 import com.initcloud.rocket23.policy.dto.PolicyDto;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.service.PolicyService;
@@ -60,7 +61,7 @@ public class PolicyController {
     @PostMapping("/{teamCode}/policies")
     public ResponseDto<String> teamPolicyAdd(
             @PathVariable String teamCode,
-            @RequestBody PolicyDto.Create dto
+            @RequestBody PolicyCreateDto dto
     ) {
         String response = policyService.createTeamPolicy(teamCode, dto);
 
@@ -87,12 +88,12 @@ public class PolicyController {
             @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "policyName", paramType = "path", value = "Unique policy name", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "dto", paramType = "body", value = "Policy details", required = true, dataTypeClass = PolicyDto.Create.class)})
+            @ApiImplicitParam(name = "dto", paramType = "body", value = "Policy details", required = true, dataTypeClass = PolicyCreateDto.class)})
     @PutMapping("/{teamCode}/policies/{policyName}")
     public ResponseDto<String> teamPolicyModify(
             @PathVariable String teamCode,
             @PathVariable String policyName,
-            @RequestBody PolicyDto.Create dto
+            @RequestBody PolicyCreateDto dto
     ) {
         String response = policyService.modifyTeamPolicy(teamCode, policyName, dto);
 
@@ -127,6 +128,21 @@ public class PolicyController {
             @PathVariable String teamCode
     ) {
         List<String> response = policyService.getTeamPolicySetList(teamCode);
+
+        return new ResponseDto<>(response);
+    }
+
+    @ApiOperation(value = "Get policy-set", notes = "Show policy-set.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "policyset", paramType = "path", value = "policy-set code", required = true, dataTypeClass = String.class)})
+    @GetMapping("/{teamCode}/policysets/{policyset}")
+    public ResponseDto<PolicySetDto> policySetDetails(
+            @PathVariable String teamCode,
+            @PathVariable String policyset
+    ) {
+        PolicySetDto response = policyService.getTeamPolicySetDetails(teamCode, policyset);
 
         return new ResponseDto<>(response);
     }

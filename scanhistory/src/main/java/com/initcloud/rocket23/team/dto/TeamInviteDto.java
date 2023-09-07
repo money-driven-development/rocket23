@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 public class TeamInviteDto {
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Request {
         @Email @NotNull
         private String email;
@@ -25,6 +26,7 @@ public class TeamInviteDto {
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Response {
         @Email @NotNull
         private String email;

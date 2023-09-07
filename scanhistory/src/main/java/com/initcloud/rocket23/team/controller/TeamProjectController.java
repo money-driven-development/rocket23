@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
 
+import java.util.List;
+
 @ApiOperation("Team Project API")
 @RestController
 @RequiredArgsConstructor
@@ -30,11 +32,24 @@ public class TeamProjectController {
             @ApiImplicitParam(name = "pageable", paramType = "query", value = "paging value", required = true, dataTypeClass = Pageable.class),
             @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
     @GetMapping("/{teamCode}/projects")
-    public ResponseDto<Page<TeamProjectDto.Summary>> projectList(
+    public ResponseDto<Page<TeamProjectDto.Summary>> projectPagedList(
             final Pageable pageable,
             @PathVariable String teamCode
     ) {
-        Page<TeamProjectDto.Summary> response = teamProjectService.getTeamProjects(pageable, teamCode);
+        Page<TeamProjectDto.Summary> response = teamProjectService.getPagedTeamProjects(pageable, teamCode);
+
+        return new ResponseDto<>(response);
+    }
+
+    @ApiOperation(value = "Get Project list.", notes = "Retrieve all list of projects.", response = ResponseDto.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @GetMapping("/{teamCode}/projects/all")
+    public ResponseDto<List<TeamProjectDto.Summary>> projectList(
+            @PathVariable String teamCode
+    ) {
+        List<TeamProjectDto.Summary> response = teamProjectService.getTeamProjects(teamCode);
 
         return new ResponseDto<>(response);
     }

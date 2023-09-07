@@ -1,17 +1,16 @@
 package com.initcloud.rocket23.checklist.dto;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.ScanHistoryDetail;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,7 +29,7 @@ public class ScanResultDto {
 
 	@Builder
 	public ScanResultDto(ScanHistory scanHistory, List<ScanHistoryDetail> scanHistoryDetails) {
-		this.fileName = scanHistory.getFileName();
+		this.fileName = scanHistory.getProjectName();
 		this.high = scanHistory.getHigh();
 		this.medium = scanHistory.getMedium();
 		this.low = scanHistory.getLow();
@@ -40,12 +39,26 @@ public class ScanResultDto {
 		this.failed = scanHistory.getFailed();
 		this.skipped = scanHistory.getSkipped();
 		this.created = scanHistory.getCreatedAt();
-		//todo 좀더 이쁘게 dto를 처리하는 방법...
 		if (scanHistoryDetails != null) {
 			this.scanResultDetailList.addAll(scanHistoryDetails.stream()
 				.map(Detail::new)
 				.collect(Collectors.toList()));
 		}
+	}
+
+	@Builder(builderClassName = "demoBuilder", builderMethodName = "scanResultDemoBuilder")
+	public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score, Integer passed, Integer failed, Integer skipped, LocalDateTime created, List<Detail> scanResultDetailList) {
+		this.fileName = fileName;
+		this.high = high;
+		this.medium = medium;
+		this.low = low;
+		this.unknown = unknown;
+		this.score = score;
+		this.passed = passed;
+		this.failed = failed;
+		this.skipped = skipped;
+		this.created = created;
+		this.scanResultDetailList = scanResultDetailList;
 	}
 
 	@Getter
@@ -54,7 +67,6 @@ public class ScanResultDto {
 		private String checkType;
 		private String appType;
 		private String scanResult;
-		private String csp;
 		private String line;
 		private String code;
 		private String ruleName;
@@ -65,7 +77,6 @@ public class ScanResultDto {
 			this.checkType = scanHistoryDetail.getCheckType();
 			this.appType = scanHistoryDetail.getAppType();
 			this.scanResult = scanHistoryDetail.getScanResult();
-			this.csp = scanHistoryDetail.getCsp();
 			this.line = scanHistoryDetail.getLine();
 			this.code = scanHistoryDetail.getCode();
 			this.ruleName = scanHistoryDetail.getRuleName();
@@ -83,7 +94,7 @@ public class ScanResultDto {
 		private Integer failed;
 
 		public Summary(ScanHistory entity) {
-			this.fileName = entity.getFileName();
+			this.fileName = entity.getProjectName();
 			this.passed = entity.getPassed();
 			this.skipped = entity.getSkipped();
 			this.failed = entity.getFailed();

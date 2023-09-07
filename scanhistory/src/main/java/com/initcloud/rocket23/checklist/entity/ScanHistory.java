@@ -3,7 +3,6 @@ package com.initcloud.rocket23.checklist.entity;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +32,21 @@ public class ScanHistory extends BaseEntity {
 	@JoinColumn(name = "PROJECT_ID")
 	private TeamProject project;
 
-	@Column(name = "FILE_NAME")
+	@Column(name = "PROJECT_NAME")
 	@NotNull
-	private String fileName;
+	private String projectName;
 
-	@Column(name = "FILE_HASH")
+	@Column(name = "PROJECT_Code")
 	@NotNull
-	private String fileHash;
+	private String projectCode;
+
+	@Column(name = "PROJECT_HASH")
+	@NotNull
+	private String projectHash;
+
+	@Column(name = "USERNAME")
+	@NotNull
+	private String username;
 
 	@Column(name = "PASSED")
 	@NotNull
@@ -85,15 +90,24 @@ public class ScanHistory extends BaseEntity {
 	@OneToMany(mappedBy = "scanHistory")
 	private List<ProjectVulnDetail> fileDetails = new ArrayList<>();
 
+	@Deprecated
+	@Column(name = "FILE_NAME")
+	private String fileName = "will_be_deprecated_file_name";
+
+	@Deprecated
+	@Column(name = "FILE_HASH")
+	private String fileHash = "will_be_deprecated_file_hash";
+
 	@Builder
-	public ScanHistory(Long id, Team team, TeamProject project, String fileName, String fileHash, Integer passed,
+	public ScanHistory(Long id, Team team, TeamProject project, String projectName, String projectCode, String projectHash, Integer passed,
 		Integer skipped, Integer failed, Integer high, Integer medium, Integer low, Integer unknown, Integer cveCount,
 		Double score) {
 		this.id = id;
 		this.team = team;
 		this.project = project;
-		this.fileName = fileName;
-		this.fileHash = fileHash;
+		this.projectName = projectName;
+		this.projectCode = projectCode;
+		this.projectHash = projectHash;
 		this.passed = passed;
 		this.skipped = skipped;
 		this.failed = failed;

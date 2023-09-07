@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,10 +23,15 @@ public class TeamProjectCreateDto {
 
     private String projectUrl;
 
-    public TeamProjectCreateDto(final String projectName, final ProjectType projectType, final String projectUrl) {
+    private String description;
+
+    private List<String> policySetNames = new ArrayList<>();
+
+    public TeamProjectCreateDto(final String projectName, final ProjectType projectType, final String projectUrl, final String description) {
         this.projectName = projectName;
         this.projectType = projectType;
         this.projectUrl = projectUrl;
+        this.description = description;
     }
 
     public TeamProject toCreateEntity(Team team) {
