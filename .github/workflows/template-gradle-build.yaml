@@ -89,4 +89,3 @@ jobs:
             ${{ secrets.SERVICE_NAME }}.jar
           path:
             ./${{ secrets.SERVICE_NAME }}/build/libs/${{ secrets.SERVICE_NAME }}.jar
-          retention-days: 1
