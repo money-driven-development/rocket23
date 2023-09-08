@@ -3,8 +3,6 @@ name: Template Gradle Build
 on:
   workflow_call:
     secrets:
-      DOCKER_REPO:
-        required: true
       DOCKER_REGISTRY:
         required: true
       REGISTRY_USERNAME:
