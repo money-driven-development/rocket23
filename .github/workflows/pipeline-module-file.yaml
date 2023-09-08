@@ -31,7 +31,6 @@ jobs:
       money-driven-development/rocket23/.github/workflows/template-gradle-build.yaml@dev
     needs: [ git-leaks ]
     secrets:
-      DOCKER_REPO: ${{secrets.DOCKER_REPO}}
       DOCKER_REGISTRY: ${{secrets.DOCKER_REGISTRY}}
       REGISTRY_USERNAME: ${{secrets.REGISTRY_USERNAME}}
       REGISTRY_PASSWORD: ${{secrets.REGISTRY_PASSWORD}}
