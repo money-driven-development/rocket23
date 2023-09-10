@@ -1,24 +1,22 @@
 package com.initcloud.rocket23.security.filter;
 
-import java.io.IOException;
+import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.exception.ApiAuthException;
+import com.initcloud.rocket23.security.config.SecurityProperties;
+import com.initcloud.rocket23.security.provider.JwtProvider;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import com.initcloud.rocket23.common.enums.ResponseCode;
-import com.initcloud.rocket23.security.config.SecurityProperties;
-import com.initcloud.rocket23.security.provider.JwtProvider;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
 
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
@@ -31,10 +29,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws
 		IOException, ServletException {
-		String token = jwtTokenProvider.resolve(request);
-		jwtTokenProvider.validate(token, securityProperties.getSecret());
-
 		try {
+			String token = jwtTokenProvider.resolve(request);
+
+			if (token == null)
+				throw new NullPointerException();
+
+			if (!jwtTokenProvider.validate(token, securityProperties.getSecret()))
+				throw new ApiAuthException(ResponseCode.INVALID_TOKEN);
+
 			Authentication authentication = jwtTokenProvider.getAuthentication(token,
 				securityProperties.getSecret());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
