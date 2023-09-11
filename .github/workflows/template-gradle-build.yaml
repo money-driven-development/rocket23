@@ -3,28 +3,33 @@ name: Template Gradle Build
 on:
   workflow_call:
     secrets:
-      SERVICE-NAME:
+      DOCKER_REGISTRY:
         required: true
-
-env:
-  SERVICE-NAME: ${{ secrets.SERVICE-NAME }}
+      REGISTRY_USERNAME:
+        required: true
+      REGISTRY_PASSWORD:
+        required: true
+      SERVICE_NAME:
+        required: true
 
 jobs:
   gradle-build:
     strategy:
       matrix:
         ## LTS, latest 대상 빌드 테스트
-        os: [ubuntu-20.04]
+        os: [ ubuntu-20.04 ]
 
         ## 추후, 버전 변경이 있을 경우
-        java-version: [11]
-        jdk-distribution: ['temurin']
+        java-version: [ 11 ]
+        jdk-distribution: [ 'temurin' ]
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       ## 빌드를 위한 JDK 구성
       - name: Set up JDK
@@ -40,30 +45,47 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key:
+            ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*',
+            '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
       ## Gradle 에 실행 권한 부여
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
+        working-directory: ./${{ secrets.SERVICE_NAME }}
 
       ## Gradle 빌드
       - name: Build with Gradle
         run: ./gradlew build
+        working-directory: ./${{ secrets.SERVICE_NAME }}
 
+      ## 웹 이미지 빌드 및 NHN Registry에 Push
+      - name: web docker build
+        working-directory: ./${{ secrets.SERVICE_NAME }}
+        run: |
+          docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+          docker build -t ${{ secrets.SERVICE_NAME }} .
+
+      - name: web docker tag and push
+        working-directory: ./${{ secrets.SERVICE_NAME }}
+        run: |
+          docker tag ${{ secrets.SERVICE_NAME }}:latest ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.SERVICE_NAME }}:latest
+          docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.SERVICE_NAME }}:latest
       ## 도커파일 업로드
       - name: Upload Dockerfile
         uses: actions/upload-artifact@v3
         with:
-          name: Dockerfile_${{ env.SERVICE-NAME }}
-          path: ./Dockerfile_${{ env.SERVICE-NAME }}
+          name: Dockerfile_${{ secrets.SERVICE_NAME }}
+          path: ./Dockerfile_${{ secrets.SERVICE_NAME }}
           retention-days: 1
 
       ## 빌드한 앱 업로드
       - name: Upload app
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ env.SERVICE-NAME }}.jar
-          path: ./${{ env.SERVICE-NAME }}/build/libs/${{ env.SERVICE-NAME }}.jar
-          retention-days: 1
+          name:
+            ${{ secrets.SERVICE_NAME }}.jar
+          path:
+            ./${{ secrets.SERVICE_NAME }}/build/libs/${{ secrets.SERVICE_NAME }}.jar
