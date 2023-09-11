@@ -1,22 +1,20 @@
 package com.initcloud.dockerapi.container.controller;
 
-import java.util.List;
-
+import com.initcloud.dockerapi.common.dto.ResponseDto;
+import com.initcloud.dockerapi.container.dto.ContainerDto;
+import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
+import com.initcloud.dockerapi.container.service.DockerInspectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.initcloud.dockerapi.common.dto.ResponseDto;
-import com.initcloud.dockerapi.container.dto.ContainerDto;
-import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
-import com.initcloud.dockerapi.container.service.DockerInspectService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
-@RequestMapping("/rocket23/containers")
+@RequestMapping("/rocket/containers")
 @RequiredArgsConstructor
 public class DockerContainerInspectController {
 
