@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public enum Channels {
 
 	CONTAINER("channel.container"),
+	PROJECT("channel.file"),
 	SCAN("channel.scan");
 
 	@Getter
