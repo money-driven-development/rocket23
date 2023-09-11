@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ContainerImages {
-	ALPINE_LATEST("alpine", "latest");
+	ALPINE_LATEST("alpine", "latest"),
+	SCANNER_ALPINE_LATEST("floodnut/scanner-alpine", "latest");
 
 	private final String repository;
 	private final String tag;

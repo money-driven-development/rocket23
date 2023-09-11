@@ -1,0 +1,20 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+docker:
+  host:
+    ssl:
+    unix: "unix:///var/run/docker.sock"
+  volume:
+    host:
+    container: "/app"
+
+
+redis:
+  mode: single
+  nodes:
+    - "redis://localhost:6379"
+  queue:
+    max: 7

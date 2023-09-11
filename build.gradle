@@ -1,21 +1,44 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.11'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'com.initcloud'
-version = 'rocket23'
+group = 'com.initcloud.rocket23'
+version = '1.0.0'
 sourceCompatibility = '11'
 
+repositories {
+    mavenCentral()
+}
 
-allprojects {
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.boot:spring-boot-dependencies:2.7.11'
+    }
+}
+
+subprojects {
     apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
+    apply plugin: 'org.asciidoctor.jvm.convert'
     apply plugin: 'io.spring.dependency-management'
+
+    group = rootProject.group
+    version = rootProject.version
 
     repositories {
         mavenCentral()
+    }
+
+    configurations {
+        asciidoctorExtensions
+
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
     }
 
     dependencies {
@@ -31,9 +54,12 @@ allprojects {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-        /* 편의성 */
+        /* Lombok */
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+
+        // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+        implementation 'com.googlecode.json-simple:json-simple:1.1'
 
         // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
         implementation 'com.google.code.findbugs:jsr305:3.0.2'
@@ -56,15 +82,24 @@ allprojects {
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     }
 
-    jar {
-        enabled = false
-    }
-
     test {
         useJUnitPlatform()
     }
 }
 
-tasks.named('test') {
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
+
+task buildJars(type: Jar) {
+    subprojects {
+        from it.tasks.jar
+    }
+}
+
+test {
     useJUnitPlatform()
 }

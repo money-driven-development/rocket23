@@ -8,6 +8,7 @@ import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import com.github.dockerjava.transport.SSLConfig;
 import com.initcloud.dockerapi.container.dto.DockerDto;
+import com.initcloud.dockerapi.container.enums.ContainerAPIType;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,9 @@ public class DockerClientConfigBuilder {
 	 * @return DockerClientConfig
 	 */
 	public static DockerClientConfig buildDefaultDockerClientConfig() {
-		return DefaultDockerClientConfig.createDefaultConfigBuilder().withDockerHost("unix:///var/run/docker.sock").build();
+		return DefaultDockerClientConfig.createDefaultConfigBuilder()
+			.withDockerHost(ContainerAPIType.DOCKER.getSocket())
+			.build();
 	}
 
 	/**
