@@ -86,7 +86,7 @@ public class ScanHistoryController {
 		@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
 		@ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
 		@ApiImplicitParam(name = "projectCode", paramType = "path", value = "Project unique code", required = true, dataTypeClass = String.class)})
-	@GetMapping("/{teamCode}/projects/{projectCode}/history")
+	@GetMapping("/{teamCode}/projects/{projectCode}/history/all")
 	public ResponseDto<List<ScanResultDto.Summary>> getScanHistoryAll(
 		@PathVariable("teamCode") String teamCode,
 		@PathVariable("projectCode") String projectCode) {
