@@ -7,7 +7,6 @@ import com.initcloud.rocket23.security.config.SecurityProperties;
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.security.dto.Token;
 import com.initcloud.rocket23.security.facade.OAuthRequestFacade;
-import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import com.initcloud.rocket23.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,12 +35,11 @@ public class OAuthService {
     }
 
     public OAuthDto.GithubTokenResponse getAccessToken(String clientId, String clientSecret, String code, String redirect) {
-        AuthRequestDto request = new AuthRequestDto(clientId, clientSecret, code, redirect);
-        return oauthRequestFacade.requestGithubOAuthToken(request.getCode());
+        return oauthRequestFacade.requestGithubOAuthToken(clientId, clientSecret, code, redirect);
     }
 
-    public Token getUserAccessToken(AuthRequestDto code) {
-        OAuthDto.GithubTokenResponse tokenResponse = oauthRequestFacade.requestGithubOAuthToken(code.getCode());
+    public Token getUserAccessToken(String clientId, String clientSecret, String code, String redirect) {
+        OAuthDto.GithubTokenResponse tokenResponse = oauthRequestFacade.requestGithubOAuthToken(clientId, clientSecret, code, redirect);
         OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(tokenResponse.getAccessToken());
 
         User user = getUserIfExist(userDetail);

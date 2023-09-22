@@ -25,10 +25,8 @@ public class OAuthRequestFacade {
      *
      * @return access token in String
      */
-    public OAuthDto.GithubTokenResponse requestGithubOAuthToken(String code) {
-        OAuthDto.GithubTokenRequest tokenRequest = new OAuthDto.GithubTokenRequest(properties, code);
-
-        return oauthFeignClient.requestGithubAccessToken(tokenRequest);
+    public OAuthDto.GithubTokenResponse requestGithubOAuthToken(String clientId, String clientSecret, String code, String redirect) {
+        return oauthFeignClient.requestGithubAccessToken(clientId, clientSecret, code, redirect);
     }
 
     /**
