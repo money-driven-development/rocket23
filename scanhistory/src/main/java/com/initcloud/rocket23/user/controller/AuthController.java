@@ -39,10 +39,10 @@ public class AuthController {
 
     @ApiOperation(value = "Redirect to Github Login page.", notes = "Redirect to Github Login page to get an auth code.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "client_id", paramType = "quary", value = "client_id from github OAuth", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "client_secret", paramType = "quary", value = "client_secret Code from github OAuth", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "code", paramType = "quary", value = "Authorization Code from github", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "redirect", paramType = "quary", value = "Redirect Url for FE", required = true, dataTypeClass = String.class)})
+            @ApiImplicitParam(name = "client_id", paramType = "query", value = "client_id from github OAuth", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "client_secret", paramType = "query", value = "client_secret Code from github OAuth", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "code", paramType = "query", value = "Authorization Code from github", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "redirect", paramType = "query", value = "Redirect Url for FE", required = true, dataTypeClass = String.class)})
     @PostMapping("/callback")
     public ResponseDto<OAuthDto.GithubTokenResponse> githubAuth(
             @RequestParam(value = "client_id", required = true) String clientId,
