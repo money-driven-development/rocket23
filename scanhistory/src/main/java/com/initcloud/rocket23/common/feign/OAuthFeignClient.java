@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "feignClient", contextId = "oauthFeignClient", url = "https://github.com")
 public interface OAuthFeignClient {
 
-    @PostMapping(value = "/login/oauth/access_token")
+    @PostMapping(value = "/login/oauth/access_token", headers = {"Accept=application/vnd.github+json"})
     @Headers("Accept: application/vnd.github+json")
     OAuthDto.GithubTokenResponse requestGithubAccessToken(
             @RequestParam(value = "client_id", required = true) String clientId,
