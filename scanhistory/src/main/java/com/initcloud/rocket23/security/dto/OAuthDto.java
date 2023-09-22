@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.security.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.initcloud.rocket23.security.config.SecurityProperties;
@@ -16,8 +17,12 @@ public class OAuthDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class GithubTokenResponse {
+        @JsonProperty("access_token")
         private String accessToken;
+
         private String scope;
+
+        @JsonProperty("token_type")
         private String tokenType;
     }
 
