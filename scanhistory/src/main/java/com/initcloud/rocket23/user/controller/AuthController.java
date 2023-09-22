@@ -1,7 +1,7 @@
 package com.initcloud.rocket23.user.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
-import com.initcloud.rocket23.security.dto.Token;
+import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.security.service.OAuthService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -43,12 +43,12 @@ public class AuthController {
             @ApiImplicitParam(name = "client_secret", paramType = "quary", value = "client_secret Code from github OAuth", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "code", paramType = "quary", value = "Authorization Code from github", required = true, dataTypeClass = String.class)})
     @PostMapping("/callback")
-    public ResponseDto<Token> githubAuth(
+    public ResponseDto<OAuthDto.GithubTokenResponse> githubAuth(
             @RequestParam(value = "client_id", required = true) String clientId,
             @RequestParam(value = "client_secret", required = true) String clientSecret,
             @RequestParam(value = "code", required = true) String code
     ) {
-        Token response = authService.getUserAccessToken(clientId, clientSecret, code);
+        OAuthDto.GithubTokenResponse response = authService.getAccessToken(clientId, clientSecret, code);
 
         return new ResponseDto<>(response);
     }
