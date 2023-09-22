@@ -35,8 +35,9 @@ public class OAuthService {
         }
     }
 
-    public OAuthDto.GithubTokenResponse getAccessToken(AuthRequestDto code) {
-        return oauthRequestFacade.requestGithubOAuthToken(code.getCode());
+    public OAuthDto.GithubTokenResponse getAccessToken(String clientId, String clientSecret, String code, String redirect) {
+        AuthRequestDto request = new AuthRequestDto(clientId, clientSecret, code, redirect);
+        return oauthRequestFacade.requestGithubOAuthToken(request.getCode());
     }
 
     public Token getUserAccessToken(AuthRequestDto code) {
