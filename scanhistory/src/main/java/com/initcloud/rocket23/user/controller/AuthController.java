@@ -41,14 +41,16 @@ public class AuthController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "client_id", paramType = "quary", value = "client_id from github OAuth", required = true, dataTypeClass = String.class),
             @ApiImplicitParam(name = "client_secret", paramType = "quary", value = "client_secret Code from github OAuth", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "code", paramType = "quary", value = "Authorization Code from github", required = true, dataTypeClass = String.class)})
+            @ApiImplicitParam(name = "code", paramType = "quary", value = "Authorization Code from github", required = true, dataTypeClass = String.class),
+            @ApiImplicitParam(name = "redirect", paramType = "quary", value = "Redirect Url for FE", required = true, dataTypeClass = String.class)})
     @PostMapping("/callback")
     public ResponseDto<OAuthDto.GithubTokenResponse> githubAuth(
             @RequestParam(value = "client_id", required = true) String clientId,
             @RequestParam(value = "client_secret", required = true) String clientSecret,
-            @RequestParam(value = "code", required = true) String code
+            @RequestParam(value = "code", required = true) String code,
+            @RequestParam(value = "redirect_uri", required = false) String redirect
     ) {
-        OAuthDto.GithubTokenResponse response = authService.getAccessToken(clientId, clientSecret, code);
+        OAuthDto.GithubTokenResponse response = authService.getAccessToken(clientId, clientSecret, code, redirect);
 
         return new ResponseDto<>(response);
     }
