@@ -6,6 +6,7 @@ import com.initcloud.rocket23.security.config.SecurityProperties;
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.security.dto.Token;
 import com.initcloud.rocket23.security.provider.JwtProvider;
+import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +26,11 @@ public class OAuthRequestFacade {
      *
      * @return access token in String
      */
-    public OAuthDto.GithubTokenResponse requestGithubOAuthToken(String clientId, String clientSecret, String code, String redirect) {
-        return oauthFeignClient.requestGithubAccessToken(clientId, clientSecret, code, redirect);
+    public OAuthDto.GithubTokenResponse requestGithubOAuthToken(AuthRequestDto request) {
+        return oauthFeignClient.requestGithubAccessToken(request.getClientId(),
+                request.getClientSecret(),
+                request.getCode(),
+                request.getRedirect());
     }
 
     /**
