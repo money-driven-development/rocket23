@@ -10,12 +10,12 @@ public interface FileService {
     void init(Path path);
 
     //Local 저장
-    void store(MultipartFile file);
+    void store(MultipartFile file, String teamCode, String projectCode);
 
-    void storeFile(MultipartFile file, Path path, String uuid, boolean check) throws IOException;
+    void storeFile(MultipartFile file, Path path, String uuid, boolean check, String teamCode, String projectCode) throws IOException;
 
     void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
     //DB 저장
-    void save(MultipartFile file, ServerType type, String uuid, String uploadPath);
+    void save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode);
 }

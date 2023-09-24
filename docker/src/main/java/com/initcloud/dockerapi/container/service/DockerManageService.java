@@ -1,5 +1,7 @@
 package com.initcloud.dockerapi.container.service;
 
+import com.initcloud.dockerapi.container.enums.IaCType;
+import com.initcloud.dockerapi.redis.message.ProjectUploadMessage;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -35,11 +37,21 @@ public class DockerManageService implements ContainerManageService {
 		queueClient.addToQueue(containerResponse.getId());
 
 		String scanResult = dockerContainerApi.execute(containerId, path);
+
+		// 확인용, 이걸 다른 곳(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
 		publisher.publishScanMessage(scanResult);
+
+
+
 		dockerContainerApi.stop(containerId);
 
 		return new ContainerDto(containerId, "Exited");
 	}
+
+	public ContainerDto executeContainer(ProjectUploadMessage upload) {
+		IaCScanRequestDto request = new IaCScanRequestDto(IaCType.TERRAFORM, upload.getUuid()); // Todo - 나중에 타입을 요청 별로 바꿔야 함 ㅎㅎ.
+		return this.executeContainer(1, request);
+}
 
 	/**
 	 * 도커 컨테이너를 생성.

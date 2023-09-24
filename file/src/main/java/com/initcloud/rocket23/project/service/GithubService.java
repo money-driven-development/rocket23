@@ -38,14 +38,16 @@ public class GithubService {
 		return githubFeignClient.getRepositoryDetails(user, repo, branch);
 	}
 
-	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch) {
+	public GithubDto.File getBlobsFromGit(String user, String repo, String hash, String branch, String teamCode, String projectCode) {
 		GithubDto.File file = githubFeignClient.getFiles(user, repo, hash, branch);
 		String uuid = UUID.randomUUID().toString();
-		redisMessagePublisher.publishFileMessage(new RedisFileDto(uuid, repo));
+		redisMessagePublisher.publishFileMessage(
+				RedisFileDto.toDto(uuid, repo, teamCode, projectCode)
+		);
 		return file;
 	}
 
-	public void saveZipFileFromResponse(ResponseEntity<Resource> responseEntity, Path targetPath, String repo) throws IOException {
+	public void saveZipFileFromResponse(ResponseEntity<Resource> responseEntity, Path targetPath, String repo, String teamCode, String projectCode) throws IOException {
 		Resource zipResource = responseEntity.getBody();
 		String uuid = UUID.randomUUID().toString();
 
@@ -55,16 +57,18 @@ public class GithubService {
 			}
 		}
 
-		redisMessagePublisher.publishFileMessage(new RedisFileDto(uuid, repo));
+		redisMessagePublisher.publishFileMessage(
+				RedisFileDto.toDto(uuid, repo, teamCode, projectCode)
+		);
 	}
 
-	public void getZip(String user, String repo) {
+	public void getZip(String user, String repo, String teamCode, String projectCode) {
 		ResponseEntity<Resource> responseEntity = githubFeignClient.getZipFiles(user, repo);
 		String targetPathStr = env.getProperty("UPLOAD_PATH");
 
 		try {
 			Path targetPath = Paths.get(targetPathStr);
-			saveZipFileFromResponse(responseEntity, targetPath, repo);
+			saveZipFileFromResponse(responseEntity, targetPath, repo, teamCode, projectCode);
 
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.SERVER_STORE_ERROR);

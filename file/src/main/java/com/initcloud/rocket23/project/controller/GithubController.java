@@ -39,25 +39,28 @@ public class GithubController {
 		return new ResponseDto<>(dtos);
 	}
 
-	@GetMapping("/repos/{user}/{repo}/git/blobs/{hash}")
+	@GetMapping("/repos/{user}/{repo}/git/blobs/{hash}/{teamCode}/{projectCode}")
 	public ResponseDto<GithubDto.File> gitFiles(
             @PathVariable("user") String user,
             @PathVariable("repo") String repo,
 		    @PathVariable("hash") String hash,
+			@PathVariable String teamCode,
+			@PathVariable String projectCode,
             @Nullable @RequestParam("ref") String branch
     ) {
-		GithubDto.File dtos = githubService.getBlobsFromGit(user, repo, hash, branch);
+		GithubDto.File dtos = githubService.getBlobsFromGit(user, repo, hash, branch, teamCode, projectCode);
 
 		return new ResponseDto<>(dtos);
 	}
 
-
-	@GetMapping("/repos/{user}/{repo}/zipball")
+	@GetMapping("/repos/{user}/{repo}/zipball/{teamCode}/{projectCode}")
 	public ResponseDto getZip(
 			@PathVariable("user") String user,
-			@PathVariable("repo") String repo
+			@PathVariable("repo") String repo,
+			@PathVariable String teamCode,
+			@PathVariable String projectCode
 	) {
-		githubService.getZip(user, repo);
+		githubService.getZip(user, repo, teamCode, projectCode);
 		return new ResponseDto<>(null);
 	}
 
