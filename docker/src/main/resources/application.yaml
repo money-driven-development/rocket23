@@ -1,23 +1,19 @@
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-
-  datasource:
-    driver-class-name: ${DB_DATASOURCE_DRIVER:com.mysql.cj.jdbc.Driver}
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${ROCKET_DB_ID}
-    password: ${ROCKET_DB_PASSWORD}
-
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: none
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
 
   redis:
-    host: ${REDIS_DATASOURCE_URL:localhost}
+    host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:password}
+
+redis:
+  mode: single
+  nodes:
+    - "redis://127.0.0.1:6379"
+  queue:
+    max: 7
 
 docker:
   host:
@@ -25,4 +21,4 @@ docker:
     unix: "unix:///var/run/docker.sock"
   volume:
     host:
-    container: "/app"
+    container: "/app/uploads"

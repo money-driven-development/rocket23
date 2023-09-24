@@ -6,10 +6,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import springfox.documentation.oas.annotations.EnableOpenApi;
 
 @EnableWebMvc
-@EnableOpenApi
+//@EnableOpenApi
 @SpringBootApplication
 @EnableCaching
 @EnableAsync
