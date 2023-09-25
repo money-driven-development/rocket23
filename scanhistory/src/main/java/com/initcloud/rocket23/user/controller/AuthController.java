@@ -3,6 +3,7 @@ package com.initcloud.rocket23.user.controller;
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.security.service.OAuthService;
+import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -38,19 +39,9 @@ public class AuthController {
     }
 
     @ApiOperation(value = "Redirect to Github Login page.", notes = "Redirect to Github Login page to get an auth code.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "client_id", paramType = "query", value = "client_id from github OAuth", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "client_secret", paramType = "query", value = "client_secret Code from github OAuth", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "code", paramType = "query", value = "Authorization Code from github", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "redirect", paramType = "query", value = "Redirect Url for FE", required = true, dataTypeClass = String.class)})
     @PostMapping("/callback")
-    public ResponseDto<OAuthDto.GithubTokenResponse> githubAuth(
-            @RequestParam(value = "client_id", required = true) String clientId,
-            @RequestParam(value = "client_secret", required = true) String clientSecret,
-            @RequestParam(value = "code", required = true) String code,
-            @RequestParam(value = "redirect_uri", required = false) String redirect
-    ) {
-        OAuthDto.GithubTokenResponse response = authService.getAccessToken(clientId, clientSecret, code, redirect);
+    public ResponseDto<OAuthDto.GithubTokenResponse> githubAuth(@RequestBody AuthRequestDto request) {
+        OAuthDto.GithubTokenResponse response = authService.getAccessToken(request);
 
         return new ResponseDto<>(response);
     }
