@@ -1,0 +1,14 @@
+version: '3'
+services:
+  rocket_scan:
+    container_name: rocket_scan
+    image: floodnut/rocket-scan
+    volumes:
+      - ./nas/uploads:/app/uploads
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - ${SCANNER_PORT}:8080
+    env_file:
+      - ../.env
+    restart: always
+    network_mode: "host"
