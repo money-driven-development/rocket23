@@ -1,4 +1,4 @@
-package com.initcloud.dockerapi.redis.config;
+package com.initcloud.rocket23.infra.redis.config;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

@@ -15,11 +15,13 @@ public class FileController {
 
 	private final FileService fileService;
 
-	@PostMapping(value = "/file")
+	@PostMapping(value = "/file/{teamCode}/{projectCode}")
 	public ResponseDto<?> uploadFile(
+			@PathVariable String teamCode,
+			@PathVariable String projectCode,
 			@RequestPart("file") MultipartFile file
 	) {
-		fileService.store(file);
+		fileService.store(file, teamCode, projectCode);
 		return new ResponseDto<>(null);
 	}
 

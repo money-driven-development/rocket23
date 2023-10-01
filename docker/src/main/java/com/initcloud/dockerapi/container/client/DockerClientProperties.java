@@ -19,5 +19,5 @@ public class DockerClientProperties {
 	private String volumeHostRoot;
 
 	@Value("${docker.volume.container}")
-	private String volumeContainerRoot;
+	private String volumeContainerRoot = "/app/uploads";
 }

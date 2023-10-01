@@ -1,11 +1,9 @@
 package com.initcloud.dockerapi.container.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.initcloud.dockerapi.common.dto.ResponseDto;
+import com.initcloud.dockerapi.container.dto.ContainerDto;
+import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
+import com.initcloud.dockerapi.container.enums.ContainerAPIType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +14,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.initcloud.dockerapi.common.dto.ResponseDto;
-import com.initcloud.dockerapi.container.dto.ContainerDto;
-import com.initcloud.dockerapi.container.dto.ContainerInspectDto;
-import com.initcloud.dockerapi.container.enums.ContainerAPIType;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WebMvcTest(DockerContainerInspectController.class)
@@ -34,7 +34,7 @@ public class DockerContainerInspectControllerTest {
 	private List<ContainerDto> inspectList;
 	private ContainerInspectDto inspectDetails;
 
-	private static final String BASE_URI = "/rocket23/containers";
+	private static final String BASE_URI = "/rocket/containers";
 
 	@BeforeAll
 	public void init() {
