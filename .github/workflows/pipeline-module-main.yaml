@@ -27,6 +27,7 @@ jobs:
       money-driven-development/rocket23/.github/workflows/template-git-leaks.yaml@dev
     secrets:
       TOKEN_FOR_CICD: ${{ secrets.TOKEN_FOR_CICD }}
+      GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   gradle-build:
     uses:
