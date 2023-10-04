@@ -1,4 +1,4 @@
-package com.initcloud.dockerapi.redis.enums;
+package com.initcloud.rocket23.infra.redis.enums;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,6 +1,14 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot'
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.initcloud'
+version = 'scan'
+
+java {
+    sourceCompatibility = '11'
 }
 
 repositories {
@@ -8,12 +16,44 @@ repositories {
 }
 
 dependencies {
-// https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
-    implementation 'io.springfox:springfox-swagger2:3.0.0'
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
 
-// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
-    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    implementation group: 'io.github.openfeign', name: 'feign-gson', version: '11.0'
+
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
+
+    // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    // https://mvnrepository.com/artifact/com.github.docker-java/docker-java-core
+    implementation 'com.github.docker-java:docker-java-core:3.3.0'
+    // https://mvnrepository.com/artifact/com.github.docker-java/docker-java-transport-httpclient5
+    // 후보군 com.github.docker-java:docker-java-transport-zerodep
+    implementation 'com.github.docker-java:docker-java-transport-httpclient5:3.3.0'
+
+//    // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
+//    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+//    implementation 'io.springfox:springfox-swagger2:3.0.0'
+//    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+//    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+}
+
+test {
+    useJUnitPlatform()
 }

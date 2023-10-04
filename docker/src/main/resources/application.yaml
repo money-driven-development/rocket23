@@ -1,7 +1,19 @@
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:password}
+
+redis:
+  mode: single
+  nodes:
+    - "redis://127.0.0.1:6379"
+  queue:
+    max: 7
 
 docker:
   host:
@@ -9,12 +21,4 @@ docker:
     unix: "unix:///var/run/docker.sock"
   volume:
     host:
-    container: "/app"
-
-
-redis:
-  mode: single
-  nodes:
-    - "redis://localhost:6379"
-  queue:
-    max: 7
+    container: "/app/uploads"
