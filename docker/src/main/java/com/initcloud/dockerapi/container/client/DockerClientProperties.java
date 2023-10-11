@@ -16,8 +16,8 @@ public class DockerClientProperties {
 	private String dockerSSL;
 
 	@Value("${docker.volume.host}")
-	private String volumeHostRoot;
+	private String volumeHostRoot = "~/nas/uploads/";
 
 	@Value("${docker.volume.container}")
-	private String volumeContainerRoot = "/app/uploads";
+	private String volumeContainerRoot = "/app/uploads/";
 }

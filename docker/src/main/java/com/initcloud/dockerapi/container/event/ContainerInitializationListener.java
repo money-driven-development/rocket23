@@ -1,16 +1,14 @@
 package com.initcloud.dockerapi.container.event;
 
+import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
+import com.initcloud.dockerapi.redis.client.RedisContainerQueueClient;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.initcloud.dockerapi.container.middleware.DockerContainerApi;
-import com.initcloud.dockerapi.redis.client.RedisContainerQueueClient;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -19,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ContainerInitializationListener {
 
 	private final DockerContainerApi containerApi;
+	private final RedisContainerQueueClient redisQueueClient;
 
 	/**
 	 * 앱 구동 완료 후 동작
@@ -26,14 +25,13 @@ public class ContainerInitializationListener {
 	 */
 	@EventListener(ApplicationReadyEvent.class)
 	public void onApplicationEvent() {
-		RedisContainerQueueClient redisContainerQueueClient = RedisContainerQueueClient.getRedisQueueClient();
-		this.removeUnControlledContainer(redisContainerQueueClient);
+		this.removeUnControlledContainer(redisQueueClient);
 
 		boolean isNotFull = true;
 		while (isNotFull) {
 			CreateContainerResponse containerResponse = containerApi.create();
 			containerApi.start(containerResponse.getId());
-			isNotFull = redisContainerQueueClient.addToQueue(containerResponse.getId());
+			isNotFull = redisQueueClient.addToQueue(containerResponse.getId());
 		}
 	}
 

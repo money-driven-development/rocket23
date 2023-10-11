@@ -21,7 +21,7 @@ public class DockerManageService implements ContainerManageService {
 
 	private final DockerContainerApi dockerContainerApi;
 	private final RedisMessagePublisher publisher;
-	private static RedisContainerQueueClient queueClient = RedisContainerQueueClient.getRedisQueueClient();
+	private final RedisContainerQueueClient queueClient;
 
 	/**
 	 * 도커 컨테이너를 실행. 스캔 명령이 함께 동작.
@@ -36,7 +36,7 @@ public class DockerManageService implements ContainerManageService {
 		String containerId = queueClient.pollContainerIdFromQueue();
 		queueClient.addToQueue(containerResponse.getId());
 
-		String scanResult = dockerContainerApi.execute(containerId, path);
+		String scanResult = dockerContainerApi.execute(containerResponse.getId(), path);
 
 		// 확인용, 이걸 다른 곳(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
 		publisher.publishScanMessage(scanResult);
