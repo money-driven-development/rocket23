@@ -20,7 +20,7 @@ public class ContainerInitializationListener {
 	private final RedisContainerQueueClient redisQueueClient;
 
 	/**
-	 * 앱 구동 완료 후 동작
+	 * 앱(스캔 API) 구동 시점에 동작
 	 * 컨테이너를 초기화하고 Subscriber 를 실행시킴.
 	 */
 	@EventListener(ApplicationReadyEvent.class)
@@ -36,7 +36,7 @@ public class ContainerInitializationListener {
 	}
 
 	/**
-	 * 관리를 이탈한 컨테이너를 런타임 시점에 삭제
+	 * 관리를 이탈한 컨테이너를 스캔 API 런타임(구동) 시점에 삭제
 	 */
 	private void removeUnControlledContainer(RedisContainerQueueClient redisContainerQueueClient) {
 		int legacyQueueSize = redisContainerQueueClient.getQueueSize();

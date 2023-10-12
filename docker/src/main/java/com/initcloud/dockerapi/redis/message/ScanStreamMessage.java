@@ -63,9 +63,11 @@ public class ScanStreamMessage<T> implements Serializable {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = (JSONObject) parser.parse(rawData);
 
-        // 불필요한 데이터 삭제
+        // 팀, 프로젝트 정보 추가
         jsonObject.put("teamCode", teamCode);
         jsonObject.put("projectCode", projectCode);
+
+        // 불필요한 필드 삭제 로직 추가 가능
 
         return jsonObject.toJSONString();
     }

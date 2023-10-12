@@ -6,11 +6,17 @@ import lombok.Getter;
 
 @Getter
 public class IaCScanRequestDto {
-	private final IaCType iacType; // Terraform, Ansible...
-	private final String iacPath;
+    private final IaCType iacType; // Terraform, Ansible...
+    private final String iacPath;
 
-	public IaCScanRequestDto(IaCType iacType, String iacPath) {
-		this.iacType = iacType;
-		this.iacPath = iacPath;
-	}
+    private final String teamCode;
+    private final String projectCode;
+
+
+    public IaCScanRequestDto(IaCType iacType, String iacPath, String teamCode, String projectCode) {
+        this.iacType = iacType;
+        this.iacPath = iacPath;
+        this.teamCode = teamCode;
+        this.projectCode = projectCode;
+    }
 }

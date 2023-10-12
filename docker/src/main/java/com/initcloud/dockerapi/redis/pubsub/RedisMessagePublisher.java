@@ -42,6 +42,12 @@ public class RedisMessagePublisher {
     public void publishScanMessage(String data, String teamCode, String projectCode) {
         try {
             if (!data.isEmpty()) {
+
+                /** Todo - written 23.10.13
+                 * ScanStreamMessage.serializeToScanResult(...)
+                 * 전달할 json 의 필드를 조절해서최적화 할 수 있음.
+                 * 또는, json 이 아닌 protobuf, avro, gin 등 바이너리로 변경 한다면 전송하는 네트워크 비용을 최적화 할 수 있음
+                 */
                 String result = ScanStreamMessage.serializeToScanResult(data, teamCode, projectCode);
                 topicScan.publish(result);
             }
@@ -51,6 +57,7 @@ public class RedisMessagePublisher {
         }
     }
 
+    // 팀, 프로젝트 코드를 전달하지 않음.
     public void publishScanMessage(String data) {
         try {
             if (!data.isEmpty()) {
