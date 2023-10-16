@@ -21,7 +21,7 @@ public class DockerManageService implements ContainerManageService {
 
 	private final DockerContainerApi dockerContainerApi;
 	private final RedisMessagePublisher publisher;
-	private static RedisContainerQueueClient queueClient = RedisContainerQueueClient.getRedisQueueClient();
+	private final RedisContainerQueueClient queueClient;
 
 	/**
 	 * 도커 컨테이너를 실행. 스캔 명령이 함께 동작.
@@ -30,26 +30,35 @@ public class DockerManageService implements ContainerManageService {
 	 */
 	@Override
 	public ContainerDto executeContainer(Integer count, IaCScanRequestDto path) {
-		CreateContainerResponse containerResponse = dockerContainerApi.create();
-		dockerContainerApi.start(containerResponse.getId());
+		CreateContainerResponse containerResponse = dockerContainerApi.create(); // 스캔을 수행할 컨테이너 생성 (cold start)
+		dockerContainerApi.start(containerResponse.getId()); // 컨테이너 실행
 
+		// 미리 생성해둔 스탠바이 컨테이너를 사용해서 cold start 시간을 줄일 수 있음
 		String containerId = queueClient.pollContainerIdFromQueue();
 		queueClient.addToQueue(containerResponse.getId());
 
-		String scanResult = dockerContainerApi.execute(containerId, path);
+		// 앞서서 가져온 ID를 가지는 컨테이너로 통해서 스캔 수행
+		String scanResult = dockerContainerApi.execute(containerResponse.getId(), path);
 
-		// 확인용, 이걸 다른 곳(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
-		publisher.publishScanMessage(scanResult);
+		// 이걸 다른 곳에 쏨(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
+		publisher.publishScanMessage(scanResult, path.getTeamCode(), path.getProjectCode());
 
+		//
 
-
+		/** 스캔이 완료된 컨테이너 종료 시킴
+		 * Todo
+		 * com.initcloud.dockerapi.container.middleware.ContainerStrategyApi
+		 * com.initcloud.dockerapi.container.enums.ContainerLifeCycleStrategy
+		 * 위 두 개의 컨테이너 관리 정책에 따라서, 컨테이너를 stop 할지 혹은 대기열에 다시 넣을지 등을 결정할 수 있음.
+		 */
 		dockerContainerApi.stop(containerId);
 
+		// 동작시켰던 컨테이너 정보를 반환
 		return new ContainerDto(containerId, "Exited");
 	}
 
 	public ContainerDto executeContainer(ProjectUploadMessage upload) {
-		IaCScanRequestDto request = new IaCScanRequestDto(IaCType.TERRAFORM, upload.getUuid()); // Todo - 나중에 타입을 요청 별로 바꿔야 함 ㅎㅎ.
+		IaCScanRequestDto request = new IaCScanRequestDto(IaCType.TERRAFORM, upload.getUuid(), upload.getTeam(), upload.getProject()); // Todo - 나중에 타입을 요청 별로 바꿔야 함 ㅎㅎ.
 		return this.executeContainer(1, request);
 }
 

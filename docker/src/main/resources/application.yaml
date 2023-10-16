@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
 #  mvc:
 #    pathmatch:
@@ -11,7 +14,7 @@ spring:
 redis:
   mode: single
   nodes:
-    - "redis://127.0.0.1:6379"
+    - ${REDIS_HOST:redis://127.0.0.1:6379}
   queue:
     max: 7
 
@@ -20,5 +23,5 @@ docker:
     ssl:
     unix: "unix:///var/run/docker.sock"
   volume:
-    host:
-    container: "/app/uploads"
+    host: ${HOST_VOLUME_PATH:./nas/uploads}
+    container: ${CONTAINER_VOLUME_PATH:/app/uploads}

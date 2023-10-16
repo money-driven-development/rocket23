@@ -36,7 +36,7 @@ public class DockerContainerApi implements ContainerApi {
 
 	@Override
 	public CreateContainerResponse create() {
-		return this.create(ContainerImages.SCANNER_ALPINE_LATEST);
+		return this.create(ContainerImages.SCANNER_LATEST);
 	}
 
 	public CreateContainerResponse create(ContainerImages image) {
@@ -197,7 +197,7 @@ public class DockerContainerApi implements ContainerApi {
 		return HostConfig.newHostConfig()
 			.withBinds(
 				new Bind(
-					dockerClientProperties.getVolumeHostRoot(),
+					"/home/ubuntu/nas/uploads/",
 					new Volume(dockerClientProperties.getVolumeContainerRoot()))
 			);
 	}

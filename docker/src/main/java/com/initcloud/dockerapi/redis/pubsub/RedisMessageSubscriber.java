@@ -33,6 +33,7 @@ public class RedisMessageSubscriber {
 	@PostConstruct
 	public void initialize() {
 		subscribeScanChannel();
+		subscribeProjectChannel();
 	}
 
 	public void subscribeScanChannel() {
@@ -58,6 +59,7 @@ public class RedisMessageSubscriber {
 			} catch (DecoderException e) {
 				log.warn("[DECODE ERROR] - from {}, about {}", channel, e.getMessage());
 			} catch (Exception e) {
+				e.printStackTrace();
 				log.warn("[DATA BIND ERROR] - from {}, about {}", channel, e.getMessage());
 			}
 		});
