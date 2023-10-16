@@ -16,7 +16,6 @@ import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -104,11 +103,13 @@ public class JwtProvider implements TokenProvider {
     }
 
     public String getUsername() {
-        return ((User) SecurityContextHolder
+        Object principal = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
-                .getPrincipal())
-                .getUsername();
+                .getPrincipal();
+        
+        UserDetails userDetails = (UserDetails) principal;
+        return userDetails.getUsername();
     }
 
     public Authentication getAuthentication(String token, String key) {
@@ -144,7 +145,7 @@ public class JwtProvider implements TokenProvider {
         Reader pemReader = new StringReader(privateKey);
 
         PEMParser pemParser = new PEMParser(pemReader);
-        PEMKeyPair object = (PEMKeyPair)pemParser.readObject();
+        PEMKeyPair object = (PEMKeyPair) pemParser.readObject();
         pemReader.close();
 
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
