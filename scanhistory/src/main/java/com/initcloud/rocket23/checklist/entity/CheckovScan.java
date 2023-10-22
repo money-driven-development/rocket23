@@ -3,22 +3,45 @@ package com.initcloud.rocket23.checklist.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * TODO: 엔티티 테이블 추가 후 어노테이션 및 테이블 컬럼 명 수정 필수 !!
- */
+import javax.persistence.*;
+
 @Getter
+@Entity
 @RequiredArgsConstructor
 public class CheckovScan {
 
+    @Id
+    @Column(name = "check_type_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "check_type")
     private String checkType;
+
+    @OneToOne
+    @JoinColumn(name = "results_id")
     private Result results;
+
     private int passed;
+
     private int failed;
+
     private int skipped;
+
+    @Column(name = "parsing_errors")
     private int parsingErrors;
+
+    @Column(name = "resource_count")
     private int resourceCount;
+
+    @Column(name = "checkov_version")
     private String checkovVersion;
+
+    @OneToOne
+    @JoinColumn(name = "summary_id")
     private Summary summary;
+
+    @Column(name = "url")
     private String url;
 
     public CheckovScan(String checkType,
