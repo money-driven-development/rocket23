@@ -5,17 +5,27 @@ import com.initcloud.rocket23.policy.dto.PolicyCreateDto;
 import com.initcloud.rocket23.policy.dto.PolicyDto;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.service.PolicyService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@ApiOperation("Team Policy and Policy-set API")
+@Tag(name = "Team Policy and Policy-set API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rocket/team")
@@ -27,37 +37,52 @@ public class PolicyController {
      * ===== Team Policy =====
      */
 
-    @ApiOperation(value = "Get paged policies", notes = "Retrieve paged policies.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Get paged policies",
+            description = "Retrieve paged policies.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/policies")
     public ResponseDto<Page<PolicyDto.Summary>> teamPagedPolicies( // Todo 어떻게 표현할건지?
-            final Pageable pageable,
-            @PathVariable String teamCode
+                                                                   final Pageable pageable,
+                                                                   @PathVariable String teamCode
     ) {
         Page<PolicyDto.Summary> response = policyService.getPagedTeamPolicyList(pageable, teamCode);
 
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Get all policies", notes = "Retrieve all policies.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Get all policies",
+            description = "Retrieve all policies.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/policies/all")
     public ResponseDto<List<PolicyDto.Summary>> teamPolicies( // Todo 어떻게 표현할건지?
-            @PathVariable String teamCode
+                                                              @PathVariable String teamCode
     ) {
         List<PolicyDto.Summary> response = policyService.getTeamPolicyList(teamCode);
 
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Add a policy", notes = "Add a policy.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Add a policy",
+            description = "Add a policy.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @PostMapping("/{teamCode}/policies")
     public ResponseDto<String> teamPolicyAdd(
             @PathVariable String teamCode,
@@ -68,11 +93,16 @@ public class PolicyController {
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Get policy details", notes = "Retrieve a policy.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "policyName", paramType = "path", value = "Unique policy name", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Get policy details",
+            description = "Retrieve a policy.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "policyName", in = ParameterIn.PATH, description = "Unique policy name", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/policies/{policyName}")
     public ResponseDto<PolicyDto.Details> teamPolicyDetails(
             @PathVariable String teamCode,
@@ -83,28 +113,38 @@ public class PolicyController {
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Modify a policy", notes = "Modify policy details.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "policyName", paramType = "path", value = "Unique policy name", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "dto", paramType = "body", value = "Policy details", required = true, dataTypeClass = PolicyCreateDto.class)})
+    @Operation(
+            summary = "Modify a policy",
+            description = "Modify policy details.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "policyName", in = ParameterIn.PATH, description = "Unique policy name", required = true, schema = @Schema(type = "string"))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicyCreateDto.class)), description = "Policy details", required = true)
     @PutMapping("/{teamCode}/policies/{policyName}")
     public ResponseDto<String> teamPolicyModify(
             @PathVariable String teamCode,
             @PathVariable String policyName,
-            @RequestBody PolicyCreateDto dto
+            @org.springframework.web.bind.annotation.RequestBody PolicyCreateDto dto
     ) {
         String response = policyService.modifyTeamPolicy(teamCode, policyName, dto);
 
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Remove a policy", notes = "Remove a policy.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "policyName", paramType = "path", value = "Unique policy name", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Remove a policy",
+            description = "Remove a policy.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "policyName", in = ParameterIn.PATH, description = "Unique policy name", required = true, schema = @Schema(type = "string"))
     @DeleteMapping("/{teamCode}/policies/{policyName}")
     public ResponseDto<String> teamPolicyRemove(
             @PathVariable String teamCode,
@@ -119,10 +159,15 @@ public class PolicyController {
      * ===== Team PolicySet =====
      */
 
-    @ApiOperation(value = "Get policy-set List", notes = "Show policy-set List.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Get policy-set List",
+            description = "Show policy-set List.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/policysets")
     public ResponseDto<List<String>> policySetList(
             @PathVariable String teamCode
@@ -132,11 +177,16 @@ public class PolicyController {
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Get policy-set", notes = "Show policy-set.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "policyset", paramType = "path", value = "policy-set code", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Get policy-set",
+            description = "Show policy-set.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "policyset", in = ParameterIn.PATH, description = "policy-set code", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/policysets/{policyset}")
     public ResponseDto<PolicySetDto> policySetDetails(
             @PathVariable String teamCode,
@@ -148,11 +198,16 @@ public class PolicyController {
     }
 
 
-    @ApiOperation(value = "Add a policy set", notes = "Add a policy set.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "request", paramType = "body", value = "Policy-set-add info.", required = true, dataTypeClass = PolicySetDto.class)})
+    @Operation(
+            summary = "Add a policy set",
+            description = "Add a policy set.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicySetDto.class)), description = "Policy-set-add info.", required = true)
     @PostMapping("/{teamCode}/policysets")
     public ResponseDto<String> policySetAdd(
             @PathVariable String teamCode,
@@ -163,12 +218,16 @@ public class PolicyController {
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Modify a policy set", notes = "Modify a policy set.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "policySet", paramType = "path", value = "Unique policy set name", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "request", paramType = "body", value = "Policy-set-modify info.", required = true, dataTypeClass = PolicySetDto.class)})
+    @Operation(
+            summary = "Modify a policy set",
+            description = "Modify a policy set.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class)))}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Unique policy set name", required = true, schema = @Schema(type = "string"))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicySetDto.class)), description = "Policy-set-modify info.", required = true)
     @PutMapping("/{teamCode}/policysets/{policySet}")
     public ResponseDto<String> policySetModify(
             @PathVariable String teamCode,
@@ -180,11 +239,15 @@ public class PolicyController {
         return new ResponseDto<>(response);
     }
 
-    @ApiOperation(value = "Remove a policy set", notes = "Remove a policy set.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "policySet", paramType = "path", value = "Unique policy set name", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Remove a policy set",
+            description = "Remove a policy set.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class)))}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Unique policy set name", required = true, schema = @Schema(type = "string"))
     @DeleteMapping("/{teamCode}/policysets/{policySet}")
     public ResponseDto policySetRemove(
             @PathVariable String teamCode,
