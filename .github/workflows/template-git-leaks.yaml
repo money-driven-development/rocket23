@@ -5,6 +5,8 @@ on:
     secrets:
       TOKEN_FOR_CICD:
         required: true
+      GITLEAKS_LICENSE:
+        required: true
 
 env:
   TOKEN_FOR_CICD: ${{ secrets.TOKEN_FOR_CICD }}
