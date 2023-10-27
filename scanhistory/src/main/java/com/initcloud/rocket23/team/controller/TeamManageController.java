@@ -1,20 +1,27 @@
 package com.initcloud.rocket23.team.controller;
 
-import com.initcloud.rocket23.team.dto.TeamDto;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
-
 import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.team.dto.TeamDto;
 import com.initcloud.rocket23.team.dto.TeamInviteDto;
 import com.initcloud.rocket23.team.service.TeamManageService;
-
-import lombok.RequiredArgsConstructor;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@ApiOperation("Team Manage API")
+@Tag(name = "Team Manage API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rocket/team")
@@ -29,11 +36,16 @@ public class TeamManageController {
     /**
      * 사용자 팀 초대
      */
-    @ApiOperation(value = "Invite member", notes = "Invite a member to team.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "request", paramType = "body", value = "Request info", required = true, dataTypeClass = TeamInviteDto.Request.class)})
+    @Operation(
+            summary = "Invite member",
+            description = "Invite a member to team.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamInviteDto.Request.class)), description = "Request info", required = true)
     @PostMapping("/{teamCode}/members")
     public ResponseDto<String> memberInvite(
             @PathVariable String teamCode,
@@ -47,11 +59,16 @@ public class TeamManageController {
     /**
      * 멤버 사용자 상태 변경
      */
-    @ApiOperation(value = "Modify member details", notes = "Modify a member details", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "memberEmail", paramType = "path", value = "member email", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Modify member details",
+            description = "Modify a member details",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "memberEmail", in = ParameterIn.PATH, description = "member email", required = true, schema = @Schema(type = "string"))
     @PutMapping("/{teamCode}/members/{memberEmail}")
     public ResponseDto<Object> memberStatus(
             @PathVariable String teamCode,
@@ -64,11 +81,16 @@ public class TeamManageController {
     /**
      * 멤버 사용자 제거
      */
-    @ApiOperation(value = "Remove team member", notes = "Remove a member from team.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "memberEmail", paramType = "path", value = "member email", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Remove team member",
+            description = "Remove a member from team",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "memberEmail", in = ParameterIn.PATH, description = "member email", required = true, schema = @Schema(type = "string"))
     @DeleteMapping("/{teamCode}/members/{memberEmail}")
     public ResponseDto<Object> memberRemove(
             @PathVariable String teamCode,
@@ -86,10 +108,15 @@ public class TeamManageController {
     /**
      * 팀 생성
      */
-    @ApiOperation(value = "Create team", notes = "Create a team.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "request", paramType = "body", value = "Team Create Dto", required = true, dataTypeClass = TeamDto.class)})
+    @Operation(
+            summary = "Create team",
+            description = "Create a team",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamDto.class)), description = "Team Create Dto", required = true)
     @PostMapping("/")
     public ResponseDto<String> teamCreate(
             @RequestBody TeamDto request
@@ -102,10 +129,15 @@ public class TeamManageController {
     /**
      * 팀 해체
      */
-    @ApiOperation(value = "Remove team", notes = "Remove a team.", response = ResponseDto.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
-            @ApiImplicitParam(name = "teamCode", paramType = "path", value = "Team unique code", required = true, dataTypeClass = String.class)})
+    @Operation(
+            summary = "Remove team",
+            description = "Remove a team",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @DeleteMapping("/{teamCode}")
     public ResponseDto<Object> teamRemove(
             @PathVariable String teamCode
