@@ -1,6 +1,6 @@
 package com.initcloud.rocket23.team.entity;
 
-import com.initcloud.rocket23.checklist.entity.ScanHistory;
+import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.entity.PolicySetPerProject;

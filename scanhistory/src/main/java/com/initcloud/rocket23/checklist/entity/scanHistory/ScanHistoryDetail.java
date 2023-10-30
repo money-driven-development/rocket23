@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.checklist.entity;
+package com.initcloud.rocket23.checklist.entity.scanHistory;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -62,7 +62,8 @@ public class ScanHistoryDetail extends BaseEntity {
 
     @Builder
     public ScanHistoryDetail(ScanHistory scanHistory, String checkType,
-                             String targetFileName, String appType, String scanResult, String line, String code, String resource,
+                             String targetFileName, String appType, String scanResult, String line, String code,
+                             String resource,
                              String resourceName, String ruleName) {
         this.scanHistory = scanHistory;
         this.checkType = checkType;
