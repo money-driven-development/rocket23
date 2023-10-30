@@ -1,5 +1,7 @@
 package com.initcloud.rocket23.checklist.service;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.initcloud.rocket23.checklist.entity.scanResult.CheckovScan;
 import com.initcloud.rocket23.infra.repository.CheckovScanRepository;
@@ -19,7 +21,8 @@ public class ScanSaveService {
     public CheckovScan saveScan(String data) throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        //data = scanParseService.parseJSON(data);
+        objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        data = scanParseService.parseJSON(data);
         System.out.println(data);
 
         try {
