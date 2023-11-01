@@ -1,7 +1,6 @@
 package com.initcloud.rocket23.checklist.entity.scanResult;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "checkov_scan")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JsonNaming(value = PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class CheckovScan {
 
     @Id
@@ -29,6 +27,7 @@ public class CheckovScan {
     private Long id;
 
     @Column(name = "check_type")
+    @JsonProperty("check_type")
     private String checkType;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -41,6 +40,12 @@ public class CheckovScan {
 
     @Column(name = "url")
     private String url;
+
+    @Column(name = "team_code")
+    private String teamCode;
+
+    @Column(name = "project_code")
+    private String projectCode;
 
     public CheckovScan(String checkType,
                        Results results,
