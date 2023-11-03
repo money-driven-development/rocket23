@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,23 +39,23 @@ public class ScanParseService {
 
     private void processCodeBlocks(JsonNode checksNode, ObjectMapper objectMapper) {
         if (checksNode.isArray()) {
-            for (JsonNode checkNode : checksNode) {
+            checksNode.forEach(checkNode -> {
                 JsonNode codeBlock = checkNode.path("code_block");
                 if (codeBlock.isArray()) {
-                    ArrayNode improvedCodeBlock = objectMapper.createArrayNode();
-                    for (JsonNode codeItem : codeBlock) {
-                        if (codeItem.isArray() && codeItem.size() == 2) {
-                            int line = codeItem.get(0).asInt();
-                            String content = codeItem.get(1).asText();
-                            ObjectNode improvedCodeItem = objectMapper.createObjectNode();
-                            improvedCodeItem.put("line", line);
-                            improvedCodeItem.put("content", content);
-                            improvedCodeBlock.add(improvedCodeItem);
-                        }
-                    }
+                    ArrayNode improvedCodeBlock = StreamSupport.stream(codeBlock.spliterator(), false)
+                            .filter(codeItem -> codeItem.isArray() && codeItem.size() == 2)
+                            .map(codeItem -> {
+                                int line = codeItem.get(0).asInt();
+                                String content = codeItem.get(1).asText();
+                                ObjectNode improvedCodeItem = objectMapper.createObjectNode();
+                                improvedCodeItem.put("line", line);
+                                improvedCodeItem.put("content", content);
+                                return improvedCodeItem;
+                            })
+                            .collect(objectMapper::createArrayNode, ArrayNode::add, ArrayNode::addAll);
                     ((ObjectNode) checkNode).set("code_block", improvedCodeBlock);
                 }
-            }
+            });
         }
     }
 
