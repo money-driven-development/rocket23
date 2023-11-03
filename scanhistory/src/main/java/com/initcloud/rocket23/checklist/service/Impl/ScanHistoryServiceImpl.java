@@ -1,5 +1,7 @@
 package com.initcloud.rocket23.checklist.service.Impl;
 
+import com.initcloud.rocket23.checklist.dto.CursorResultDto;
+import com.initcloud.rocket23.checklist.dto.HistoryDto;
 import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
@@ -8,7 +10,8 @@ import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
@@ -60,6 +63,19 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
         Page<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCode(pageable,
                 teamCode, projectCode);
         return scanHistories.map(ScanResultDto.Summary::new);
+    }
+
+    /*
+        단일 스캔 내역 전체 조회
+     */
+    @Override
+    public List<ScanResultDto.Summary> getScanHistoryAll(String teamCode, String projectCode) {
+        List<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCode(teamCode,
+                projectCode);
+        if (scanHistories.isEmpty()) {
+            throw new ApiException(ResponseCode.NO_SCAN_RESULT);
+        }
+        return scanHistories.stream().map(ScanResultDto.Summary::new).collect(Collectors.toList());
     }
 
     /*

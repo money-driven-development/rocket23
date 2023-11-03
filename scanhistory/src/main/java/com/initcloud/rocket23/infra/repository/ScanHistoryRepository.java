@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.infra.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
@@ -15,6 +16,8 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> 
                                                                                            String projectCode,
                                                                                            String hashCode);
 
-    Page<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCode(Pageable pageable, String teamCode,
-                                                                   String projectCode);
+	Page<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCode(Pageable pageable, String teamCode,
+		String projectCode);
+
+	List<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCode(String teamCode, String projectCode);
 }

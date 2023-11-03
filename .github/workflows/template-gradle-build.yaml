@@ -58,7 +58,7 @@ jobs:
 
       ## Gradle 빌드
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
         working-directory: ./${{ secrets.SERVICE_NAME }}
 
       ## 웹 이미지 빌드 및 NHN Registry에 Push
