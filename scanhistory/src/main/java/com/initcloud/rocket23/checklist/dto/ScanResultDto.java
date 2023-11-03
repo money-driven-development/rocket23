@@ -2,6 +2,7 @@ package com.initcloud.rocket23.checklist.dto;
 
 import com.initcloud.rocket23.checklist.entity.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.ScanHistoryDetail;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class ScanResultDto {
 	private Integer passed;
 	private Integer failed;
 	private Integer skipped;
-	private LocalDateTime created;
+	private LocalDateTime created_at;
 	private List<Detail> scanResultDetailList = new ArrayList<>();
 
 	@Builder
@@ -38,7 +39,7 @@ public class ScanResultDto {
 		this.passed = scanHistory.getPassed();
 		this.failed = scanHistory.getFailed();
 		this.skipped = scanHistory.getSkipped();
-		this.created = scanHistory.getCreatedAt();
+		this.created_at = scanHistory.getCreatedAt();
 		if (scanHistoryDetails != null) {
 			this.scanResultDetailList.addAll(scanHistoryDetails.stream()
 				.map(Detail::new)
@@ -47,7 +48,8 @@ public class ScanResultDto {
 	}
 
 	@Builder(builderClassName = "demoBuilder", builderMethodName = "scanResultDemoBuilder")
-	public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score, Integer passed, Integer failed, Integer skipped, LocalDateTime created, List<Detail> scanResultDetailList) {
+	public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
+		Integer passed, Integer failed, Integer skipped, LocalDateTime created, List<Detail> scanResultDetailList) {
 		this.fileName = fileName;
 		this.high = high;
 		this.medium = medium;
@@ -57,7 +59,7 @@ public class ScanResultDto {
 		this.passed = passed;
 		this.failed = failed;
 		this.skipped = skipped;
-		this.created = created;
+		this.created_at = created;
 		this.scanResultDetailList = scanResultDetailList;
 	}
 
@@ -92,12 +94,16 @@ public class ScanResultDto {
 		private Integer passed;
 		private Integer skipped;
 		private Integer failed;
+		private Double score;
+		private LocalDateTime created_at;
 
 		public Summary(ScanHistory entity) {
 			this.fileName = entity.getProjectName();
 			this.passed = entity.getPassed();
 			this.skipped = entity.getSkipped();
 			this.failed = entity.getFailed();
+			this.score = entity.getScore();
+			this.created_at = entity.getCreatedAt();
 		}
 	}
 }
