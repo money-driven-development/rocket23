@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.exception.ApiException;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,9 @@ public class ScanParseService {
             processCodeBlocks(passedChecksNode, objectMapper);
             processCodeBlocks(failedChecksNode, objectMapper);
 
-            String improvedJsonData = writer.writeValueAsString(rootNode);
-            return improvedJsonData;
+            return writer.writeValueAsString(rootNode);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            throw new ApiException(ResponseCode.SCAN_PARSING_ERROR);
         }
     }
 
