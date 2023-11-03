@@ -2,6 +2,7 @@ package com.initcloud.rocket23.checklist.dto;
 
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,53 +16,52 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScanResultDto {
-    private String fileName;
-    private Integer high;
-    private Integer medium;
-    private Integer low;
-    private Integer unknown;
-    private Double score;
-    private Integer passed;
-    private Integer failed;
-    private Integer skipped;
-    private LocalDateTime created;
-    private List<Detail> scanResultDetailList = new ArrayList<>();
+	private String fileName;
+	private Integer high;
+	private Integer medium;
+	private Integer low;
+	private Integer unknown;
+	private Double score;
+	private Integer passed;
+	private Integer failed;
+	private Integer skipped;
+	private LocalDateTime created_at;
+	private List<Detail> scanResultDetailList = new ArrayList<>();
 
-    @Builder
-    public ScanResultDto(ScanHistory scanHistory, List<ScanHistoryDetail> scanHistoryDetails) {
-        this.fileName = scanHistory.getProjectName();
-        this.high = scanHistory.getHigh();
-        this.medium = scanHistory.getMedium();
-        this.low = scanHistory.getLow();
-        this.unknown = scanHistory.getUnknown();
-        this.score = scanHistory.getScore();
-        this.passed = scanHistory.getPassed();
-        this.failed = scanHistory.getFailed();
-        this.skipped = scanHistory.getSkipped();
-        this.created = scanHistory.getCreatedAt();
-        if (scanHistoryDetails != null) {
-            this.scanResultDetailList.addAll(scanHistoryDetails.stream()
-                    .map(Detail::new)
-                    .collect(Collectors.toList()));
-        }
-    }
+	@Builder
+	public ScanResultDto(ScanHistory scanHistory, List<ScanHistoryDetail> scanHistoryDetails) {
+		this.fileName = scanHistory.getProjectName();
+		this.high = scanHistory.getHigh();
+		this.medium = scanHistory.getMedium();
+		this.low = scanHistory.getLow();
+		this.unknown = scanHistory.getUnknown();
+		this.score = scanHistory.getScore();
+		this.passed = scanHistory.getPassed();
+		this.failed = scanHistory.getFailed();
+		this.skipped = scanHistory.getSkipped();
+		this.created_at = scanHistory.getCreatedAt();
+		if (scanHistoryDetails != null) {
+			this.scanResultDetailList.addAll(scanHistoryDetails.stream()
+				.map(Detail::new)
+				.collect(Collectors.toList()));
+		}
+	}
 
-    @Builder(builderClassName = "demoBuilder", builderMethodName = "scanResultDemoBuilder")
-    public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
-                         Integer passed, Integer failed, Integer skipped, LocalDateTime created,
-                         List<Detail> scanResultDetailList) {
-        this.fileName = fileName;
-        this.high = high;
-        this.medium = medium;
-        this.low = low;
-        this.unknown = unknown;
-        this.score = score;
-        this.passed = passed;
-        this.failed = failed;
-        this.skipped = skipped;
-        this.created = created;
-        this.scanResultDetailList = scanResultDetailList;
-    }
+	@Builder(builderClassName = "demoBuilder", builderMethodName = "scanResultDemoBuilder")
+	public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
+		Integer passed, Integer failed, Integer skipped, LocalDateTime created, List<Detail> scanResultDetailList) {
+		this.fileName = fileName;
+		this.high = high;
+		this.medium = medium;
+		this.low = low;
+		this.unknown = unknown;
+		this.score = score;
+		this.passed = passed;
+		this.failed = failed;
+		this.skipped = skipped;
+		this.created_at = created;
+		this.scanResultDetailList = scanResultDetailList;
+	}
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -87,19 +87,23 @@ public class ScanResultDto {
         }
     }
 
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Summary {
-        private String fileName;
-        private Integer passed;
-        private Integer skipped;
-        private Integer failed;
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Summary {
+		private String fileName;
+		private Integer passed;
+		private Integer skipped;
+		private Integer failed;
+		private Double score;
+		private LocalDateTime created_at;
 
-        public Summary(ScanHistory entity) {
-            this.fileName = entity.getProjectName();
-            this.passed = entity.getPassed();
-            this.skipped = entity.getSkipped();
-            this.failed = entity.getFailed();
-        }
-    }
+		public Summary(ScanHistory entity) {
+			this.fileName = entity.getProjectName();
+			this.passed = entity.getPassed();
+			this.skipped = entity.getSkipped();
+			this.failed = entity.getFailed();
+			this.score = entity.getScore();
+			this.created_at = entity.getCreatedAt();
+		}
+	}
 }
