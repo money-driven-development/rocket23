@@ -9,6 +9,7 @@ import javax.persistence.RollbackException;
 import javax.transaction.TransactionalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,8 +18,8 @@ public class ScanSaveService {
     private final CheckovScanRepository checkovScanRepository;
     private final ScanParseService scanParseService;
 
-    //@Transactional
-    public CheckovScan saveScan(String data) throws Exception {
+    @Transactional
+    public CheckovScan saveCheckovScan(String data) throws Exception {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
