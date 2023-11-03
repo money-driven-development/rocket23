@@ -20,7 +20,7 @@ public class ScanSaveController {
 
     @PostMapping
     public ResponseDto<CheckovScan> scanSave(@RequestBody String data) throws Exception {
-        CheckovScan dto = scanSaveService.saveScan(data);
+        CheckovScan dto = scanSaveService.saveCheckovScan(data);
         return new ResponseDto<>(dto);
     }
 
