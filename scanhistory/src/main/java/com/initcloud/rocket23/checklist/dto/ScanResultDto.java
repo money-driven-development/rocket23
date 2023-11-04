@@ -1,7 +1,7 @@
 package com.initcloud.rocket23.checklist.dto;
 
-import com.initcloud.rocket23.checklist.entity.ScanHistory;
-import com.initcloud.rocket23.checklist.entity.ScanHistoryDetail;
+import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
+import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -63,29 +63,29 @@ public class ScanResultDto {
 		this.scanResultDetailList = scanResultDetailList;
 	}
 
-	@Getter
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class Detail {
-		private String checkType;
-		private String appType;
-		private String scanResult;
-		private String line;
-		private String code;
-		private String ruleName;
-		private String resource;
-		private String resourceName;
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Detail {
+        private String checkType;
+        private String appType;
+        private String scanResult;
+        private String line;
+        private String code;
+        private String ruleName;
+        private String resource;
+        private String resourceName;
 
-		public Detail(ScanHistoryDetail scanHistoryDetail) {
-			this.checkType = scanHistoryDetail.getCheckType();
-			this.appType = scanHistoryDetail.getAppType();
-			this.scanResult = scanHistoryDetail.getScanResult();
-			this.line = scanHistoryDetail.getLine();
-			this.code = scanHistoryDetail.getCode();
-			this.ruleName = scanHistoryDetail.getRuleName();
-			this.resource = scanHistoryDetail.getResource();
-			this.resourceName = scanHistoryDetail.getResourceName();
-		}
-	}
+        public Detail(ScanHistoryDetail scanHistoryDetail) {
+            this.checkType = scanHistoryDetail.getCheckType();
+            this.appType = scanHistoryDetail.getAppType();
+            this.scanResult = scanHistoryDetail.getScanResult();
+            this.line = scanHistoryDetail.getLine();
+            this.code = scanHistoryDetail.getCode();
+            this.ruleName = scanHistoryDetail.getRuleName();
+            this.resource = scanHistoryDetail.getResource();
+            this.resourceName = scanHistoryDetail.getResourceName();
+        }
+    }
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)

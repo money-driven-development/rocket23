@@ -1,9 +1,11 @@
 package com.initcloud.rocket23.checklist.service.Impl;
 
+import com.initcloud.rocket23.checklist.dto.CursorResultDto;
+import com.initcloud.rocket23.checklist.dto.HistoryDto;
 import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
-import com.initcloud.rocket23.checklist.entity.ScanHistory;
-import com.initcloud.rocket23.checklist.entity.ScanHistoryDetail;
+import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
+import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
@@ -11,9 +13,13 @@ import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
