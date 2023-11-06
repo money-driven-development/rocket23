@@ -14,6 +14,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +25,7 @@ public class OAuthService {
     private final UserRepository userRepository;
     private final OAuthRequestFacade oauthRequestFacade;
     private final SecurityProperties properties;
+    private final Environment environment;
 
     public void redirectGithub(HttpServletResponse response, String redirect) {
         try {
@@ -35,19 +37,17 @@ public class OAuthService {
     }
 
     public OAuthDto.GithubTokenResponse getAccessToken(AuthRequestDto request) {
-        if (request == null
-                || request.getClientId() == null
-                || request.getClientSecret() == null
-                || request.getCode() == null) {
-            throw new ApiAuthException(ResponseCode.INVALID_REQUEST);
-        }
+        AuthRequestDto dto = new AuthRequestDto(
+                environment.getProperty("GITHUB_CLIENT_ID"),
+                environment.getProperty("GITHUB_CLIENT_SECRET"),
+                request.getCode(),
+                environment.getProperty("REDIRECT_URI"));
 
-        return oauthRequestFacade.requestGithubOAuthToken(request);
+        return oauthRequestFacade.requestGithubOAuthToken(dto);
     }
 
-    public Token getUserAccessToken(String clientId, String clientSecret, String code, String redirect) {
-        AuthRequestDto request = new AuthRequestDto(clientId, clientSecret, code, redirect);
-        OAuthDto.GithubTokenResponse tokenResponse = oauthRequestFacade.requestGithubOAuthToken(request);
+    public Token getUserAccessToken(AuthRequestDto request) {
+        OAuthDto.GithubTokenResponse tokenResponse = getAccessToken(request);
         OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(
                 tokenResponse.getAccessToken());
 
