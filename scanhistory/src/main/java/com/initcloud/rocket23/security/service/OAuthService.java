@@ -9,13 +9,13 @@ import com.initcloud.rocket23.security.dto.Token;
 import com.initcloud.rocket23.security.facade.OAuthRequestFacade;
 import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import com.initcloud.rocket23.user.entity.User;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,7 @@ public class OAuthService {
     private final UserRepository userRepository;
     private final OAuthRequestFacade oauthRequestFacade;
     private final SecurityProperties properties;
+    private final Environment environment;
 
     public void redirectGithub(HttpServletResponse response, String redirect) {
         try {
@@ -36,13 +37,19 @@ public class OAuthService {
     }
 
     public OAuthDto.GithubTokenResponse getAccessToken(AuthRequestDto request) {
-        return oauthRequestFacade.requestGithubOAuthToken(request);
+        AuthRequestDto dto = new AuthRequestDto(
+                environment.getProperty("GITHUB_CLIENT_ID"),
+                environment.getProperty("GITHUB_CLIENT_SECRET"),
+                request.getCode(),
+                environment.getProperty("REDIRECT_URI"));
+
+        return oauthRequestFacade.requestGithubOAuthToken(dto);
     }
 
-    public Token getUserAccessToken(String clientId, String clientSecret, String code, String redirect) {
-        AuthRequestDto request = new AuthRequestDto(clientId, clientSecret, code, redirect);
-        OAuthDto.GithubTokenResponse tokenResponse = oauthRequestFacade.requestGithubOAuthToken(request);
-        OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(tokenResponse.getAccessToken());
+    public Token getUserAccessToken(AuthRequestDto request) {
+        OAuthDto.GithubTokenResponse tokenResponse = getAccessToken(request);
+        OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(
+                tokenResponse.getAccessToken());
 
         User user = getUserIfExist(userDetail);
 
@@ -63,8 +70,9 @@ public class OAuthService {
     public User getUserIfExist(OAuthDto.GithubUserDetail userDetail) {
         Optional<User> user = userRepository.findUserByUsername(userDetail.getLogin());
 
-        if (user.isPresent())
+        if (user.isPresent()) {
             return user.get();
+        }
 
         User socialUser = userRepository.save(User.addIndividualSocialUser(userDetail));
 

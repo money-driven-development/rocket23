@@ -1,7 +1,7 @@
 package com.initcloud.rocket23.user.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
-import com.initcloud.rocket23.security.dto.OAuthDto;
+import com.initcloud.rocket23.security.dto.Token;
 import com.initcloud.rocket23.security.service.OAuthService;
 import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,10 +55,10 @@ public class AuthController {
         authService.redirectGithub(response, redirect);
     }
 
-    @Operation(summary = "Redirect to Github Login page.", description = "Redirect to Github Login page to get an auth code.")
+    @Operation(summary = "Get a Access Token.", description = "Get a Access Token and Redirect to Main Page")
     @PostMapping("/callback")
-    public ResponseDto<OAuthDto.GithubTokenResponse> githubAuth(@RequestBody AuthRequestDto request) {
-        OAuthDto.GithubTokenResponse response = authService.getAccessToken(request);
+    public ResponseDto<Token> githubAuth(@RequestBody AuthRequestDto request) {
+        Token response = authService.getUserAccessToken(request);
 
         return new ResponseDto<>(response);
     }
