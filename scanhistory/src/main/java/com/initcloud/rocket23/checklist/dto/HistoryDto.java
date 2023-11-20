@@ -1,13 +1,11 @@
 package com.initcloud.rocket23.checklist.dto;
 
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
-
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,7 +24,6 @@ public class HistoryDto {
         this.id = entity.getId();
         this.projectName = entity.getProjectName();
         this.projectCode = entity.getProjectCode();
-        this.projectHash = entity.getProjectHash();
         this.scanDateTime = entity.getCreatedAt();
         this.score = entity.getScore();
         this.failed = entity.getFailed();
