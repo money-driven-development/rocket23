@@ -62,6 +62,10 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
 
     implementation 'org.redisson:redisson-spring-boot-starter:3.16.8'
+
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation 'net.minidev:json-smart:2.4.7'
+
 }
 
 tasks.named('test') {
