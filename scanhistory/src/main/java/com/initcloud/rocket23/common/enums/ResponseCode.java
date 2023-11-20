@@ -24,6 +24,8 @@ public enum ResponseCode {
     NO_SCAN_RESULT(5401, HttpStatus.INTERNAL_SERVER_ERROR, "조회할 수 있는 스캔 결과가 없습니다."),
     SCAN_SAVE_ERROR(5402, HttpStatus.INTERNAL_SERVER_ERROR, "스캔 저장중 오류입니다."),
     SCAN_PARSING_ERROR(5403, HttpStatus.INTERNAL_SERVER_ERROR, "스캔 데이터 파싱중 오류입니다."),
+    SCAN_DESCRIOTION_ERROR(5404, HttpStatus.INTERNAL_SERVER_ERROR, "스캔 세부조회 저장중 오류입니다."),
+    SCAN_CODE_BLOCK_ERROR(5405, HttpStatus.INTERNAL_SERVER_ERROR, "스캔 코드블록 저장중 오류입니다."),
     /*Redis Error. 5500*/
     JSON_PROCESSING_ERROR(5501, HttpStatus.INTERNAL_SERVER_ERROR, "Redis Publish JSON 직렬화 오류입니다."),
 

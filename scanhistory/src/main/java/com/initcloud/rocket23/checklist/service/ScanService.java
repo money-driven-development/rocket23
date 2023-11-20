@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.initcloud.rocket23.checklist.entity.scanHistory.CodeBlock;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
+import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.CodeBlockRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryDetailRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
@@ -105,7 +107,7 @@ public class ScanService {
             saveCodeBlocks(codeBlockNodes, scanHistoryDetail);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ApiException(ResponseCode.SCAN_DESCRIOTION_ERROR);
         }
     }
 
@@ -121,7 +123,7 @@ public class ScanService {
                 codeBlockRepository.save(codeBlock);
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ApiException(ResponseCode.SCAN_CODE_BLOCK_ERROR);
         }
     }
 }
