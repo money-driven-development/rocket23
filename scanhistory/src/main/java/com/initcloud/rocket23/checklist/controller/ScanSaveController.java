@@ -1,8 +1,6 @@
 package com.initcloud.rocket23.checklist.controller;
 
-import com.initcloud.rocket23.checklist.entity.scanResult.CheckovScan;
-import com.initcloud.rocket23.checklist.service.ScanSaveService;
-import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.checklist.service.ScanService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ScanSaveController {
 
-    private final ScanSaveService scanSaveService;
+    //private final ScanSaveService scanSaveService;
+    private final ScanService scanService;
+
+//    @PostMapping
+//    public ResponseDto<CheckovScan> scanSave(@RequestBody String data) throws Exception {
+//        CheckovScan dto = scanSaveService.saveCheckovScan(data);
+//        return new ResponseDto<>(dto);
+//    }
 
     @PostMapping
-    public ResponseDto<CheckovScan> scanSave(@RequestBody String data) throws Exception {
-        CheckovScan dto = scanSaveService.saveCheckovScan(data);
-        return new ResponseDto<>(dto);
+    public void scanNewSave(@RequestBody String data) throws Exception {
+        scanService.saveCheckovScan(data);
     }
 
 }
