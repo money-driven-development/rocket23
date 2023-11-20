@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.checklist.entity.scanHistory;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.common.utils.UniqueUtils;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class ScanHistory extends BaseEntity {
     @Builder
     public ScanHistory(
             Team team, TeamProject project, String projectName, String projectCode,
-            String scanHash, String username,
+            String username,
             Integer passed, Integer skipped, Integer failed, Integer high,
             Integer medium, Integer low, Integer unknown,
             Double score) {
@@ -113,7 +114,7 @@ public class ScanHistory extends BaseEntity {
         this.project = project;
         this.projectName = projectName;
         this.projectCode = projectCode;
-        this.scanHash = scanHash;
+        this.scanHash = UniqueUtils.getUUID();
         this.username = username;
         this.passed = passed;
         this.skipped = skipped;

@@ -45,8 +45,8 @@ public class ScanService {
         Object obj = jsonParser.parse(data);
         JSONObject jsonObj = (JSONObject) obj;
 
-        Team team = teamInspectService.getTeam(jsonObj.get("team_code").toString());
-        TeamProject teamProject = teamProjectService.getTeamProject(team, jsonObj.get("project_code").toString());
+        Team team = teamInspectService.getTeam(jsonObj.get("teamCode").toString());
+        TeamProject teamProject = teamProjectService.getTeamProject(team, jsonObj.get("projectCode").toString());
 
         JSONObject summaryObject = (JSONObject) jsonObj.get("summary");
 
@@ -55,7 +55,6 @@ public class ScanService {
                 .project(teamProject)
                 .projectName(teamProject.getProjectName())
                 .projectCode(teamProject.getProjectCode())
-                .scanHash("demo_hash")
                 .username("username")
                 .passed((int) summaryObject.get("passed"))
                 .skipped((int) summaryObject.get("skipped"))
