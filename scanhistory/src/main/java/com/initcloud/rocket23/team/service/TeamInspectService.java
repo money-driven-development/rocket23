@@ -2,17 +2,15 @@ package com.initcloud.rocket23.team.service;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.rocket23.infra.repository.TeamRepository;
+import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
 import com.initcloud.rocket23.team.dto.TeamMemberDto;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.initcloud.rocket23.infra.repository.TeamRepository;
-import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -46,5 +44,13 @@ public class TeamInspectService {
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_USER_IN_TEAM));
 
         return TeamWithUsers.toDetailsDto(teamWithUser);
+    }
+
+    /**
+     * 팀 엔티티 가져오기
+     */
+    public Team getTeam(String teamCode) {
+        return teamRepository.findByTeamCode(teamCode)
+                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
     }
 }
