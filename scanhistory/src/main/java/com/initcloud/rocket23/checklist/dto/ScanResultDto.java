@@ -2,10 +2,12 @@ package com.initcloud.rocket23.checklist.dto;
 
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,6 +86,7 @@ public class ScanResultDto {
         private Integer skipped;
         private Integer failed;
         private Double score;
+        private String scanHash;
         private LocalDateTime created_at;
 
         public Summary(ScanHistory entity) {
@@ -92,6 +95,7 @@ public class ScanResultDto {
             this.skipped = entity.getSkipped();
             this.failed = entity.getFailed();
             this.score = entity.getScore();
+            this.scanHash = entity.getScanHash();
             this.created_at = entity.getCreatedAt();
         }
     }
