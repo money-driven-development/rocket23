@@ -50,6 +50,10 @@ public class BasePolicy extends BaseEntity {
     @Column(updatable = false, name = "IS_MODIFIABLE")
     private boolean isModifiable;
 
+    @Column(updatable = false, name = "SEVERITY")
+    @Enumerated(EnumType.STRING)
+    private Policy.Severity severity;
+
     @Column(updatable = false, name = "SOLUTION")
     private String solution;
 
@@ -64,7 +68,8 @@ public class BasePolicy extends BaseEntity {
 
     public BasePolicy(Long id, String defaultPolicyName, String defaultPolicyNameIC, String policyContent,
                       String policyContentKr, Provider policyProvider, Type policyType,
-                      Target policyTarget, boolean isModifiable, String solution, String solutionCode,
+                      Target policyTarget, boolean isModifiable, Policy.Severity severity,
+                      String solution, String solutionCode,
                       String insecureCode, String secureCode) {
         this.id = id;
         this.defaultPolicyName = defaultPolicyName;
@@ -75,6 +80,7 @@ public class BasePolicy extends BaseEntity {
         this.policyType = policyType;
         this.policyTarget = policyTarget;
         this.isModifiable = isModifiable;
+        this.severity = severity;
         this.solution = solution;
         this.solutionCode = solutionCode;
         this.insecureCode = insecureCode;
