@@ -169,7 +169,6 @@ public class ScanService {
         for (JsonNode passedCheck : failedChecksNode) {
             String checkId = passedCheck.path("check_id").asText();
             checkId = ckvToIc(checkId);
-            System.out.println("===========");
             BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyNameIC(checkId);
             if (basePolicy != null) {
                 switch (basePolicy.getSeverity()) {
@@ -195,13 +194,10 @@ public class ScanService {
      * */
     public String ckvToIc(String policyName){
 
-        System.out.println("policyName: " + policyName);
-
         // "CKV"가 포함되어 있는지 확인
         if (policyName.contains("CKV")) {
             try{
                 BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyName(policyName);
-                System.out.println("IC: "+basePolicy.getDefaultPolicyNameIC());
                 return  basePolicy.getDefaultPolicyNameIC();
             }catch(Exception e){
                 e.printStackTrace();
