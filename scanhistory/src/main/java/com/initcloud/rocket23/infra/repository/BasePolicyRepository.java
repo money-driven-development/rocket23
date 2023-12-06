@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BasePolicyRepository extends JpaRepository<BasePolicy, Long> {
+    BasePolicy findByDefaultPolicyNameIC(String checkId);
+
+    BasePolicy findByDefaultPolicyName(String policyName);
 }

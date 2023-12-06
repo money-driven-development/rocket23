@@ -30,4 +30,10 @@ public class Policy {
 
         NONE
     }
+
+    public enum Severity {
+        high,
+        medium,
+        low
+    }
 }
