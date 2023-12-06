@@ -29,6 +29,17 @@ public class ScoreDto {
         this.score = score;
     }
 
+    @Builder
+    public ScoreDto(ScoreDto dto, double score){
+        this.successHigh = dto.getSuccessHigh();
+        this.successMedium = dto.getSuccessMedium();
+        this.successLow = dto.getSuccessLow();
+        this.failHigh = dto.getFailHigh();
+        this.failMedium = dto.getFailMedium();
+        this.failLow = dto.getFailLow();
+        this.score = score;
+    }
+
     public void incrementSuccessHigh() {
         this.successHigh++;
     }
@@ -52,4 +63,5 @@ public class ScoreDto {
     public void incrementFailLow() {
         this.failLow++;
     }
+
 }

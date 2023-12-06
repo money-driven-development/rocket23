@@ -57,6 +57,7 @@ public class ScanService {
         JSONObject summaryObject = (JSONObject) jsonObj.get("summary");
 
         ScoreDto scoreDto = countSeverity(jsonObj);
+        ScoreDto dto = getScore(scoreDto);
 
         ScanHistory scanHistory = ScanHistory.builder()
                 .team(team)
@@ -67,11 +68,11 @@ public class ScanService {
                 .passed((int) summaryObject.get("passed"))
                 .skipped((int) summaryObject.get("skipped"))
                 .failed((int) summaryObject.get("failed"))
-                .high(scoreDto.getSuccessHigh() + scoreDto.getFailHigh()) //TODO: 정책 추가 시 값 입력 필요
-                .medium(scoreDto.getSuccessMedium() + scoreDto.getFailMedium())
-                .low(scoreDto.getSuccessLow() + scoreDto.getFailLow())
+                .high(dto.getSuccessHigh() + dto.getFailHigh()) //TODO: 정책 추가 시 값 입력 필요
+                .medium(dto.getSuccessMedium() + dto.getFailMedium())
+                .low(dto.getSuccessLow() + dto.getFailLow())
                 .unknown(0)
-                .score(0.0)
+                .score(dto.getScore())
                 .build();
         scanHistoryRepository.save(scanHistory);
 
@@ -205,6 +206,24 @@ public class ScanService {
 
         }
         return policyName;
+
+    }
+
+    public ScoreDto getScore(ScoreDto dto){
+        // 분자 계산
+        int numerator = dto.getSuccessHigh() * 3
+                + dto.getSuccessMedium() * 2
+                + dto.getSuccessLow();
+
+        // 분모 계산
+        int denominator = (dto.getSuccessHigh() + dto.getFailHigh()) * 3
+                + (dto.getSuccessMedium() + dto.getFailMedium()) * 2
+                + dto.getSuccessLow() + dto.getFailLow();
+
+        double rawScore = (double) numerator / denominator;
+        double score = Math.round(rawScore * 100.0);
+        System.out.println(score);
+        return new ScoreDto(dto,score);
 
     }
 }
