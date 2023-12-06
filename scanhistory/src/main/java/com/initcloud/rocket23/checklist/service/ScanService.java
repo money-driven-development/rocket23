@@ -37,11 +37,12 @@ public class ScanService {
     private final TeamInspectService teamInspectService;
     private final TeamProjectService teamProjectService;
 
-    private final TeamProjectRepository teamProjectRepository;
     private final ScanHistoryDetailRepository scanHistoryDetailRepository;
     private final ScanHistoryRepository scanHistoryRepository;
     private final CodeBlockRepository codeBlockRepository;
-    private final BasePolicyRepository basePolicyRepository;
+
+    private final ScanSeverityService scanSeverityService;
+
 
     //@Transactional
     public ScanHistory saveCheckovScan(String data) throws Exception {
@@ -56,8 +57,8 @@ public class ScanService {
 
         JSONObject summaryObject = (JSONObject) jsonObj.get("summary");
 
-        ScoreDto scoreDto = countSeverity(jsonObj);
-        ScoreDto dto = getScore(scoreDto);
+        ScoreDto scoreDto = scanSeverityService.countSeverity(jsonObj);
+        ScoreDto dto = scanSeverityService.getScore(scoreDto);
 
         ScanHistory scanHistory = ScanHistory.builder()
                 .team(team)
@@ -135,95 +136,5 @@ public class ScanService {
         }
     }
 
-    /**
-     * check_id에 따른 severity 및 score count
-     * */
-    private ScoreDto countSeverity(JSONObject jsonObj) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode;
-        rootNode = objectMapper.readTree(jsonObj.toString());
-        JsonNode passedChecksNode = rootNode.path("results").path("passed_checks"); //pass, fail에 따른 루트 차이 O
 
-        ScoreDto scoreDto = new ScoreDto();
-
-        for (JsonNode passedCheck : passedChecksNode) {
-            String checkId = passedCheck.path("check_id").asText();
-            checkId = ckvToIc(checkId);
-            BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyNameIC(checkId);
-            if (basePolicy != null) {
-                switch (basePolicy.getSeverity()) {
-                    case high:
-                        scoreDto.incrementSuccessHigh();
-                        break;
-                    case medium:
-                        scoreDto.incrementSuccessMedium();
-                        break;
-                    case low:
-                        scoreDto.incrementSuccessLow();
-                        break;
-                }
-            }
-        }
-
-        JsonNode failedChecksNode = rootNode.path("results").path("failed_checks"); //pass, fail에 따른 루트 차이 O
-
-        for (JsonNode passedCheck : failedChecksNode) {
-            String checkId = passedCheck.path("check_id").asText();
-            checkId = ckvToIc(checkId);
-            BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyNameIC(checkId);
-            if (basePolicy != null) {
-                switch (basePolicy.getSeverity()) {
-                    case high:
-                        scoreDto.incrementFailHigh();
-                        break;
-                    case medium:
-                        scoreDto.incrementFailMedium();
-                        break;
-                    case low:
-                        scoreDto.incrementFailLow();
-                        break;
-                }
-            }
-        }
-
-        return scoreDto;
-
-    }
-
-    /**
-     * check_id가 CKV인 경우와 IC Policy Name을 찾도록 하는 메서드
-     * */
-    public String ckvToIc(String policyName){
-
-        // "CKV"가 포함되어 있는지 확인
-        if (policyName.contains("CKV")) {
-            try{
-                BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyName(policyName);
-                return  basePolicy.getDefaultPolicyNameIC();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-
-        }
-        return policyName;
-
-    }
-
-    public ScoreDto getScore(ScoreDto dto){
-        // 분자 계산
-        int numerator = dto.getSuccessHigh() * 3
-                + dto.getSuccessMedium() * 2
-                + dto.getSuccessLow();
-
-        // 분모 계산
-        int denominator = (dto.getSuccessHigh() + dto.getFailHigh()) * 3
-                + (dto.getSuccessMedium() + dto.getFailMedium()) * 2
-                + dto.getSuccessLow() + dto.getFailLow();
-
-        double rawScore = (double) numerator / denominator;
-        double score = Math.round(rawScore * 100.0);
-        System.out.println(score);
-        return new ScoreDto(dto,score);
-
-    }
 }
