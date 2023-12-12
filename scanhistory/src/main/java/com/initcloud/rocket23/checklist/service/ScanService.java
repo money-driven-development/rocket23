@@ -69,7 +69,7 @@ public class ScanService {
                 .passed((int) summaryObject.get("passed"))
                 .skipped((int) summaryObject.get("skipped"))
                 .failed((int) summaryObject.get("failed"))
-                .high(dto.getSuccessHigh() + dto.getFailHigh()) //TODO: 정책 추가 시 값 입력 필요
+                .high(dto.getSuccessHigh() + dto.getFailHigh())
                 .medium(dto.getSuccessMedium() + dto.getFailMedium())
                 .low(dto.getSuccessLow() + dto.getFailLow())
                 .unknown(0)
