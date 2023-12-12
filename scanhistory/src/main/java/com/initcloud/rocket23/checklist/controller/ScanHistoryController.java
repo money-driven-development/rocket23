@@ -1,6 +1,5 @@
 package com.initcloud.rocket23.checklist.controller;
 
-import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.dto.ResponseDto;
@@ -86,25 +85,25 @@ public class ScanHistoryController {
     /*
         단일 스캔 실패 내역에 대한 조회
      */
-    @Operation(
-            summary = "Get a failed-scan-history",
-            description = "Retrieve a failed-scan-history.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class)))}
-    )
-    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
-    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
-    @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
-    @Parameter(name = "hashCode", in = ParameterIn.PATH, description = "History unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}/fail")
-    public ResponseDto<ScanFailDetailDto> getScanFailDetail(
-            @PathVariable("teamCode") String teamCode,
-            @PathVariable("projectCode") String projectCode,
-            @PathVariable("hashCode") String hashCode
-    ) {
-        ScanFailDetailDto dtos = scanHistoryService.getScanFailDetail(teamCode, projectCode, hashCode);
-        return new ResponseDto<>(dtos);
-    }
+//    @Operation(
+//            summary = "Get a failed-scan-history",
+//            description = "Retrieve a failed-scan-history.",
+//            responses = {
+//                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class)))}
+//    )
+//    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+//    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+//    @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
+//    @Parameter(name = "hashCode", in = ParameterIn.PATH, description = "History unique code", required = true, schema = @Schema(type = "string"))
+//    @GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}/fail")
+//    public ResponseDto<ScanFailDetailDto> getScanFailDetail(
+//            @PathVariable("teamCode") String teamCode,
+//            @PathVariable("projectCode") String projectCode,
+//            @PathVariable("hashCode") String hashCode
+//    ) {
+//        ScanFailDetailDto dtos = scanHistoryService.getScanFailDetail(teamCode, projectCode, hashCode);
+//        return new ResponseDto<>(dtos);
+//    }
 
     /**
      * get 방식을 통해 file scan history 내역을 최근 10개를 출력하도록함.

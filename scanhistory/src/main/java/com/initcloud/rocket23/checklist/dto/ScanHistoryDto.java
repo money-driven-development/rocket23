@@ -1,9 +1,7 @@
 package com.initcloud.rocket23.checklist.dto;
 
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
-
 import lombok.AccessLevel;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +24,6 @@ public class ScanHistoryDto {
     public ScanHistoryDto(ScanHistory entity) {
         this.projectName = entity.getProjectName();
         this.projectCode = entity.getProjectCode();
-        this.projectHash = entity.getProjectHash();
         this.passed = entity.getPassed();
         this.failed = entity.getFailed();
         this.skipped = entity.getSkipped();
@@ -34,7 +31,6 @@ public class ScanHistoryDto {
         this.medium = entity.getMedium();
         this.low = entity.getLow();
         this.unknown = entity.getUnknown();
-        this.cveCount = entity.getCveCount();
         this.score = entity.getScore();
     }
 }

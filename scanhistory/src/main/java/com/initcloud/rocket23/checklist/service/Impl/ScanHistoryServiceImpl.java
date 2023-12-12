@@ -1,8 +1,5 @@
 package com.initcloud.rocket23.checklist.service.Impl;
 
-import com.initcloud.rocket23.checklist.dto.CursorResultDto;
-import com.initcloud.rocket23.checklist.dto.HistoryDto;
-import com.initcloud.rocket23.checklist.dto.ScanFailDetailDto;
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
@@ -13,13 +10,9 @@ import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +25,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
      */
     @Override
     public ScanResultDto getScanHistory(String teamCode, String projectCode, String hashCode) {
-        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
+        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderById(
                 teamCode,
                 projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
         return ScanResultDto.builder()
@@ -45,7 +38,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
      */
     @Override
     public ScanResultDto getScanHistoryTotal(String teamCode, String projectCode, String hashCode) {
-        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
+        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderById(
                 teamCode, projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
         List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails();
 
@@ -81,18 +74,17 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
     /*
         단일 스캔에서 실패 내역 조회.
      */
-    @Override
-    public ScanFailDetailDto getScanFailDetail(String teamCode, String projectCode, String hashCode) {
-        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
-                teamCode,
-                projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
-        List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails()
-                .stream()
-                .filter(scanHistoryDetail -> "failed".equals(scanHistoryDetail.getScanResult()))
-                .collect(Collectors.toList());
-
-        return new ScanFailDetailDto(scanHistory, scanHistoryDetails);
-    }
+    //@Override
+    //public ScanFailDetailDto getScanFailDetail(String teamCode, String projectCode, String hashCode) {
+    //    ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(
+    //            teamCode,
+    //            projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
+    //    List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails()
+    //            .stream()
+    //            .filter(scanHistoryDetail -> "failed".equals(scanHistoryDetail.getScanResult()))
+    //            .collect(Collectors.toList());
+    //    return new ScanFailDetailDto(scanHistory, scanHistoryDetails);
+    //}
     // @Override
     // public List<HistoryDto> getHistoryList(String teamId, String projectId) {
     // 	return null;

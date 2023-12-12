@@ -1,7 +1,7 @@
 package com.initcloud.rocket23.infra.redis.pubsub;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.initcloud.rocket23.checklist.service.ScanSaveService;
+import com.initcloud.rocket23.checklist.service.ScanService;
 import io.netty.handler.codec.DecoderException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class RedisMessageSubscriber {
     private final RTopic topicScan;
 
     private final ObjectMapper objectMapper;
-    private final ScanSaveService scanSaveService;
+    private final ScanService scanService;
 
     @PostConstruct
     public void initialize() {
@@ -31,7 +31,7 @@ public class RedisMessageSubscriber {
         topicScan.addListener(String.class, (channel, data) -> {
             try {
                 log.info("[RECEIVED] {} - {}", channel, data);
-                scanSaveService.saveCheckovScan(data);
+                scanService.saveCheckovScan(data);
             } catch (DecoderException e) {
                 log.warn("[DECODE ERROR] - from {}, about {}", channel, e.getMessage());
             } catch (Exception e) {

@@ -2,6 +2,9 @@ package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.common.enums.Policy;
+import com.initcloud.rocket23.common.enums.Policy.Provider;
+import com.initcloud.rocket23.common.enums.Policy.Target;
+import com.initcloud.rocket23.common.enums.Policy.Type;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,56 +20,70 @@ public class BasePolicy extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BASE_POLICY_ID")
+    @Column(name = "POLICY_ID")
     private Long id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "DEFAULT_POLICY_NAME")
     private String defaultPolicyName;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "DEFAULT_POLICY_NAME_IC")
     private String defaultPolicyNameIC;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "POLICY_CONTENT")
+    private String policyContent;
+
+    @Column(updatable = false, name = "POLICY_CONTENT_KR")
+    private String policyContentKr;
+
+    @Column(updatable = false, name = "POLICY_PROVIDER")
     @Enumerated(EnumType.STRING)
     private Policy.Provider policyProvider;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "POLICY_TYPE")
     @Enumerated(EnumType.STRING)
     private Policy.Type policyType;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "POLICY_TARGET")
     @Enumerated(EnumType.STRING)
     private Policy.Target policyTarget;
 
-    @Column(updatable = false)
+    @Column(updatable = false, name = "IS_MODIFIABLE")
     private boolean isModifiable;
 
-    @Column(updatable = false)
-    private String insecureExample;
+    @Column(updatable = false, name = "SEVERITY")
+    @Enumerated(EnumType.STRING)
+    private Policy.Severity severity;
 
-    @Column(updatable = false)
-    private String secureExample;
+    @Column(updatable = false, name = "SOLUTION")
+    private String solution;
 
-    @Column(updatable = false)
-    private String code;
+    @Column(updatable = false, name = "SOLUTION_CODE")
+    private String solutionCode;
 
-    @Column(updatable = false)
-    private String customDefault;
+    @Column(updatable = false, name = "INSECURE_CODE")
+    private String insecureCode;
 
-    @OneToMany(mappedBy = "basePolicy")
-    private List<BasePolicyDetails> details = new ArrayList<>();
+    @Column(updatable = false, name = "SECURE_CODE")
+    private String secureCode;
 
-    public BasePolicy(Long id, String defaultPolicyName, String defaultPolicyNameIC, Policy.Provider policyProvider, Policy.Type policyType, Policy.Target policyTarget, boolean isModifiable, String insecureExample, String secureExample, String code, String customDefault) {
+    public BasePolicy(Long id, String defaultPolicyName, String defaultPolicyNameIC, String policyContent,
+                      String policyContentKr, Provider policyProvider, Type policyType,
+                      Target policyTarget, boolean isModifiable, Policy.Severity severity,
+                      String solution, String solutionCode,
+                      String insecureCode, String secureCode) {
         this.id = id;
         this.defaultPolicyName = defaultPolicyName;
         this.defaultPolicyNameIC = defaultPolicyNameIC;
+        this.policyContent = policyContent;
+        this.policyContentKr = policyContentKr;
         this.policyProvider = policyProvider;
         this.policyType = policyType;
         this.policyTarget = policyTarget;
         this.isModifiable = isModifiable;
-        this.insecureExample = insecureExample;
-        this.secureExample = secureExample;
-        this.code = code;
-        this.customDefault = customDefault;
+        this.severity = severity;
+        this.solution = solution;
+        this.solutionCode = solutionCode;
+        this.insecureCode = insecureCode;
+        this.secureCode = secureCode;
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> {
-    Optional<ScanHistory> findTopByTeam_TeamCodeAndProject_ProjectCodeAndFileHashOrderById(String teamCode,
+    Optional<ScanHistory> findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderById(String teamCode,
                                                                                            String projectCode,
                                                                                            String hashCode);
 

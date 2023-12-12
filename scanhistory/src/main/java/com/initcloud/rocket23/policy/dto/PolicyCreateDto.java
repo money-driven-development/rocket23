@@ -44,9 +44,6 @@ public class PolicyCreateDto {
                 .memo(this.policyMemo)
                 .customDetails(this.policyDetails)
 
-                .secureExample(basePolicy.getSecureExample())
-                .insecureExample(basePolicy.getInsecureExample())
-
                 .isOrigin(false)
 
                 // Todo
