@@ -72,9 +72,17 @@ public class ScanService {
                 .build();
         scanHistoryRepository.save(scanHistory);
 
-        saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
-        saveScanHistoryDetails(jsonObj, scanHistory, "failed_checks");
+        try{
+            saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
+        try{
+            saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return scanHistory;
 
     }
