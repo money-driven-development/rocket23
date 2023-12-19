@@ -79,7 +79,7 @@ public class ScanService {
         }
 
         try{
-            saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
+            saveScanHistoryDetails(jsonObj, scanHistory, "failed_checks");
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -104,6 +104,7 @@ public class ScanService {
 
     private void saveScanHistoryDetail(JsonNode checkNode, ScanHistory scanHistory) {
         try {
+
             ScanHistoryDetail scanHistoryDetail = ScanHistoryDetail.builder()
                     .ruleName(checkNode.get("check_id").asText())
                     .scanHistory(scanHistory)
