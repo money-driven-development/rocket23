@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScanResultDto {
-    private String fileName;
+    private String projectName;
     private Integer high;
     private Integer medium;
     private Integer low;
@@ -30,7 +30,7 @@ public class ScanResultDto {
 
     @Builder
     public ScanResultDto(ScanHistory scanHistory, List<ScanHistoryDetail> scanHistoryDetails) {
-        this.fileName = scanHistory.getProjectName();
+        this.projectName = scanHistory.getProjectName();
         this.high = scanHistory.getHigh();
         this.medium = scanHistory.getMedium();
         this.low = scanHistory.getLow();
@@ -51,7 +51,7 @@ public class ScanResultDto {
     public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
                          Integer passed, Integer failed, Integer skipped, LocalDateTime created,
                          List<Detail> scanResultDetailList) {
-        this.fileName = fileName;
+        this.projectName = fileName;
         this.high = high;
         this.medium = medium;
         this.low = low;
