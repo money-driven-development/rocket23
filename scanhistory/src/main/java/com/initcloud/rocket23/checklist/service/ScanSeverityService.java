@@ -49,20 +49,26 @@ public class ScanSeverityService {
                     case high:
                         if (isPassed) {
                             scoreDto.incrementSuccessHigh();
+                            break;
                         } else {
                             scoreDto.incrementFailHigh();
+                            break;
                         }
                     case medium:
                         if (isPassed) {
                             scoreDto.incrementSuccessMedium();
+                            break;
                         } else {
                             scoreDto.incrementFailMedium();
+                            break;
                         }
                     case low:
                         if (isPassed) {
                             scoreDto.incrementSuccessLow();
+                            break;
                         } else {
                             scoreDto.incrementFailLow();
+                            break;
                         }
                 }
             }
