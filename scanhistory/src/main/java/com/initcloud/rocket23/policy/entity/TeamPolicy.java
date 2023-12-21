@@ -78,7 +78,7 @@ public class TeamPolicy extends BaseEntity {
     @Column(name = "SECURE_EXAMPLE", updatable = false)
     private String secureExample;
 
-    @Column(name = "IS_BASE_POLICY", updatable = false)
+    @Column(name = "MEMO", updatable = false)
     private String memo;
 
     @OneToMany(mappedBy = "teamPolicy")

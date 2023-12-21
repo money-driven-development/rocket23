@@ -23,7 +23,7 @@ public class PolicyDto {
         }
 
         public static Page<Summary> toPageDto(final Page<TeamPolicy> policies) {
-            return policies.map(policy -> new Summary(policy));
+            return policies.map(Summary::new);
         }
     }
 

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PolicyService {
+public class TeamPolicyService {
 
     // Todo - 요거 나중에 Join 쿼리로 묶을 예정
     private final TeamRepository teamRepository;
@@ -84,7 +84,7 @@ public class PolicyService {
      */
     @Transactional
     public String modifyTeamPolicy(final String teamCode, final String policyName, final PolicyCreateDto dto) {
-        TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndOriginFalseAndModifiableTrueAndBasePolicyName(teamCode, policyName)
+        TeamPolicy policy = teamPolicyRepository.findTeamPolicyByTeam_TeamCodeAndOriginFalseAndIsModifiableTrueAndBasePolicyName(teamCode, policyName)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
         teamPolicyRepository.save(
