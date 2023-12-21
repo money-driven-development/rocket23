@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.checklist.dto;
 
+import com.initcloud.rocket23.checklist.entity.scanHistory.CodeBlock;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 
@@ -73,6 +74,7 @@ public class ScanResultDto {
         private String ruleDescription;
         private String fileName;
         private String scanResource;
+        private List<CodeBlock> codeBlock;
 
         public Detail(ScanHistoryDetail scanHistoryDetail) {
             this.appType = scanHistoryDetail.getAppType();
@@ -81,6 +83,7 @@ public class ScanResultDto {
             this.ruleDescription = scanHistoryDetail.getRuleDescription();
             this.fileName = scanHistoryDetail.getTargetFileName();
             this.scanResource = scanHistoryDetail.getScanResource();
+            this.codeBlock = scanHistoryDetail.getCodeBlock();
         }
     }
 
