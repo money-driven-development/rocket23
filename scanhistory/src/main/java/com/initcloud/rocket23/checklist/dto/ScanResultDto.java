@@ -70,11 +70,17 @@ public class ScanResultDto {
         private String appType;
         private String scanResult;
         private String ruleName;
+        private String ruleDescription;
+        private String fileName;
+        private String scanResource;
 
         public Detail(ScanHistoryDetail scanHistoryDetail) {
             this.appType = scanHistoryDetail.getAppType();
             this.scanResult = scanHistoryDetail.getScanResult();
             this.ruleName = scanHistoryDetail.getRuleName();
+            this.ruleDescription = scanHistoryDetail.getRuleDescription();
+            this.fileName = scanHistoryDetail.getTargetFileName();
+            this.scanResource = scanHistoryDetail.getScanResource();
         }
     }
 
