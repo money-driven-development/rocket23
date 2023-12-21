@@ -42,9 +42,8 @@ public class PolicyCreateDto {
                 .basePolicyName(this.basePolicyName)
                 .policyName(this.policyName)
                 .memo(this.policyMemo)
-                .customDetails(this.policyDetails)
 
-                .isOrigin(false)
+                .origin(false)
 
                 // Todo
                 .policyProvider(Policy.Provider.NONE)
