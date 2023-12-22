@@ -4,10 +4,15 @@ import com.initcloud.rocket23.checklist.dto.ScanResultDto;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
+import com.initcloud.rocket23.checklist.service.ScanSeverityService;
+import com.initcloud.rocket23.common.enums.Policy.Severity;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
+import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
+import com.initcloud.rocket23.policy.entity.BasePolicy;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +24,8 @@ import org.springframework.stereotype.Service;
 public class ScanHistoryServiceImpl implements ScanHistoryService {
 
     private final ScanHistoryRepository scanHistoryRepository;
+    private final BasePolicyRepository basePolicyRepository;
+    private final ScanSeverityService scanSeverityService;
 
     /*
         단일 스캔 내역 조회
@@ -42,10 +49,21 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
                 teamCode, projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
         List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails();
 
+        Map<ScanHistoryDetail, Severity> ruleNameMap = scanHistoryDetails.stream()
+                .collect(Collectors.toMap(detail -> detail, this::getRuleNameForScanDetail));
+
         return ScanResultDto.builder()
                 .scanHistory(scanHistory)
                 .scanHistoryDetails(scanHistoryDetails)
+                .severityMap(ruleNameMap)
                 .build();
+    }
+
+    private Severity getRuleNameForScanDetail(ScanHistoryDetail scanHistoryDetail) {
+        String ruleName = scanHistoryDetail.getRuleName();
+        String ICRuleName = scanSeverityService.ckvToIc(ruleName);
+        BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyNameIC(ICRuleName);
+        return basePolicy.getSeverity();
     }
 
     /*
