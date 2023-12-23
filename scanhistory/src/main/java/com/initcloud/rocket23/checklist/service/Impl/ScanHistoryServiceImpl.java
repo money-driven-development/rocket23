@@ -63,7 +63,13 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
         String ruleName = scanHistoryDetail.getRuleName();
         String ICRuleName = scanSeverityService.ckvToIc(ruleName);
         BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyNameIC(ICRuleName);
-        return basePolicy.getSeverity();
+
+        // basePolicy가 null이 아닌 경우에만 Severity 설정
+        if (basePolicy != null) {
+            return basePolicy.getSeverity();
+        }
+
+        return Severity.none;
     }
 
     /*
