@@ -41,7 +41,7 @@ public class TeamProjectService {
         Team team = teamRepository.findByTeamCode(teamCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
-        Page<TeamProject> teamProject = teamProjectRepository.findTeamProjectsByTeam(pageable, team);
+        Page<TeamProject> teamProject = teamProjectRepository.findTeamProjectsByTeamOrderByIdDesc(pageable, team);
 
         return TeamProject.toPageDto(teamProject);
     }
@@ -51,7 +51,7 @@ public class TeamProjectService {
         Team team = teamRepository.findByTeamCode(teamCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
-        List<TeamProject> teamProject = teamProjectRepository.findTeamProjectsByTeam(team);
+        List<TeamProject> teamProject = teamProjectRepository.findTeamProjectsByTeamOrderByIdDesc(team);
 
         return TeamProject.toDto(teamProject);
     }

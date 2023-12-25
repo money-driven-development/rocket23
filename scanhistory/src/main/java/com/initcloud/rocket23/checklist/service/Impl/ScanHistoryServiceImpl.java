@@ -32,7 +32,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
      */
     @Override
     public ScanResultDto getScanHistory(String teamCode, String projectCode, String hashCode) {
-        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderById(
+        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderByIdDesc(
                 teamCode,
                 projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
         return ScanResultDto.builder()
@@ -45,7 +45,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
      */
     @Override
     public ScanResultDto getScanHistoryTotal(String teamCode, String projectCode, String hashCode) {
-        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderById(
+        ScanHistory scanHistory = scanHistoryRepository.findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderByIdDesc(
                 teamCode, projectCode, hashCode).orElseThrow(() -> new ApiException(ResponseCode.NO_SCAN_RESULT));
         List<ScanHistoryDetail> scanHistoryDetails = scanHistory.getScanDetails();
 
@@ -77,7 +77,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
      */
     @Override
     public Page<ScanResultDto.Summary> getScanHistoryPaging(String teamCode, String projectCode, Pageable pageable) {
-        Page<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCode(pageable,
+        Page<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(pageable,
                 teamCode, projectCode);
         return scanHistories.map(ScanResultDto.Summary::new);
     }

@@ -17,9 +17,9 @@ public interface TeamProjectRepository extends JpaRepository<TeamProject, Long> 
 
     Optional<TeamProject> findTeamProjectByTeam_TeamCodeAndProjectCode(String teamCode, String projectCode);
 
-    Page<TeamProject> findTeamProjectsByTeam(Pageable pageable, Team team);
+    Page<TeamProject> findTeamProjectsByTeamOrderByIdDesc(Pageable pageable, Team team);
 
-    List<TeamProject> findTeamProjectsByTeam(Team team);
+    List<TeamProject> findTeamProjectsByTeamOrderByIdDesc(Team team);
 
     void deleteTeamProjectByTeamAndProjectCode(Team team, String projectCode);
 }

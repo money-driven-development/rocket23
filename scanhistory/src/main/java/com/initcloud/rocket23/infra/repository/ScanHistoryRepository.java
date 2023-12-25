@@ -16,8 +16,13 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> 
                                                                                            String projectCode,
                                                                                            String hashCode);
 
-	Page<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCode(Pageable pageable, String teamCode,
+	Optional<ScanHistory> findTopByTeam_TeamCodeAndProject_ProjectCodeAndScanHashOrderByIdDesc(String teamCode,
+																						   String projectCode,
+																						   String hashCode);
+
+	Page<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(Pageable pageable, String teamCode,
 		String projectCode);
 
 	List<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCode(String teamCode, String projectCode);
+
 }
