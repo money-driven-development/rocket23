@@ -23,6 +23,6 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> 
 	Page<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(Pageable pageable, String teamCode,
 		String projectCode);
 
-	List<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCode(String teamCode, String projectCode);
+	List<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(String teamCode, String projectCode);
 
 }

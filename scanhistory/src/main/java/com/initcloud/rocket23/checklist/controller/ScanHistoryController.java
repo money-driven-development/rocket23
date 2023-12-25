@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.checklist.controller;
 
 import com.initcloud.rocket23.checklist.dto.ScanResultDto;
+import com.initcloud.rocket23.checklist.dto.ScanResultDto.Summary;
 import com.initcloud.rocket23.checklist.service.ScanHistoryService;
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
@@ -61,7 +63,7 @@ public class ScanHistoryController {
     }
 
     /*
-        단일 스캔 이력 Pagination
+        프로젝트 내 스캔 목록 조회 Pagination
      */
     @Operation(summary = "Get paged scan-history list",
             description = "Retrieve paged scan-history list.",
@@ -79,6 +81,26 @@ public class ScanHistoryController {
             final Pageable pageable
     ) {
         Page<ScanResultDto.Summary> dtos = scanHistoryService.getScanHistoryPaging(teamCode, projectCode, pageable);
+        return new ResponseDto<>(dtos);
+    }
+
+    /*
+        프로젝트 내 스캔 목록 조회 Pagination X
+     */
+    @Operation(summary = "Get scan-history list",
+            description = "Retrieve scan-history list.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class)))}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
+    @GetMapping("/{teamCode}/projects/{projectCode}/history/all")
+    public ResponseDto<List<ScanResultDto.Summary>> getScanHistoryAll(
+            @PathVariable("teamCode") String teamCode,
+            @PathVariable("projectCode") String projectCode
+    ) {
+        List<Summary> dtos = scanHistoryService.getScanHistoryAll(teamCode, projectCode);
         return new ResponseDto<>(dtos);
     }
 

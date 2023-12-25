@@ -73,7 +73,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
     }
 
     /*
-        단일 스캔 내역 페이징 처리
+        프로젝트 내 스캔 목록 조회 페이징 처리
      */
     @Override
     public Page<ScanResultDto.Summary> getScanHistoryPaging(String teamCode, String projectCode, Pageable pageable) {
@@ -87,7 +87,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
      */
     @Override
     public List<ScanResultDto.Summary> getScanHistoryAll(String teamCode, String projectCode) {
-        List<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCode(teamCode,
+        List<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(teamCode,
                 projectCode);
         if (scanHistories.isEmpty()) {
             throw new ApiException(ResponseCode.NO_SCAN_RESULT);
