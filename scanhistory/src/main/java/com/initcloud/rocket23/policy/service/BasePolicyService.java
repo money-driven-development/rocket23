@@ -16,9 +16,19 @@ public class BasePolicyService {
     private final BasePolicyRepository basePolicyRepository;
 
     /**
-     * Base Policy 전체 조회(페이징)
+     * Base Policy Summary 전체 조회(페이징)
      */
-    public Page<BasePolicyDto.Details> getPagedBasePolicy(final Pageable pageable) {
+    public Page<BasePolicyDto.Summary> getPagedBasePolicy(final Pageable pageable) {
+        Page<BasePolicy> basePolicies = basePolicyRepository.findAll(pageable);
+
+        return BasePolicyDto.Summary.toPageDto(basePolicies);
+    }
+
+
+    /**
+     * Base Policy Details 전체 조회(페이징)
+     */
+    public Page<BasePolicyDto.Details> getPagedBasePolicyDetails(final Pageable pageable) {
         Page<BasePolicy> basePolicies = basePolicyRepository.findAll(pageable);
 
         return BasePolicyDto.Details.toPageDto(basePolicies);

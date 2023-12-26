@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Base Policy API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rocket/basePolicy")
+@RequestMapping("/rocket/basePolicys")
 public class BasePolicyController {
 
     private final BasePolicyService basePolicyService;
@@ -32,7 +32,7 @@ public class BasePolicyController {
      * */
 
     /**
-     * Base Policy 전체 조회
+     * Base Policy 요약 전체 조회
      * */
     @Operation(
             summary = "Get Base policy-set",
@@ -42,14 +42,36 @@ public class BasePolicyController {
                     )}
     )
     @GetMapping
-    public ResponseDto<Page<BasePolicyDto.Details>> teamPagedPolicies(
+    public ResponseDto<Page<BasePolicyDto.Summary>> teamPagedPolicies(
                                                          final Pageable pageable
     ) {
 
-        Page<BasePolicyDto.Details> response = basePolicyService.getPagedBasePolicy(pageable);
+        Page<BasePolicyDto.Summary> response = basePolicyService.getPagedBasePolicy(pageable);
 
         return new ResponseDto<>(response);
     }
+
+    /**
+     * Base Policy 상세 전체 조회
+     * */
+    @Operation(
+            summary = "Get Base policy-set",
+            description = "Show Base policy-set.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @GetMapping("/details")
+    public ResponseDto<Page<BasePolicyDto.Details>> teamPagedPoliciesDetails(
+            final Pageable pageable
+    ) {
+
+        Page<BasePolicyDto.Details> response = basePolicyService.getPagedBasePolicyDetails(pageable);
+
+        return new ResponseDto<>(response);
+    }
+
+
 
     /**
      * TODO: BackOfiice API  - Base Policy 삭제

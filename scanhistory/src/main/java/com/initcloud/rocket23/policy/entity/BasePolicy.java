@@ -57,8 +57,8 @@ public class BasePolicy extends BaseEntity {
     @Column(updatable = false, name = "EXPLANATION")
     private String explanation;
 
-    @Column(updatable = false, name = "EXPLANATION_KOR")
-    private String explantionKor;
+    @Column(updatable = false, name = "EXPLANATION_KR")
+    private String explantionKr;
 
     @Column(updatable = false, name = "SOLUTION")
     private String solution;
@@ -75,7 +75,7 @@ public class BasePolicy extends BaseEntity {
     public BasePolicy(Long id, String defaultPolicyName, String defaultPolicyNameIC, String policyContent,
                       String policyContentKr, Provider policyProvider, Type policyType,
                       Target policyTarget, boolean isModifiable, Policy.Severity severity,
-                      String explanation, String explantionKor,
+                      String explanation, String explantionKr,
                       String solution, String solutionCode,
                       String insecureCode, String secureCode) {
         this.id = id;
@@ -89,7 +89,7 @@ public class BasePolicy extends BaseEntity {
         this.isModifiable = isModifiable;
         this.severity = severity;
         this.explanation = explanation;
-        this.explantionKor = explantionKor;
+        this.explantionKr = explantionKr;
         this.solution = solution;
         this.solutionCode = solutionCode;
         this.insecureCode = insecureCode;

@@ -13,6 +13,37 @@ public class BasePolicyDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Summary{
+
+        private String defaultPolicyName;
+        private String defaultPolicyNameIc;
+        private String policyContent;
+        private String policyContentKr;
+        private Policy.Provider policyProvider;
+        private Policy.Type policyType;
+        private Policy.Target policyTarget;
+        private boolean isModifiable;
+        private Policy.Severity severity;
+
+        public Summary(final BasePolicy basePolicy) {
+            this.defaultPolicyName = basePolicy.getDefaultPolicyName();
+            this.defaultPolicyNameIc = basePolicy.getDefaultPolicyNameIC();
+            this.policyContent = basePolicy.getPolicyContent();
+            this.policyContentKr = basePolicy.getPolicyContentKr();
+            this.policyProvider = basePolicy.getPolicyProvider();
+            this.policyType = basePolicy.getPolicyType();
+            this.policyTarget = basePolicy.getPolicyTarget();
+            this.isModifiable = basePolicy.isModifiable();
+            this.severity = basePolicy.getSeverity();
+        }
+
+        public static Page<Summary> toPageDto(final Page<BasePolicy> basePolicies) {
+            return basePolicies.map(Summary::new);
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Details{
 
         private String defaultPolicyName;
@@ -25,7 +56,7 @@ public class BasePolicyDto {
         private boolean isModifiable;
         private Policy.Severity severity;
         private String explanation;
-        private String explanationKor;
+        private String explanationKr;
         private String solution;
         private String solutionCode;
         private String insecureCode;
@@ -42,7 +73,7 @@ public class BasePolicyDto {
             this.isModifiable = basePolicy.isModifiable();
             this.severity = basePolicy.getSeverity();
             this.explanation = basePolicy.getExplanation();
-            this.explanationKor = basePolicy.getExplantionKor();
+            this.explanationKr = basePolicy.getExplantionKr();
             this.solution = basePolicy.getSolution();
             this.solutionCode = basePolicy.getSolutionCode();
             this.insecureCode = basePolicy.getInsecureCode();
