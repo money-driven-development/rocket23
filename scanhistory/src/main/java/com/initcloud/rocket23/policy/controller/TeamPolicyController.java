@@ -5,6 +5,7 @@ import com.initcloud.rocket23.policy.dto.PolicyCreateDto;
 import com.initcloud.rocket23.policy.dto.PolicyDto;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.service.TeamPolicyService;
+import com.initcloud.rocket23.policy.service.TeamPolicySetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamPolicyController {
 
     private final TeamPolicyService teamPolicyService;
+    private final TeamPolicySetService teamPolicySetService;
 
     /**
      * ===== Team Policy =====
@@ -172,7 +174,7 @@ public class TeamPolicyController {
     public ResponseDto<List<String>> policySetList(
             @PathVariable String teamCode
     ) {
-        List<String> response = teamPolicyService.getTeamPolicySetList(teamCode);
+        List<String> response = teamPolicySetService.getTeamPolicySetList(teamCode);
 
         return new ResponseDto<>(response);
     }
@@ -192,7 +194,7 @@ public class TeamPolicyController {
             @PathVariable String teamCode,
             @PathVariable String policyset
     ) {
-        PolicySetDto response = teamPolicyService.getTeamPolicySetDetails(teamCode, policyset);
+        PolicySetDto response = teamPolicySetService.getTeamPolicySetDetails(teamCode, policyset);
 
         return new ResponseDto<>(response);
     }
@@ -213,7 +215,7 @@ public class TeamPolicyController {
             @PathVariable String teamCode,
             @RequestBody PolicySetDto request
     ) {
-        String response = teamPolicyService.createTeamPolicySet(teamCode, request);
+        String response = teamPolicySetService.createTeamPolicySet(teamCode, request);
 
         return new ResponseDto<>(response);
     }
@@ -234,7 +236,7 @@ public class TeamPolicyController {
             @PathVariable String policySet,
             @RequestBody PolicySetDto request
     ) {
-        String response = teamPolicyService.modifyTeamPolicySet(teamCode, policySet, request);
+        String response = teamPolicySetService.modifyTeamPolicySet(teamCode, policySet, request);
 
         return new ResponseDto<>(response);
     }
@@ -253,7 +255,7 @@ public class TeamPolicyController {
             @PathVariable String teamCode,
             @PathVariable String policySet
     ) {
-        teamPolicyService.deleteTeamPolicySet(teamCode, policySet);
+        teamPolicySetService.deleteTeamPolicySet(teamCode, policySet);
 
         return new ResponseDto<>(null);
     }
