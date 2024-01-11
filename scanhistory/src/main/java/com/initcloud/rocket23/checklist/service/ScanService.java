@@ -69,6 +69,7 @@ public class ScanService {
                 .low(dto.getSuccessLow() + dto.getFailLow())
                 .unknown(0)
                 .score(dto.getScore())
+                .fileHash(jsonObj.get("fileHash").toString())
                 .build();
         scanHistoryRepository.save(scanHistory);
 
