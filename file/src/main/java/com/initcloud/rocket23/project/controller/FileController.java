@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.project.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.project.dto.RedisFileDto;
 import com.initcloud.rocket23.project.service.FileService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,13 +17,13 @@ public class FileController {
 	private final FileService fileService;
 
 	@PostMapping(value = "/file/{teamCode}/{projectCode}")
-	public ResponseDto<?> uploadFile(
+	public ResponseDto<RedisFileDto> uploadFile(
 			@PathVariable String teamCode,
 			@PathVariable String projectCode,
 			@RequestPart("file") MultipartFile file
 	) {
-		fileService.store(file, teamCode, projectCode);
-		return new ResponseDto<>(null);
+		RedisFileDto dto = fileService.store(file, teamCode, projectCode);
+		return new ResponseDto<>(dto);
 	}
 
 }

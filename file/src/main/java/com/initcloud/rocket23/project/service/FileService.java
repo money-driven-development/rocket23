@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.project.service;
 
+import com.initcloud.rocket23.project.dto.RedisFileDto;
 import com.initcloud.rocket23.project.enums.ServerType;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,12 +11,12 @@ public interface FileService {
     void init(Path path);
 
     //Local 저장
-    void store(MultipartFile file, String teamCode, String projectCode);
+    RedisFileDto store(MultipartFile file, String teamCode, String projectCode);
 
-    void storeFile(MultipartFile file, Path path, String uuid, boolean check, String teamCode, String projectCode) throws IOException;
+    RedisFileDto storeFile(MultipartFile file, Path path, String uuid, boolean check, String teamCode, String projectCode) throws IOException;
 
     void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
     //DB 저장
-    void save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode);
+    RedisFileDto save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode);
 }
