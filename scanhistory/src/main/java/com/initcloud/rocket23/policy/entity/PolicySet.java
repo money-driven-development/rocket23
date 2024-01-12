@@ -40,7 +40,7 @@ public class PolicySet extends BaseEntity {
     /**
      * 이 정책 셋을 사용하는 프로젝트
      */
-    @OneToMany(mappedBy = "policySet")
+    @OneToMany(mappedBy = "policySet", cascade = CascadeType.ALL)
     private List<PolicyPerPolicySet> projects = new ArrayList<>();
 
     public PolicySet(Team team, String name, String description) {
