@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Base Policy API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rocket/basePolicys")
+@RequestMapping("/rocket/basePolicies")
 public class BasePolicyController {
 
     private final BasePolicyService basePolicyService;
