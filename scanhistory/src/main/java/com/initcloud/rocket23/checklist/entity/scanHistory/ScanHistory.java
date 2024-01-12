@@ -92,9 +92,6 @@ public class ScanHistory extends BaseEntity {
     @OneToMany(mappedBy = "scanHistory")
     private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "scanHistory")
-    private List<ProjectVulnDetail> fileDetails = new ArrayList<>();
-
     @Deprecated
     @Column(name = "FILE_NAME")
     private String fileName = "will_be_deprecated_file_name";
