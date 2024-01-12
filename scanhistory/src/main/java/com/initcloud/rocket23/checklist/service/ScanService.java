@@ -1,21 +1,16 @@
 package com.initcloud.rocket23.checklist.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.initcloud.rocket23.checklist.dto.ScoreDto;
 import com.initcloud.rocket23.checklist.entity.scanHistory.CodeBlock;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
-import com.initcloud.rocket23.common.enums.Policy.Severity;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
-import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
 import com.initcloud.rocket23.infra.repository.CodeBlockRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryDetailRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
-import com.initcloud.rocket23.infra.repository.TeamProjectRepository;
-import com.initcloud.rocket23.policy.entity.BasePolicy;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import com.initcloud.rocket23.team.service.TeamInspectService;
@@ -77,9 +72,17 @@ public class ScanService {
                 .build();
         scanHistoryRepository.save(scanHistory);
 
-        saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
-        saveScanHistoryDetails(jsonObj, scanHistory, "failed_checks");
+        try{
+            saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
+        try{
+            saveScanHistoryDetails(jsonObj, scanHistory, "failed_checks");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return scanHistory;
 
     }
@@ -101,11 +104,13 @@ public class ScanService {
 
     private void saveScanHistoryDetail(JsonNode checkNode, ScanHistory scanHistory) {
         try {
+
             ScanHistoryDetail scanHistoryDetail = ScanHistoryDetail.builder()
                     .ruleName(checkNode.get("check_id").asText())
                     .scanHistory(scanHistory)
                     .ruleDescription(checkNode.get("check_name").asText())
                     .scanResult(checkNode.get("check_result").get("result").asText())
+                    .scanResource(parseResource(checkNode.get("resource").asText()))
                     .targetFileName(checkNode.get("file_path").asText())
                     .appType("Terraform")
                     .build();
@@ -118,6 +123,16 @@ public class ScanService {
         } catch (Exception e) {
             throw new ApiException(ResponseCode.SCAN_DESCRIOTION_ERROR);
         }
+    }
+
+    private String parseResource(String postText){
+        int index = postText.indexOf(".");
+        if (index != -1) {
+            return postText.substring(0, index);
+        } else {
+            return postText; // delimiter가 없는 경우 전체 문자열 반환
+        }
+
     }
 
     private void saveCodeBlocks(JsonNode codeBlockNodes, ScanHistoryDetail scanHistoryDetail) {

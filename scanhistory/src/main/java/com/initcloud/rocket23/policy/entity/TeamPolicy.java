@@ -2,6 +2,9 @@ package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.common.enums.Policy;
+import com.initcloud.rocket23.common.enums.Policy.Provider;
+import com.initcloud.rocket23.common.enums.Policy.Target;
+import com.initcloud.rocket23.common.enums.Policy.Type;
 import com.initcloud.rocket23.team.entity.Team;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,11 +33,14 @@ public class TeamPolicy extends BaseEntity {
     @JoinColumn(updatable = false, name = "BASE_POLICY_ID")
     private BasePolicy basePolicy;
 
-    @Column
+    @Column(name = "POLICY_NAME", updatable = false)
     private String policyName;
 
-    @Column(updatable = false)
+    @Column(name = "BASE_POLICY_NAME", updatable = false)
     private String basePolicyName;
+
+    @Column(name = "IS_BASE_POLICY", updatable = false)
+    private boolean origin;
 
     @Column(updatable = false)
     @Enumerated(EnumType.STRING)
@@ -48,48 +54,59 @@ public class TeamPolicy extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Policy.Target policyTarget;
 
-    @Column(name = "IS_BASE_POLICY", updatable = false)
-    private boolean origin;
+    @Column(name = "IS_MODIFIABLE", updatable = false)
+    private boolean isModifiable;
 
-    @Column(updatable = false)
-    private boolean modifiable;
+    @Column(name = "EXPLANATION", updatable = false)
+    private String explanation;
 
-    @Column
-    private String memo;
+    @Column(name = "EXPLANATION_KR", updatable = false)
+    private String explanationKr;
 
-    @Column
+    @Column(name = "SEVERITY", updatable = false)
+    private String severity;
+
+    @Column(name = "SOLUTION", updatable = false)
+    private String solution;
+
+    @Column(name = "SOLUTION_CODE", updatable = false)
+    private String solutionCode;
+
+    @Column(name = "IN_SECURE_EXAMPLE", updatable = false)
     private String insecureExample;
 
-    @Column
+    @Column(name = "SECURE_EXAMPLE", updatable = false)
     private String secureExample;
 
-    @Column
-    private String code;
+    @Column(name = "MEMO", updatable = false)
+    private String memo;
 
-    @Column
-    private String customDetails;
-
-    @OneToMany(mappedBy = "teamPolicy")
-    private List<TeamPolicyDetails> details = new ArrayList<>();
-
-    @OneToMany(mappedBy = "teamPolicy")
+    @OneToMany(mappedBy = "teamPolicy", cascade = CascadeType.ALL)
     private List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
 
     @Builder(builderClassName = "policyBuilder", builderMethodName = "policyCreateBuilder")
-    public TeamPolicy(Team team, BasePolicy basePolicy, String policyName, String basePolicyName, Policy.Provider policyProvider, Policy.Type policyType, Policy.Target policyTarget, boolean isOrigin, boolean isModifiable, String memo, String insecureExample, String secureExample, String code, String customDetails) {
+    public TeamPolicy(Long id, Team team, BasePolicy basePolicy, String policyName, String basePolicyName,
+                      boolean origin,
+                      Provider policyProvider, Type policyType, Target policyTarget,
+                      boolean isModifiable, String explanation, String explanationKr, String severity, String solution,
+                      String solutionCode, String insecureExample, String secureExample, String memo) {
+        this.id = id;
         this.team = team;
         this.basePolicy = basePolicy;
         this.policyName = policyName;
         this.basePolicyName = basePolicyName;
+        this.origin = origin;
         this.policyProvider = policyProvider;
         this.policyType = policyType;
         this.policyTarget = policyTarget;
-        this.origin = isOrigin;
-        this.modifiable = isModifiable;
-        this.memo = memo;
+        this.isModifiable = isModifiable;
+        this.explanation = explanation;
+        this.explanationKr = explanationKr;
+        this.severity = severity;
+        this.solution = solution;
+        this.solutionCode = solutionCode;
         this.insecureExample = insecureExample;
         this.secureExample = secureExample;
-        this.code = code;
-        this.customDetails = customDetails;
+        this.memo = memo;
     }
 }

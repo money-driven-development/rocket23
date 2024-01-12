@@ -9,6 +9,8 @@ import com.initcloud.rocket23.policy.entity.BasePolicy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class ScanSeverityService {
 
     private final BasePolicyRepository basePolicyRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ScanSeverityService.class);
 
     /**
      * check_id에 따른 severity 및 score count
@@ -43,29 +47,35 @@ public class ScanSeverityService {
             String checkId = check.path("check_id").asText();
             checkId = ckvToIc(checkId);
             BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyNameIC(checkId);
-
             if (basePolicy != null) {
                 switch (basePolicy.getSeverity()) {
                     case high:
                         if (isPassed) {
                             scoreDto.incrementSuccessHigh();
+                            break;
                         } else {
                             scoreDto.incrementFailHigh();
+                            break;
                         }
                     case medium:
                         if (isPassed) {
                             scoreDto.incrementSuccessMedium();
+                            break;
                         } else {
                             scoreDto.incrementFailMedium();
+                            break;
                         }
                     case low:
                         if (isPassed) {
                             scoreDto.incrementSuccessLow();
+                            break;
                         } else {
                             scoreDto.incrementFailLow();
+                            break;
                         }
                 }
             }
+
         });
     }
 
@@ -77,8 +87,12 @@ public class ScanSeverityService {
 
         // "CKV"가 포함되어 있는지 확인
         if (policyName.contains("CKV")) {
-            BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyName(policyName);
-            return  basePolicy.getDefaultPolicyNameIC();
+            try{
+                BasePolicy basePolicy = basePolicyRepository.findByDefaultPolicyName(policyName);
+                return  basePolicy.getDefaultPolicyNameIC();
+            }catch(Exception e) {
+                logger.error("Error occurred while processing policyName: {}", policyName);
+            }
         }
         return policyName;
 

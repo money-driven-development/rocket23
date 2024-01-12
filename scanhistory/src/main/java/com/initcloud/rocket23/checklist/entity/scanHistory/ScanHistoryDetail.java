@@ -30,7 +30,7 @@ public class ScanHistoryDetail extends BaseEntity {
     @Column(name = "SCANHISTORY_DETAIL_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "HISTORY_ID")
     private ScanHistory scanHistory;
 
@@ -50,6 +50,10 @@ public class ScanHistoryDetail extends BaseEntity {
     @NotNull
     private String scanResult;
 
+    @Column(name = "SCAN_RESOURCE")
+    @NotNull
+    private String scanResource;
+
     @Column(name = "TARGET_FILE_NAME")
     @NotNull
     private String targetFileName;
@@ -66,6 +70,7 @@ public class ScanHistoryDetail extends BaseEntity {
                              String ruleDescription,
                              String appType,
                              String scanResult,
+                             String scanResource,
                              String targetFileName) {
         this.scanHistory = scanHistory;
         this.ruleName = ruleName;
@@ -73,6 +78,7 @@ public class ScanHistoryDetail extends BaseEntity {
         this.targetFileName = targetFileName;
         this.appType = appType;
         this.scanResult = scanResult;
+        this.scanResource = scanResource;
         scanHistory.getScanDetails().add(this);
     }
 }

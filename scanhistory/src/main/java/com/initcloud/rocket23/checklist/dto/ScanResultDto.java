@@ -1,11 +1,14 @@
 package com.initcloud.rocket23.checklist.dto;
 
+import com.initcloud.rocket23.checklist.entity.scanHistory.CodeBlock;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 
+import com.initcloud.rocket23.common.enums.Policy.Severity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import lombok.AccessLevel;
@@ -16,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ScanResultDto {
-    private String fileName;
+    private String projectName;
     private Integer high;
     private Integer medium;
     private Integer low;
@@ -29,8 +32,8 @@ public class ScanResultDto {
     private List<Detail> scanResultDetailList = new ArrayList<>();
 
     @Builder
-    public ScanResultDto(ScanHistory scanHistory, List<ScanHistoryDetail> scanHistoryDetails) {
-        this.fileName = scanHistory.getProjectName();
+    public ScanResultDto(ScanHistory scanHistory, List<ScanHistoryDetail> scanHistoryDetails, Map<ScanHistoryDetail, Severity> severityMap) {
+        this.projectName = scanHistory.getProjectName();
         this.high = scanHistory.getHigh();
         this.medium = scanHistory.getMedium();
         this.low = scanHistory.getLow();
@@ -42,7 +45,7 @@ public class ScanResultDto {
         this.created_at = scanHistory.getCreatedAt();
         if (scanHistoryDetails != null) {
             this.scanResultDetailList.addAll(scanHistoryDetails.stream()
-                    .map(Detail::new)
+                    .map(detail -> new Detail(detail, severityMap.getOrDefault(detail, Severity.none)))
                     .collect(Collectors.toList()));
         }
     }
@@ -51,7 +54,7 @@ public class ScanResultDto {
     public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
                          Integer passed, Integer failed, Integer skipped, LocalDateTime created,
                          List<Detail> scanResultDetailList) {
-        this.fileName = fileName;
+        this.projectName = fileName;
         this.high = high;
         this.medium = medium;
         this.low = low;
@@ -70,11 +73,21 @@ public class ScanResultDto {
         private String appType;
         private String scanResult;
         private String ruleName;
+        private String ruleDescription;
+        private String fileName;
+        private String scanResource;
+        private List<CodeBlock> codeBlock;
+        private Severity severity;
 
-        public Detail(ScanHistoryDetail scanHistoryDetail) {
+        public Detail(ScanHistoryDetail scanHistoryDetail, Severity severity) {
             this.appType = scanHistoryDetail.getAppType();
             this.scanResult = scanHistoryDetail.getScanResult();
             this.ruleName = scanHistoryDetail.getRuleName();
+            this.ruleDescription = scanHistoryDetail.getRuleDescription();
+            this.fileName = scanHistoryDetail.getTargetFileName();
+            this.scanResource = scanHistoryDetail.getScanResource();
+            this.codeBlock = scanHistoryDetail.getCodeBlock();
+            this.severity = severity;
         }
     }
 

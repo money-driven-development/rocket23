@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.checklist.entity.scanHistory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +30,7 @@ public class CodeBlock {
 
     @JoinColumn(name = "scan_history_detail_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private ScanHistoryDetail scanHistoryDetail;
 
     @Builder

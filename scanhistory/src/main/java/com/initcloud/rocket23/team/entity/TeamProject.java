@@ -44,13 +44,13 @@ public class TeamProject extends BaseEntity {
     @Column
     private String projectName;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<ScanHistory> scanHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<TeamProjectVersioning> versions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<PolicySetPerProject> policySets = new ArrayList<>();
 
 

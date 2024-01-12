@@ -23,7 +23,7 @@ public class PolicyDto {
         }
 
         public static Page<Summary> toPageDto(final Page<TeamPolicy> policies) {
-            return policies.map(policy -> new Summary(policy));
+            return policies.map(Summary::new);
         }
     }
 
@@ -48,7 +48,6 @@ public class PolicyDto {
             this.isModifiable = policy.isModifiable();
             this.insecureExample = policy.getInsecureExample();
             this.secureExample = policy.getSecureExample();
-            this.code = policy.getCode();
         }
 
         public Details toDetailsDto(final TeamPolicy policy) {

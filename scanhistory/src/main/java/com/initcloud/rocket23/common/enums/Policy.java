@@ -34,6 +34,7 @@ public class Policy {
     public enum Severity {
         high,
         medium,
-        low
+        low,
+        none
     }
 }
