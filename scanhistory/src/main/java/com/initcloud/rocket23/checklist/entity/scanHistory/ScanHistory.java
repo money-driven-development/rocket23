@@ -6,6 +6,7 @@ import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -89,11 +90,8 @@ public class ScanHistory extends BaseEntity {
     @NotNull
     private Double score = 0.0;
 
-    @OneToMany(mappedBy = "scanHistory")
+    @OneToMany(mappedBy = "scanHistory", cascade = CascadeType.ALL)
     private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
-
-    @OneToMany(mappedBy = "scanHistory")
-    private List<ProjectVulnDetail> fileDetails = new ArrayList<>();
 
     @Deprecated
     @Column(name = "FILE_NAME")

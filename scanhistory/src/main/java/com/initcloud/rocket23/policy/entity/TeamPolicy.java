@@ -81,7 +81,7 @@ public class TeamPolicy extends BaseEntity {
     @Column(name = "MEMO", updatable = false)
     private String memo;
 
-    @OneToMany(mappedBy = "teamPolicy")
+    @OneToMany(mappedBy = "teamPolicy", cascade = CascadeType.ALL)
     private List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
 
     @Builder(builderClassName = "policyBuilder", builderMethodName = "policyCreateBuilder")

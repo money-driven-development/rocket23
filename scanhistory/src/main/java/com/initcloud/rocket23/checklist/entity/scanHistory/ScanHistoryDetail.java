@@ -30,7 +30,7 @@ public class ScanHistoryDetail extends BaseEntity {
     @Column(name = "SCANHISTORY_DETAIL_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "HISTORY_ID")
     private ScanHistory scanHistory;
 
