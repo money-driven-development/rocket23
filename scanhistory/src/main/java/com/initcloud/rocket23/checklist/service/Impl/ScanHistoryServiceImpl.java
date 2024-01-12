@@ -95,6 +95,15 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
         return scanHistories.stream().map(ScanResultDto.Summary::new).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ScanResultDto.Summary> getScanHistoryFile(String fileHash) {
+        List<ScanHistory> scanHistories = scanHistoryRepository.findAllByFileHash(fileHash);
+        if (scanHistories.isEmpty()) {
+            throw new ApiException(ResponseCode.NO_SCAN_RESULT);
+        }
+        return scanHistories.stream().map(ScanResultDto.Summary::new).collect(Collectors.toList());
+    }
+
     /*
         단일 스캔에서 실패 내역 조회.
      */
