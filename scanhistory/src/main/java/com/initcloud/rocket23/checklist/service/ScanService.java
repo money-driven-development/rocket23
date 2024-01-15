@@ -69,8 +69,13 @@ public class ScanService {
                 .low(dto.getSuccessLow() + dto.getFailLow())
                 .unknown(0)
                 .score(dto.getScore())
+                .fileHash(jsonObj.get("fileHash").toString())
                 .build();
-        scanHistoryRepository.save(scanHistory);
+        try{
+            scanHistoryRepository.save(scanHistory);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         try{
             saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
@@ -115,7 +120,11 @@ public class ScanService {
                     .appType("Terraform")
                     .build();
 
-            scanHistoryDetailRepository.save(scanHistoryDetail);
+            try{
+                scanHistoryDetailRepository.save(scanHistoryDetail);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
 
             JsonNode codeBlockNodes = checkNode.path("code_block");
             saveCodeBlocks(codeBlockNodes, scanHistoryDetail);

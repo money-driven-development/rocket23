@@ -105,6 +105,25 @@ public class ScanHistoryController {
     }
 
     /*
+        프로젝트 내 파일 해시를 통한 스캔 목록 조회
+     */
+    @Operation(summary = "Get scan-history list By FileHash",
+            description = "Retrieve scan-history list.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class)))}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
+    @GetMapping("/{teamCode}/projects/{projectCode}/file/{fileHash}")
+    public ResponseDto<List<ScanResultDto.Summary>> getScanHistoryFile(
+            @PathVariable("fileHash") String fileHash
+    ) {
+        List<Summary> dtos = scanHistoryService.getScanHistoryFile(fileHash);
+        return new ResponseDto<>(dtos);
+    }
+
+    /*
         단일 스캔 실패 내역에 대한 조회
      */
 //    @Operation(

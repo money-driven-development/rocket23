@@ -54,7 +54,7 @@ public class FileServiceImpl implements FileService {
 	 *             uuid값을 통해 파일 별도의 디렉토리 이름 생성 -> 파일 저장 root 위치
 	 */
 	@Override
-	public void store(MultipartFile file, String teamCode, String projectCode) {
+	public RedisFileDto store(MultipartFile file, String teamCode, String projectCode) {
 		try {
 			if (file.isEmpty()) {
 				throw new ApiException(ResponseCode.DATA_MISSING);
@@ -68,7 +68,7 @@ public class FileServiceImpl implements FileService {
 			}
 
 			boolean isZipFile = isZip(file);
-			storeFile(file, root, uuid, isZipFile, teamCode, projectCode);
+			return storeFile(file, root, uuid, isZipFile, teamCode, projectCode);
 		} catch (IOException e) {
 			throw new ApiException(ResponseCode.FILE_WRONG_ERROR);
 		} catch (IllegalArgumentException e) {
@@ -87,7 +87,7 @@ public class FileServiceImpl implements FileService {
 	 *                                         todo file을 db에 저장할 떄 저장위치에 관해서 수정해야함.
 	 */
 	@Override
-	public void storeFile(MultipartFile file, Path path, String uuid, boolean isZipFile, String teamCode, String projectCode) throws IOException {
+	public RedisFileDto storeFile(MultipartFile file, Path path, String uuid, boolean isZipFile, String teamCode, String projectCode) throws IOException {
 		if (isZipFile) {
 			unZip(file, path);
 		} else {
@@ -96,7 +96,7 @@ public class FileServiceImpl implements FileService {
 					StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
-		save(file, ServerType.LOCAL, uuid, path.toString(), teamCode, projectCode);
+		return save(file, ServerType.LOCAL, uuid, path.toString(), teamCode, projectCode);
 	}
 
 	/**
@@ -107,10 +107,10 @@ public class FileServiceImpl implements FileService {
 	 *                   저장 후 redis publish를 통한 uuid, timestamp 정보 메세지 생성
 	 */
 	@Override
-	public void save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode) {
-		redisMessagePublisher.publishFileMessage(
-			RedisFileDto.toDto(uuid, file.getOriginalFilename(), teamCode, projectCode)
-		);
+	public RedisFileDto save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode) {
+		RedisFileDto dto = RedisFileDto.toDto(uuid, file.getOriginalFilename(), teamCode, projectCode);
+		redisMessagePublisher.publishFileMessage(dto);
+		return dto;
 	}
 
 	/**

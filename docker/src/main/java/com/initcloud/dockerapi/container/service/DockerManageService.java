@@ -41,7 +41,7 @@ public class DockerManageService implements ContainerManageService {
 		String scanResult = dockerContainerApi.execute(containerResponse.getId(), path);
 
 		// 이걸 다른 곳에 쏨(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
-		publisher.publishScanMessage(scanResult, path.getTeamCode(), path.getProjectCode());
+		publisher.publishScanMessage(scanResult, path.getTeamCode(), path.getProjectCode(), path.getIacPath());
 
 		//
 
@@ -58,7 +58,10 @@ public class DockerManageService implements ContainerManageService {
 	}
 
 	public ContainerDto executeContainer(ProjectUploadMessage upload) {
-		IaCScanRequestDto request = new IaCScanRequestDto(IaCType.TERRAFORM, upload.getUuid(), upload.getTeam(), upload.getProject()); // Todo - 나중에 타입을 요청 별로 바꿔야 함 ㅎㅎ.
+		IaCScanRequestDto request = new IaCScanRequestDto(IaCType.TERRAFORM,
+				upload.getUuid(),
+				upload.getTeam(),
+				upload.getProject()); // Todo - 나중에 타입을 요청 별로 바꿔야 함 ㅎㅎ.
 		return this.executeContainer(1, request);
 }
 

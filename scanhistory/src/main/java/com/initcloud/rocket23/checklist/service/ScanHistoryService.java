@@ -15,6 +15,8 @@ public interface ScanHistoryService {
     Page<ScanResultDto.Summary> getScanHistoryPaging(String teamCode, String projectCode, Pageable pageable);
 
     List<ScanResultDto.Summary> getScanHistoryAll(String teamCode, String projectCode);
+
+    List<ScanResultDto.Summary> getScanHistoryFile(String fileHash);
     // List<HistoryDto> getHistoryList(String teamCode, String projectCode,;
     //
     // Page<HistoryDto> getOffsetPageHistoryList(String teamCode, String projectCode, Pageable page);

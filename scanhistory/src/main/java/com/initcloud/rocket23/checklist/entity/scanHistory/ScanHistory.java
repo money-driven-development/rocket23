@@ -97,9 +97,8 @@ public class ScanHistory extends BaseEntity {
     @Column(name = "FILE_NAME")
     private String fileName = "will_be_deprecated_file_name";
 
-    @Deprecated
     @Column(name = "FILE_HASH")
-    private String fileHash = "will_be_deprecated_file_hash";
+    private String fileHash;
 
     @Builder
     public ScanHistory(
@@ -107,7 +106,7 @@ public class ScanHistory extends BaseEntity {
             String username,
             Integer passed, Integer skipped, Integer failed, Integer high,
             Integer medium, Integer low, Integer unknown,
-            Double score) {
+            Double score, String fileHash) {
         this.team = team;
         this.project = project;
         this.projectName = projectName;
@@ -122,5 +121,6 @@ public class ScanHistory extends BaseEntity {
         this.low = low;
         this.unknown = unknown;
         this.score = score;
+        this.fileHash = fileHash;
     }
 }
