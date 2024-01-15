@@ -81,6 +81,7 @@ public class TeamProject extends BaseEntity {
                 .projectType(this.projectType)
                 .projectCode(this.projectCode)
                 .projectUrl(this.projectUrl)
+                .description(this.description)
                 .versionHistory(
                         this.versions.stream()
                                 .map(TeamProjectDto.Version::new)
