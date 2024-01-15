@@ -1,22 +1,37 @@
 package com.initcloud.rocket23.project.service;
 
-import com.initcloud.rocket23.project.dto.RedisFileDto;
-import com.initcloud.rocket23.project.enums.ServerType;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-public interface FileService {
-    void init(Path path);
+@Service
+@RequiredArgsConstructor
+public class FileService {
 
-    //Local 저장
-    RedisFileDto store(MultipartFile file, String teamCode, String projectCode);
+    @Value("${spring.servlet.multipart.location}")
+    private String uploadPath;
 
-    RedisFileDto storeFile(MultipartFile file, Path path, String uuid, boolean check, String teamCode, String projectCode) throws IOException;
+    public List<String> readAllFilesInDirectory(String fileHash) throws IOException {
+        Path directoryPath = Paths.get(uploadPath, fileHash);
+        List<String> fileContents = new ArrayList<>();
 
-    void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directoryPath)) {
+            for (Path filePath : directoryStream) {
+                if (Files.isRegularFile(filePath)) {
+                    byte[] fileBytes = Files.readAllBytes(filePath);
+                    fileContents.add(new String(fileBytes));
+                }
+            }
+        }
 
-    //DB 저장
-    RedisFileDto save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode);
+        return fileContents;
+    }
+
 }
