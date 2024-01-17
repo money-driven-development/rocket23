@@ -90,7 +90,7 @@ public class ScanHistory extends BaseEntity {
     @NotNull
     private Double score = 0.0;
 
-    @OneToMany(mappedBy = "scanHistory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "scanHistory", cascade = CascadeType.REMOVE)
     private List<ScanHistoryDetail> scanDetails = new ArrayList<>();
 
     @Deprecated
