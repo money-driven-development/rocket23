@@ -1,4 +1,4 @@
-package com.initcloud.rocket23.checklist.entity.scanHistory;
+package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.policy.entity.BasePolicy;
 import javax.persistence.CascadeType;

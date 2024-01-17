@@ -1,6 +1,5 @@
 package com.initcloud.rocket23.policy.entity;
 
-import com.initcloud.rocket23.checklist.entity.scanHistory.Tag;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.common.enums.Policy;
 import com.initcloud.rocket23.common.enums.Policy.Provider;
@@ -11,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
