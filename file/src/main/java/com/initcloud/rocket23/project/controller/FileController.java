@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/rocket23/")
+@RequestMapping("/rocket23/file/")
 @RequiredArgsConstructor
 public class FileController {
 
 	private final FileManageService fileManageService;
 	private final FileService fileService;
 
-	@PostMapping(value = "/file/{teamCode}/{projectCode}")
+	@PostMapping(value = "/{teamCode}/{projectCode}")
 	public ResponseDto<RedisFileDto> uploadFile(
 			@PathVariable String teamCode,
 			@PathVariable String projectCode,
@@ -30,11 +30,13 @@ public class FileController {
 		return new ResponseDto<>(dto);
 	}
 
-	@GetMapping(value = "/{fileHash}")
+	@GetMapping(value = "/{teamCode}/{projectCode}/{fileHash}")
 	public ResponseDto<List<String>> uploadFile(
-			@PathVariable String fileHash
+			@PathVariable String fileHash,
+			@PathVariable String teamCode,
+			@PathVariable String projectCode
 	) throws IOException {
-		List<String> dto = fileService.readAllFilesInDirectory(fileHash);
+		List<String> dto = fileService.readAllFilesInDirectory(teamCode, projectCode, fileHash);
 		return new ResponseDto<>(dto);
 	}
 

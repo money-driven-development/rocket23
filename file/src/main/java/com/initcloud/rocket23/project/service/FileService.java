@@ -18,7 +18,7 @@ public class FileService {
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
 
-    public List<String> readAllFilesInDirectory(String fileHash) throws IOException {
+    public List<String> readAllFilesInDirectory(String teamCode, String projectCode, String fileHash) throws IOException {
         Path directoryPath = Paths.get(uploadPath, fileHash);
         List<String> fileContents = new ArrayList<>();
 
