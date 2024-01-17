@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.policy.entity;
 
+import com.initcloud.rocket23.checklist.entity.scanHistory.Tag;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.common.enums.Policy;
 import com.initcloud.rocket23.common.enums.Policy.Provider;
@@ -71,6 +72,9 @@ public class BasePolicy extends BaseEntity {
 
     @Column(updatable = false, name = "SECURE_CODE")
     private String secureCode;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "basePolicy")
+    private Tag tag;
 
     public BasePolicy(Long id, String defaultPolicyName, String defaultPolicyNameIC, String policyContent,
                       String policyContentKr, Provider policyProvider, Type policyType,
