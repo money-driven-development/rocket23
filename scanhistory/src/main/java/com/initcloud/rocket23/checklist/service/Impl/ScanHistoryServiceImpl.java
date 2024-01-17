@@ -11,6 +11,7 @@ import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryRepository;
 import com.initcloud.rocket23.policy.entity.BasePolicy;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -90,7 +91,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
         List<ScanHistory> scanHistories = scanHistoryRepository.findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(teamCode,
                 projectCode);
         if (scanHistories.isEmpty()) {
-            throw new ApiException(ResponseCode.NO_SCAN_RESULT);
+            return Collections.emptyList();
         }
         return scanHistories.stream().map(ScanResultDto.Summary::new).collect(Collectors.toList());
     }
