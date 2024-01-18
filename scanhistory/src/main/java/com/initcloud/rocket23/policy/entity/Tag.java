@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.policy.entity;
 
+import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.policy.entity.BasePolicy;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity(name = "TAG")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Tag {
+public class Tag extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +29,8 @@ public class Tag {
     private Long id;
 
     @JoinColumn(name = "policy_id")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private BasePolicy basePolicy;
-
-    @Column(name = "default_policy_name_ic")
-    private String defaultPolicyNameIc;
 
     @Column(name = "tag")
     @Enumerated(EnumType.STRING)
