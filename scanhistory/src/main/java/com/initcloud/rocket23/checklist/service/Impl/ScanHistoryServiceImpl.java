@@ -97,12 +97,12 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
     }
 
     @Override
-    public String getScanSuccess(String fileHash) {
+    public boolean getScanSuccess(String fileHash) {
         List<ScanHistory> scanHistories = scanHistoryRepository.findAllByFileHash(fileHash);
         if (scanHistories.isEmpty()) {
             throw new ApiException(ResponseCode.NO_SCAN_RESULT);
         }
-        return "스캔이 완료되었습니다";
+        return true;
     }
 
     /*

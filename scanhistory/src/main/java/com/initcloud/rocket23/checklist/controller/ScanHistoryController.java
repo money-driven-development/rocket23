@@ -116,10 +116,10 @@ public class ScanHistoryController {
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/projects/{projectCode}/file/{fileHash}")
-    public ResponseDto<String> getScanHistoryFile(
+    public ResponseDto<Boolean> getScanHistoryFile(
             @PathVariable("fileHash") String fileHash
     ) {
-        String dto = scanHistoryService.getScanSuccess(fileHash);
+        boolean dto = scanHistoryService.getScanSuccess(fileHash);
         return new ResponseDto<>(dto);
     }
 

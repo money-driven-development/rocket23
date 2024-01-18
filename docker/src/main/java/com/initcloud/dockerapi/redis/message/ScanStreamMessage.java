@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.initcloud.dockerapi.common.enums.ScanType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -70,7 +71,7 @@ public class ScanStreamMessage<T> implements Serializable {
 
         if(rootNode.isArray()){
             for (JsonNode node : rootNode) {
-                if (node.isObject() && "terraform".equals(node.get("check_type").asText())) {
+                if (node.isObject() && ScanType.TERRAFORM.getType().equals(node.get("check_type").asText())) {
                     ((ObjectNode) node).put("teamCode", teamCode);
                     ((ObjectNode) node).put("projectCode", projectCode);
                     ((ObjectNode) node).put("fileHash", fileHash);
