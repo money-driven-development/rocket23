@@ -4,7 +4,7 @@ import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.project.dto.RedisFileDto;
 import com.initcloud.rocket23.project.enums.ServerType;
-import com.initcloud.rocket23.project.service.FileService;
+import com.initcloud.rocket23.project.service.FileManageService;
 import com.initcloud.rocket23.infra.redis.pubsub.RedisMessagePublisher;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.zip.ZipInputStream;
 
 @RequiredArgsConstructor
 @Service
-public class FileServiceImpl implements FileService {
+public class FileManageManageServiceImpl implements FileManageService {
 
 	private final RedisMessagePublisher redisMessagePublisher;
 

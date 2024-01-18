@@ -31,7 +31,7 @@ public class TeamProjectDto {
             this.projectCode = teamProject.getProjectCode();
             this.projectName = teamProject.getProjectName();
             this.projectCreatedAt = teamProject.getCreatedAt();
-            this.description = "DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO.";
+            this.description = teamProject.getDescription();
         }
     }
 
@@ -55,6 +55,7 @@ public class TeamProjectDto {
                 String projectCode,
                 String projectName,
                 String projectUrl,
+                String description,
                 LocalDateTime recentScanDateTime,
                 LocalDateTime projectCreatedAt,
                 LocalDateTime projectModifiedAt,
@@ -65,12 +66,12 @@ public class TeamProjectDto {
             this.projectCode = projectCode;
             this.projectName = projectName;
             this.projectUrl = projectUrl;
+            this.description = description;
             this.recentScanDateTime = recentScanDateTime;
             this.projectCreatedAt = projectCreatedAt;
             this.projectModifiedAt = projectModifiedAt;
             this.versionHistory = versionHistory;
             this.policySets = policySets;
-            this.description = "DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO. DESCRIPTION_DEMO.";
         }
     }
 

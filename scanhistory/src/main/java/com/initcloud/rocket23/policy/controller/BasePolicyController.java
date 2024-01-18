@@ -2,12 +2,14 @@ package com.initcloud.rocket23.policy.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.policy.dto.BasePolicyDto;
+import com.initcloud.rocket23.policy.dto.BasePolicyDto.Details;
 import com.initcloud.rocket23.policy.service.BasePolicyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,17 +34,17 @@ public class BasePolicyController {
      * */
 
     /**
-     * Base Policy 요약 전체 조회
+     * Base Policy 요약 전체 조회(페이징 O)
      * */
     @Operation(
-            summary = "Get Base policy-set",
-            description = "Show Base policy-set.",
+            summary = "Get Paged Base policy-set",
+            description = "Show Paged Base policy-set.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
                     )}
     )
     @GetMapping
-    public ResponseDto<Page<BasePolicyDto.Summary>> teamPagedPolicies(
+    public ResponseDto<Page<BasePolicyDto.Summary>> basePagedPolicies(
                                                          final Pageable pageable
     ) {
 
@@ -52,7 +54,7 @@ public class BasePolicyController {
     }
 
     /**
-     * Base Policy 상세 전체 조회
+     * Base Policy 요약 전체 조회(페이징 X)
      * */
     @Operation(
             summary = "Get Base policy-set",
@@ -61,12 +63,46 @@ public class BasePolicyController {
                     @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
                     )}
     )
+    @GetMapping("/all")
+    public ResponseDto<List<BasePolicyDto.Summary>> basePolicies() {
+
+        List<BasePolicyDto.Summary> response = basePolicyService.getBasePolicy();
+        return new ResponseDto<>(response);
+    }
+
+    /**
+     * Base Policy 상세 전체 조회(페이징 O)
+     * */
+    @Operation(
+            summary = "Get Paged Base policy-set details",
+            description = "Show Paged Base policy-set details.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
     @GetMapping("/details")
-    public ResponseDto<Page<BasePolicyDto.Details>> teamPagedPoliciesDetails(
+    public ResponseDto<Page<BasePolicyDto.Details>> basePagedPoliciesDetails(
             final Pageable pageable
     ) {
 
         Page<BasePolicyDto.Details> response = basePolicyService.getPagedBasePolicyDetails(pageable);
+
+        return new ResponseDto<>(response);
+    }
+
+    /**
+     * Base Policy 상세 전체 조회(페이징 X)
+     * */
+    @Operation(
+            summary = "Get Base policy-set details",
+            description = "Show Base policy-set details.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @GetMapping("/details/all")
+    public ResponseDto<List<Details>> basePoliciesDetails(){
+        List<BasePolicyDto.Details> response = basePolicyService.getBasePolicyDetails();
 
         return new ResponseDto<>(response);
     }

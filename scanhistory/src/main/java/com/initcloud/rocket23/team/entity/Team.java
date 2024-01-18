@@ -31,16 +31,16 @@ public class Team extends BaseEntity {
     @Column
     private String logoUri;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<ScanHistory> scanHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<PolicySet> policySets = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<TeamProject> teamProjects = new ArrayList<>();
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<TeamWithUsers> teamWithUsers = new ArrayList<>();
 
     public Team(Long id, String teamCode, String name, String logoUri) {

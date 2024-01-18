@@ -25,6 +25,7 @@ public class ScanResultDto {
     private Integer low;
     private Integer unknown;
     private Double score;
+    private String fileHash;
     private Integer passed;
     private Integer failed;
     private Integer skipped;
@@ -39,6 +40,7 @@ public class ScanResultDto {
         this.low = scanHistory.getLow();
         this.unknown = scanHistory.getUnknown();
         this.score = scanHistory.getScore();
+        this.fileHash = scanHistory.getFileHash();
         this.passed = scanHistory.getPassed();
         this.failed = scanHistory.getFailed();
         this.skipped = scanHistory.getSkipped();
@@ -99,6 +101,7 @@ public class ScanResultDto {
         private Integer skipped;
         private Integer failed;
         private Double score;
+        private String fileHash;
         private String scanHash;
         private LocalDateTime created_at;
 
@@ -108,6 +111,7 @@ public class ScanResultDto {
             this.skipped = entity.getSkipped();
             this.failed = entity.getFailed();
             this.score = entity.getScore();
+            this.fileHash = entity.getFileHash();
             this.scanHash = entity.getScanHash();
             this.created_at = entity.getCreatedAt();
         }

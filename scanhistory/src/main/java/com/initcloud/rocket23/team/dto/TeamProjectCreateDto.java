@@ -41,6 +41,7 @@ public class TeamProjectCreateDto {
                 .projectType(this.projectType)
                 .projectUrl(this.projectUrl)
                 .projectName(this.projectName)
+                .description(this.description)
                 .build();
     }
 }

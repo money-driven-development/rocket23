@@ -44,6 +44,9 @@ public class TeamProject extends BaseEntity {
     @Column
     private String projectName;
 
+    @Column
+    private String description;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private List<ScanHistory> scanHistories = new ArrayList<>();
 
@@ -55,12 +58,13 @@ public class TeamProject extends BaseEntity {
 
 
     @Builder(builderClassName = "teamProjectBuilder", builderMethodName = "teamProjectCreateBuilder")
-    public TeamProject(Team team, String projectCode, ProjectType projectType, String projectUrl, String projectName) {
+    public TeamProject(Team team, String projectCode, ProjectType projectType, String projectUrl, String projectName, String description) {
         this.team = team;
         this.projectCode = projectCode;
         this.projectType = projectType;
         this.projectUrl = projectUrl;
         this.projectName = projectName;
+        this.description = description;
     }
 
     public static Page<TeamProjectDto.Summary> toPageDto(Page<TeamProject> teamProjects) {
@@ -77,6 +81,7 @@ public class TeamProject extends BaseEntity {
                 .projectType(this.projectType)
                 .projectCode(this.projectCode)
                 .projectUrl(this.projectUrl)
+                .description(this.description)
                 .versionHistory(
                         this.versions.stream()
                                 .map(TeamProjectDto.Version::new)

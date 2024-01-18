@@ -111,7 +111,7 @@ public class ScanService {
         try {
 
             ScanHistoryDetail scanHistoryDetail = ScanHistoryDetail.builder()
-                    .ruleName(checkNode.get("check_id").asText())
+                    .ruleName(checkNode.get("check_id").asText().replace("CKV","IC"))
                     .scanHistory(scanHistory)
                     .ruleDescription(checkNode.get("check_name").asText())
                     .scanResult(checkNode.get("check_result").get("result").asText())
