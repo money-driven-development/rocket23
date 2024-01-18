@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.policy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.policy.entity.BasePolicy;
 import javax.persistence.CascadeType;
@@ -30,10 +31,10 @@ public class Tag extends BaseEntity {
 
     @JoinColumn(name = "policy_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private BasePolicy basePolicy;
 
     @Column(name = "tag")
-    @Enumerated(EnumType.STRING)
-    private com.initcloud.rocket23.common.enums.Tag tag;
+    private String tag;
 
 }

@@ -2,6 +2,8 @@ package com.initcloud.rocket23.policy.dto;
 
 import com.initcloud.rocket23.common.enums.Policy;
 import com.initcloud.rocket23.policy.entity.BasePolicy;
+import com.initcloud.rocket23.policy.entity.Tag;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +63,7 @@ public class BasePolicyDto {
         private String solutionCode;
         private String insecureCode;
         private String secureCode;
+        private List<Tag> tag;
 
         public Details(final BasePolicy basePolicy) {
             this.defaultPolicyName = basePolicy.getDefaultPolicyName();
@@ -78,6 +81,7 @@ public class BasePolicyDto {
             this.solutionCode = basePolicy.getSolutionCode();
             this.insecureCode = basePolicy.getInsecureCode();
             this.secureCode = basePolicy.getSecureCode();
+            this.tag = basePolicy.getTags();
         }
 
         public static Page<Details> toPageDto(final Page<BasePolicy> basePolicies) {
