@@ -46,8 +46,8 @@ public class PolicyDto {
             this.policyType = policy.getPolicyType();
             this.policyTarget = policy.getPolicyTarget();
             this.isModifiable = policy.isModifiable();
-            this.insecureExample = policy.getInsecureExample();
-            this.secureExample = policy.getSecureExample();
+            this.insecureExample = policy.getInsecureCode();
+            this.secureExample = policy.getSecureCode();
         }
 
         public Details toDetailsDto(final TeamPolicy policy) {
