@@ -4,6 +4,7 @@ import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.team.entity.Team;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,6 +44,7 @@ public class PolicySet extends BaseEntity {
     @OneToMany(mappedBy = "policySet", cascade = CascadeType.ALL)
     private List<PolicyPerPolicySet> projects = new ArrayList<>();
 
+    @Builder
     public PolicySet(Team team, String name, String description) {
         this.team = team;
         this.name = name;

@@ -41,11 +41,30 @@ public class BaseToTeamPolicyController {
     )
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @GetMapping("/{teamCode}/all")
-    public ResponseDto<Page<Summary>> teamPagedPolicies(
+    public ResponseDto<Page<Summary>> baseTeamPolicies(
                                                          @PathVariable String teamCode
     ) {
         baseToTeamPolicyService.basePolicyAllToTeamPolicy(teamCode);
 
+        return new ResponseDto<>(null);
+    }
+
+    /**
+     * ===== Add Base Policy Set =====
+     */
+    @Operation(
+            summary = "Make Base Policy Set",
+            description = "Register Base Policy Set",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @GetMapping("/{teamCode}/baseSet")
+    public ResponseDto<Page<Summary>> baseTeamPolicySet(
+            @PathVariable String teamCode
+    ) {
+        baseToTeamPolicyService.createBasePolicySet(teamCode);
         return new ResponseDto<>(null);
     }
 

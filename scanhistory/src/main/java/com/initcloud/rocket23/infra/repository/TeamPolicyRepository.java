@@ -2,12 +2,16 @@ package com.initcloud.rocket23.infra.repository;
 
 import com.initcloud.rocket23.policy.entity.TeamPolicy;
 import com.initcloud.rocket23.team.entity.Team;
+import feign.Param;
+import java.util.Collection;
+import org.hibernate.annotations.Where;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
 
 public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
@@ -26,4 +30,7 @@ public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
     void deleteTeamPolicyByOriginFalseAndTeam_TeamCodeAndPolicyName(String teamCode, String policyName);
 
     List<TeamPolicy> findByTeam_Id(Long id);
+
+    @Query("SELECT tp FROM TeamPolicy tp WHERE tp.team.id = :teamId AND tp.origin = true")
+    List<TeamPolicy> findTeamPoliciesByTeam_Id(@Param("teamId") Long teamId);
 }
