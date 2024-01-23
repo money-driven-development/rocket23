@@ -7,23 +7,20 @@ import com.initcloud.rocket23.infra.repository.PolicyPerPolicySetRepository;
 import com.initcloud.rocket23.infra.repository.TeamPolicyRepository;
 import com.initcloud.rocket23.infra.repository.TeamPolicySetRepository;
 import com.initcloud.rocket23.infra.repository.TeamRepository;
-import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.entity.BasePolicy;
 import com.initcloud.rocket23.policy.entity.PolicyPerPolicySet;
 import com.initcloud.rocket23.policy.entity.PolicySet;
 import com.initcloud.rocket23.policy.entity.TeamPolicy;
-import com.initcloud.rocket23.policy.utils.PoliciesUtils;
 import com.initcloud.rocket23.team.entity.Team;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class BaseToTeamPolicyService {
+public class BasePolicySetService {
 
     private final TeamRepository teamRepository;
     private final TeamPolicyRepository teamPolicyRepository;
