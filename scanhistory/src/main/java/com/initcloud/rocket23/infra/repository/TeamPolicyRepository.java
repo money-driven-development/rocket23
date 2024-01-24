@@ -33,4 +33,6 @@ public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
     @Query("SELECT tp FROM TeamPolicy tp WHERE tp.team.id = :teamId AND tp.origin = true")
     List<TeamPolicy> findTeamPoliciesByTeam_Id(@Param("teamId") Long teamId);
+
+    TeamPolicy findByTeam_TeamCodeAndPolicyName(String teamCode, String policyName);
 }

@@ -7,6 +7,7 @@ import com.initcloud.rocket23.infra.repository.PolicyPerPolicySetRepository;
 import com.initcloud.rocket23.infra.repository.TeamPolicyRepository;
 import com.initcloud.rocket23.infra.repository.TeamPolicySetRepository;
 import com.initcloud.rocket23.infra.repository.TeamRepository;
+import com.initcloud.rocket23.policy.dto.BasePolicySetDto;
 import com.initcloud.rocket23.policy.entity.BasePolicy;
 import com.initcloud.rocket23.policy.entity.PolicyPerPolicySet;
 import com.initcloud.rocket23.policy.entity.PolicySet;
@@ -83,7 +84,7 @@ public class BasePolicySetService {
         PolicySet basePolicySet = PolicySet.builder()
                 .team(team)
                 .description("기본 제공되는 Base Policy Set 입니다.")
-                .name("Base Policy Set")
+                .name("Base_Policy_Set")
                 .build();
 
         // 3. 정책 셋을 만들고
@@ -98,6 +99,29 @@ public class BasePolicySetService {
         policyPerPolicySetRepository.saveAll(policiesPerPolicySet);
 
         return null;
+    }
+
+    /**
+     * 베이스 정책 셋 수정
+     */
+    public boolean modifyBasePolicySet(final String teamCode, final String policySet, final List<BasePolicySetDto> dto) {
+        // 1. 수정 대상 기존 Base 정책 셋을 찾고
+        PolicySet originPolicySet = teamPolicySetRepository.findPolicySetByTeam_TeamCodeAndName(teamCode, policySet)
+                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_POLICY_SET_IN_TEAM));
+
+        // 2. 수정 대상 정책 수정
+        for (BasePolicySetDto policyState : dto) {
+            TeamPolicy teamPolicy = teamPolicyRepository.findByTeam_TeamCodeAndPolicyName(teamCode,
+                    policyState.getPolicyName());
+
+            PolicyPerPolicySet policyPerPolicySet = policyPerPolicySetRepository.findPolicyPerPolicySetByTeamPolicyAndPolicySet(
+                    teamPolicy,originPolicySet);
+
+            policyPerPolicySet.updateState(policyState.getState());
+            policyPerPolicySetRepository.save(policyPerPolicySet);
+        }
+
+        return true;
     }
 
 
