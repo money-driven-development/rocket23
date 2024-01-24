@@ -5,6 +5,7 @@ import com.initcloud.rocket23.common.enums.Policy;
 import com.initcloud.rocket23.common.enums.Policy.Provider;
 import com.initcloud.rocket23.common.enums.Policy.Target;
 import com.initcloud.rocket23.common.enums.Policy.Type;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -72,7 +73,7 @@ public class BasePolicy extends BaseEntity {
     private String secureCode;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "basePolicy")
-    private List<Tag> tags;
+    private List<Tag> tags = new ArrayList<>();;
 
     public BasePolicy(Long id, String defaultPolicyName, String defaultPolicyNameIC, String policyContent,
                       String policyContentKr, Provider policyProvider, Type policyType,
