@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.infra.repository;
 
 import com.initcloud.rocket23.policy.entity.PolicySet;
+import com.initcloud.rocket23.team.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,6 @@ public interface TeamPolicySetRepository extends JpaRepository<PolicySet, Long> 
     List<PolicySet> findPolicySetByTeam_TeamCode(String teamCode);
 
     void deleteTeamPolicySetByTeam_TeamCodeAndName(String teamCode, String name);
+
+    Optional<PolicySet> findPolicySetByTeamAndName(Team team, String policySet);
 }

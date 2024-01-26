@@ -30,28 +30,6 @@ public class BasePolicySetController {
     private final BasePolicySetService basePolicySetService;
 
     /**
-     * ===== All BasePolicy Register Team =====
-     */
-
-
-    @Operation(
-            summary = "Make Base Policy To Team Policy",
-            description = "Register Base Policies",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
-                    )}
-    )
-    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/all")
-    public ResponseDto<Page<Summary>> baseTeamPolicies(
-                                                         @PathVariable String teamCode
-    ) {
-        basePolicySetService.basePolicyAllToTeamPolicy(teamCode);
-
-        return new ResponseDto<>(null);
-    }
-
-    /**
      * ===== Add Base Policy Set =====
      */
     @Operation(
@@ -88,8 +66,8 @@ public class BasePolicySetController {
             @PathVariable String policySet,
             @RequestBody List<BasePolicySetDto> request
     ) {
-        boolean result = basePolicySetService.modifyBasePolicySet(teamCode, policySet, request);
-        return new ResponseDto<>(result);
+        basePolicySetService.modifyBasePolicySet(teamCode, policySet, request);
+        return new ResponseDto<>(null);
     }
 
 }

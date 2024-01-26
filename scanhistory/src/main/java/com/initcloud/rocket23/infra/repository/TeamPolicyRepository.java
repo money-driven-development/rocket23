@@ -29,7 +29,7 @@ public interface TeamPolicyRepository extends JpaRepository<TeamPolicy, Long> {
 
     void deleteTeamPolicyByOriginFalseAndTeam_TeamCodeAndPolicyName(String teamCode, String policyName);
 
-    List<TeamPolicy> findByTeam_Id(Long id);
+    List<TeamPolicy> findByTeam(Team team);
 
     @Query("SELECT tp FROM TeamPolicy tp WHERE tp.team.id = :teamId AND tp.origin = true")
     List<TeamPolicy> findTeamPoliciesByTeam_Id(@Param("teamId") Long teamId);
