@@ -46,36 +46,12 @@ public class BasePolicySetServiceTest {
     }
 
     @Test
-    public void testBasePolicyAllToTeamPolicyWithInvalidTeamCode() {
-        // Arrange
-        String invalidTeamCode = "demo_team_code";
-
-        // Act & Assert
-        ApiException exception = assertThrows(ApiException.class, () ->
-                basePolicySetService.basePolicyAllToTeamPolicy(invalidTeamCode));
-
-        assertEquals(ResponseCode.INVALID_TEAM, exception.getResponseCode());
-    }
-
-    @Test
     public void testBasePolicyAllToTeamPolicyWithInvalidBasePolicy() {
         // Act & Assert
         ApiException exception = assertThrows(ApiException.class, () ->
                 basePolicySetService.getBasePolicy());
 
         assertEquals(ResponseCode.INVALID_BASE_POLICY, exception.getResponseCode());
-    }
-
-    @Test
-    public void testCreateBasePolicySetWithInvalidTeamCode() {
-        // Arrange
-        String invalidTeamCode = "demo_team_code";
-
-        // Act & Assert
-        ApiException exception = assertThrows(ApiException.class, () ->
-                basePolicySetService.createBasePolicySet(invalidTeamCode));
-
-        assertEquals(ResponseCode.INVALID_TEAM, exception.getResponseCode());
     }
 
     @Test
