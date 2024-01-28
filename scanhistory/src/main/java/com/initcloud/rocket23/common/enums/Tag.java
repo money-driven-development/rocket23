@@ -1,0 +1,19 @@
+package com.initcloud.rocket23.common.enums;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public enum Tag {
+
+    ACCESS_CONTROL,
+    IDENTIFICATION_AND_AUTHENTICATION,
+    SYSTEM_AND_COMMUNICATIONS_PROTECTION,
+    MEDIA_PROTECTION,
+    SYSTEM_AND_INFORMATION_INTEGRITY,
+    CONFIGURATION_MANAGEMENT,
+    CONTINGENCY_PLANNING,
+    AUDIT_AND_ACCOUNTABILITY,
+    PERFORMANCE_IMPROVEMENTS
+
+}
