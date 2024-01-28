@@ -76,7 +76,7 @@ public class BasePolicyDto {
             this.isModifiable = basePolicy.isModifiable();
             this.severity = basePolicy.getSeverity();
             this.explanation = basePolicy.getExplanation();
-            this.explanationKr = basePolicy.getExplantionKr();
+            this.explanationKr = basePolicy.getExplanationKr();
             this.solution = basePolicy.getSolution();
             this.solutionCode = basePolicy.getSolutionCode();
             this.insecureCode = basePolicy.getInsecureCode();

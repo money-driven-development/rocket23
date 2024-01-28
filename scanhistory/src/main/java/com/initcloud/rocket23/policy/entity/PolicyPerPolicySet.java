@@ -2,6 +2,7 @@ package com.initcloud.rocket23.policy.entity;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,9 +29,14 @@ public class PolicyPerPolicySet extends BaseEntity {
     @Column
     private boolean state;
 
+    @Builder
     public PolicyPerPolicySet(PolicySet policySet, TeamPolicy teamPolicy, boolean state) {
         this.policySet = policySet;
         this.teamPolicy = teamPolicy;
+        this.state = state;
+    }
+
+    public void updateState(boolean state) {
         this.state = state;
     }
 }

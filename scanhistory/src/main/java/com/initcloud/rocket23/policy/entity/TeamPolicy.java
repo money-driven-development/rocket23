@@ -29,10 +29,6 @@ public class TeamPolicy extends BaseEntity {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(updatable = false, name = "BASE_POLICY_ID")
-    private BasePolicy basePolicy;
-
     @Column(name = "POLICY_NAME", updatable = false)
     private String policyName;
 
@@ -41,6 +37,12 @@ public class TeamPolicy extends BaseEntity {
 
     @Column(name = "IS_BASE_POLICY", updatable = false)
     private boolean origin;
+
+    @Column(updatable = false, name = "POLICY_CONTENT")
+    private String policyContent;
+
+    @Column(updatable = false, name = "POLICY_CONTENT_KR")
+    private String policyContentKr;
 
     @Column(updatable = false)
     @Enumerated(EnumType.STRING)
@@ -64,19 +66,20 @@ public class TeamPolicy extends BaseEntity {
     private String explanationKr;
 
     @Column(name = "SEVERITY", updatable = false)
-    private String severity;
+    @Enumerated(EnumType.STRING)
+    private Policy.Severity severity;
 
     @Column(name = "SOLUTION", updatable = false)
     private String solution;
 
-    @Column(name = "SOLUTION_CODE", updatable = false)
+    @Column(updatable = false, name = "SOLUTION_CODE")
     private String solutionCode;
 
-    @Column(name = "IN_SECURE_EXAMPLE", updatable = false)
-    private String insecureExample;
+    @Column(updatable = false, name = "INSECURE_CODE")
+    private String insecureCode;
 
-    @Column(name = "SECURE_EXAMPLE", updatable = false)
-    private String secureExample;
+    @Column(updatable = false, name = "SECURE_CODE")
+    private String secureCode;
 
     @Column(name = "MEMO", updatable = false)
     private String memo;
@@ -85,28 +88,29 @@ public class TeamPolicy extends BaseEntity {
     private List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
 
     @Builder(builderClassName = "policyBuilder", builderMethodName = "policyCreateBuilder")
-    public TeamPolicy(Long id, Team team, BasePolicy basePolicy, String policyName, String basePolicyName,
-                      boolean origin,
+    public TeamPolicy(Long id, Team team, String policyName, String basePolicyName,
+                      boolean origin, String policyContent, String policyContentKr,
                       Provider policyProvider, Type policyType, Target policyTarget,
-                      boolean isModifiable, String explanation, String explanationKr, String severity, String solution,
-                      String solutionCode, String insecureExample, String secureExample, String memo) {
+                      boolean isModifiable, String explanation, String explanationKr, Policy.Severity severity, String solution,
+                      String solutionCode, String insecureCode, String secureCode, String memo) {
         this.id = id;
         this.team = team;
-        this.basePolicy = basePolicy;
         this.policyName = policyName;
         this.basePolicyName = basePolicyName;
         this.origin = origin;
+        this.policyContent = policyContent;
+        this.policyContentKr = policyContentKr;
         this.policyProvider = policyProvider;
         this.policyType = policyType;
         this.policyTarget = policyTarget;
         this.isModifiable = isModifiable;
+        this.severity = severity;
         this.explanation = explanation;
         this.explanationKr = explanationKr;
-        this.severity = severity;
         this.solution = solution;
         this.solutionCode = solutionCode;
-        this.insecureExample = insecureExample;
-        this.secureExample = secureExample;
+        this.insecureCode = insecureCode;
+        this.secureCode = secureCode;
         this.memo = memo;
     }
 }

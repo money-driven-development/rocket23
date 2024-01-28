@@ -32,11 +32,9 @@ public class PolicyCreateDto {
     }
 
     public TeamPolicy toTeamPolicyEntity(final TeamPolicy teamPolicy) {
-        BasePolicy basePolicy = teamPolicy.getBasePolicy();
         Team team = teamPolicy.getTeam();
 
         return TeamPolicy.policyCreateBuilder()
-                .basePolicy(basePolicy)
                 .team(team)
 
                 .basePolicyName(this.basePolicyName)

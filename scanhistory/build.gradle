@@ -66,6 +66,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.json/json
     implementation 'net.minidev:json-smart:2.4.7'
 
+    testImplementation "org.mockito:mockito-core:4.8.0"
+
 }
 
 tasks.named('test') {

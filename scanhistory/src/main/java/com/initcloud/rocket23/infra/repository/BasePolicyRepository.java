@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.infra.repository;
 
 import com.initcloud.rocket23.policy.entity.BasePolicy;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
