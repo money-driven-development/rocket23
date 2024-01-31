@@ -15,8 +15,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +60,7 @@ public class BasePolicySetController {
     )
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Base Policy Set name", required = true, schema = @Schema(type = "string"))
-    @PutMapping("/{teamCode}/basePolicySets/{baseSetCode}")
+    @PatchMapping("/{teamCode}/basePolicySets/{baseSetCode}")
     public ResponseDto<Boolean> ModifyBaseTeamPolicySet(
             @PathVariable String teamCode,
             @PathVariable String baseSetCode,

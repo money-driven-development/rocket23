@@ -19,9 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -126,7 +126,7 @@ public class TeamPolicyController {
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policyName", in = ParameterIn.PATH, description = "Unique policy name", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicyCreateDto.class)), description = "Policy details", required = true)
-    @PutMapping("/{teamCode}/policies/{policyName}")
+    @PatchMapping("/{teamCode}/policies/{policyName}")
     public ResponseDto<String> teamPolicyModify(
             @PathVariable String teamCode,
             @PathVariable String policyName,
@@ -230,7 +230,7 @@ public class TeamPolicyController {
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Unique policy set name", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicySetDto.class)), description = "Policy-set-modify info.", required = true)
-    @PutMapping("/{teamCode}/policySets/{policySet}")
+    @PatchMapping("/{teamCode}/policySets/{policySet}")
     public ResponseDto<String> policySetModify(
             @PathVariable String teamCode,
             @PathVariable String policySet,
