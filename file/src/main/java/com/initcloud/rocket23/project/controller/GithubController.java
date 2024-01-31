@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/rocket23")
+@RequestMapping("/rocket")
 @RequiredArgsConstructor
 public class GithubController {
 

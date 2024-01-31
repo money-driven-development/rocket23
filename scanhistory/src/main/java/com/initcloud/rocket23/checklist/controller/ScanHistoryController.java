@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Scan History API")
 @RestController
-@RequestMapping("/rocket/team/")
+@RequestMapping("/rocket/team")
 @RequiredArgsConstructor
 public class ScanHistoryController {
 
@@ -38,27 +38,27 @@ public class ScanHistoryController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
-    @Parameter(name = "hashCode", in = ParameterIn.PATH, description = "History unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}")
+    @Parameter(name = "scanHash", in = ParameterIn.PATH, description = "Scan unique code", required = true, schema = @Schema(type = "string"))
+    @GetMapping("/{teamCode}/projects/{projectCode}/scans/{scanHash}")
     public ResponseDto<ScanResultDto> getScanHistory(
             @PathVariable("teamCode") String teamCode,
             @PathVariable("projectCode") String projectCode,
-            @PathVariable("hashCode") String hashCode
+            @PathVariable("scanHash") String scanHash
     ) {
-        ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, hashCode);
+        ScanResultDto dto = scanHistoryService.getScanHistory(teamCode, projectCode, scanHash);
         return new ResponseDto<>(dto);
     }
 
     /*
         단일 스캔 전체 내역 조회
      */
-    @GetMapping("/{teamCode}/projects/{projectCode}/history/{hashCode}/total")
+    @GetMapping("/{teamCode}/projects/{projectCode}/scans/{scanHash}/details")
     public ResponseDto<ScanResultDto> getScanHistoryTotal(
             @PathVariable("teamCode") String teamCode,
             @PathVariable("projectCode") String projectCode,
-            @PathVariable("hashCode") String hashCode
+            @PathVariable("scanHash") String scanHash
     ) {
-        ScanResultDto dto = scanHistoryService.getScanHistoryTotal(teamCode, projectCode, hashCode);
+        ScanResultDto dto = scanHistoryService.getScanHistoryTotal(teamCode, projectCode, scanHash);
         return new ResponseDto<>(dto);
     }
 
@@ -74,7 +74,7 @@ public class ScanHistoryController {
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "pageable", in = ParameterIn.QUERY, description = "paging value", required = true, content = @Content(schema = @Schema(implementation = PageableAsQueryParam.class)))
-    @GetMapping("/{teamCode}/projects/{projectCode}/history")
+    @GetMapping("/{teamCode}/projects/{projectCode}/scans")
     public ResponseDto<Page<ScanResultDto.Summary>> getScanHistoryPaging(
             @PathVariable("teamCode") String teamCode,
             @PathVariable("projectCode") String projectCode,
@@ -95,7 +95,7 @@ public class ScanHistoryController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/projects/{projectCode}/history/all")
+    @GetMapping("/{teamCode}/projects/{projectCode}/scans/all")
     public ResponseDto<List<ScanResultDto.Summary>> getScanHistoryAll(
             @PathVariable("teamCode") String teamCode,
             @PathVariable("projectCode") String projectCode
@@ -115,11 +115,13 @@ public class ScanHistoryController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/projects/{projectCode}/file/{fileHash}")
+    @GetMapping("/{teamCode}/projects/{projectCode}/files/{fileHash}")
     public ResponseDto<Boolean> getScanHistoryFile(
+            @PathVariable("teamCode") String teamCode,
+            @PathVariable("projectCode") String projectCode,
             @PathVariable("fileHash") String fileHash
     ) {
-        boolean dto = scanHistoryService.getScanSuccess(fileHash);
+        boolean dto = scanHistoryService.getScanSuccess(teamCode, projectCode, fileHash);
         return new ResponseDto<>(dto);
     }
 

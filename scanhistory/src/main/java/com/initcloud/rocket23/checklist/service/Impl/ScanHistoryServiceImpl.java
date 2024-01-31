@@ -97,7 +97,7 @@ public class ScanHistoryServiceImpl implements ScanHistoryService {
     }
 
     @Override
-    public boolean getScanSuccess(String fileHash) {
+    public boolean getScanSuccess(String teamCode, String projectCode, String fileHash) {
         List<ScanHistory> scanHistories = scanHistoryRepository.findAllByFileHash(fileHash);
         if (scanHistories.isEmpty()) {
             throw new ApiException(ResponseCode.NO_SCAN_RESULT);

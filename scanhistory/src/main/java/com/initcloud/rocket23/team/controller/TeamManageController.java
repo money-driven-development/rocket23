@@ -117,7 +117,7 @@ public class TeamManageController {
     )
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamDto.class)), description = "Team Create Dto", required = true)
-    @PostMapping("/")
+    @PostMapping
     public ResponseDto<String> teamCreate(
             @RequestBody TeamDto request
     ) {

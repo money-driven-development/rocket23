@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Base Policy register Team Policy API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rocket/basePolicy")
+@RequestMapping("/rocket/team")
 public class BasePolicySetController {
 
     private final BasePolicySetService basePolicySetService;
@@ -40,7 +40,7 @@ public class BasePolicySetController {
                     )}
     )
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/baseSet")
+    @GetMapping("/{teamCode}/basePolicySets")
     public ResponseDto<Page<Summary>> baseTeamPolicySet(
             @PathVariable String teamCode
     ) {
@@ -60,13 +60,13 @@ public class BasePolicySetController {
     )
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Base Policy Set name", required = true, schema = @Schema(type = "string"))
-    @PutMapping("/{teamCode}/policySets/{policySet}")
+    @PutMapping("/{teamCode}/basePolicySets/{baseSetCode}")
     public ResponseDto<Boolean> ModifyBaseTeamPolicySet(
             @PathVariable String teamCode,
-            @PathVariable String policySet,
+            @PathVariable String baseSetCode,
             @RequestBody List<BasePolicySetDto> request
     ) {
-        basePolicySetService.modifyBasePolicySet(teamCode, policySet, request);
+        basePolicySetService.modifyBasePolicySet(teamCode, baseSetCode, request);
         return new ResponseDto<>(null);
     }
 

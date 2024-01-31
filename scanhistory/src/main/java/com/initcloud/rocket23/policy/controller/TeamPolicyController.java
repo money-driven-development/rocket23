@@ -170,7 +170,7 @@ public class TeamPolicyController {
     )
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/policysets")
+    @GetMapping("/{teamCode}/policySets")
     public ResponseDto<List<String>> policySetList(
             @PathVariable String teamCode
     ) {
@@ -189,12 +189,12 @@ public class TeamPolicyController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policyset", in = ParameterIn.PATH, description = "policy-set code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/policysets/{policyset}")
+    @GetMapping("/{teamCode}/policySets/{policySet}")
     public ResponseDto<PolicySetDto> policySetDetails(
             @PathVariable String teamCode,
-            @PathVariable String policyset
+            @PathVariable String policySet
     ) {
-        PolicySetDto response = teamPolicySetService.getTeamPolicySetDetails(teamCode, policyset);
+        PolicySetDto response = teamPolicySetService.getTeamPolicySetDetails(teamCode, policySet);
 
         return new ResponseDto<>(response);
     }
@@ -210,7 +210,7 @@ public class TeamPolicyController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicySetDto.class)), description = "Policy-set-add info.", required = true)
-    @PostMapping("/{teamCode}/policysets")
+    @PostMapping("/{teamCode}/policySets")
     public ResponseDto<String> policySetAdd(
             @PathVariable String teamCode,
             @RequestBody PolicySetDto request
@@ -230,7 +230,7 @@ public class TeamPolicyController {
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Unique policy set name", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = PolicySetDto.class)), description = "Policy-set-modify info.", required = true)
-    @PutMapping("/{teamCode}/policysets/{policySet}")
+    @PutMapping("/{teamCode}/policySets/{policySet}")
     public ResponseDto<String> policySetModify(
             @PathVariable String teamCode,
             @PathVariable String policySet,
@@ -250,7 +250,7 @@ public class TeamPolicyController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Unique policy set name", required = true, schema = @Schema(type = "string"))
-    @DeleteMapping("/{teamCode}/policysets/{policySet}")
+    @DeleteMapping("/{teamCode}/policySets/{policySet}")
     public ResponseDto policySetRemove(
             @PathVariable String teamCode,
             @PathVariable String policySet
