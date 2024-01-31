@@ -6,10 +6,14 @@ import com.initcloud.rocket23.policy.dto.PolicySetDto;
 import com.initcloud.rocket23.policy.entity.PolicySetPerProject;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.enums.ProjectType;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Comparator;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.asm.Advice.Local;
 import org.springframework.data.domain.Page;
 
 import javax.persistence.*;
@@ -75,18 +79,17 @@ public class TeamProject extends BaseEntity {
         return teamProjects.stream().map(TeamProjectDto.Summary::new).collect(Collectors.toList());
     }
 
-    public TeamProjectDto.Details toDetailsDto() {
+    public TeamProjectDto.Details toDetailsDto(LocalDateTime mostRecentScanDateTime) {
+
         return TeamProjectDto.Details.builder()
                 .projectName(this.projectName)
                 .projectType(this.projectType)
                 .projectCode(this.projectCode)
                 .projectUrl(this.projectUrl)
                 .description(this.description)
-                .versionHistory(
-                        this.versions.stream()
-                                .map(TeamProjectDto.Version::new)
-                                .collect(Collectors.toList())
-                )
+                .recentScanDateTime(mostRecentScanDateTime)
+                .projectCreatedAt(this.getCreatedAt())
+                .projectModifiedAt(this.getModifiedAt())
                 .policySets(
                         this.policySets.stream()
                                 .map(policySetPerProject -> new PolicySetDto(policySetPerProject.getPolicySet()))
