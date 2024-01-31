@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/rocket/file/")
+@RequestMapping("/rocket/")
 @RequiredArgsConstructor
 public class FileController {
 
 	private final FileManageService fileManageService;
 	private final FileService fileService;
 
-	@PostMapping(value = "/team/{teamCode}/projects/{projectCode}")
+	@PostMapping(value = "/team/{teamCode}/projects/{projectCode}/files")
 	public ResponseDto<RedisFileDto> uploadFile(
 			@PathVariable String teamCode,
 			@PathVariable String projectCode,
