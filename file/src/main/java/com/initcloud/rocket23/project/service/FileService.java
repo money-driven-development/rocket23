@@ -1,14 +1,12 @@
 package com.initcloud.rocket23.project.service;
 
 import com.initcloud.rocket23.project.dto.FileDto;
-import com.initcloud.rocket23.project.enums.ServerType;
+import com.initcloud.rocket23.project.enums.ProjectType;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,20 +20,21 @@ public class FileService {
 
     public FileDto readAllFilesInDirectory(String teamCode, String projectCode, String fileHash) throws IOException {
         Path directoryPath = Paths.get(uploadPath, fileHash);
-        List<String> fileContents = new ArrayList<>();
-        String fileName = null;
+
+        String fileName = "";
+        String code = "";
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directoryPath)) {
             for (Path filePath : directoryStream) {
                 if (Files.isRegularFile(filePath)) {
                     fileName = filePath.getFileName().toString();
                     byte[] fileBytes = Files.readAllBytes(filePath);
-                    fileContents.add(new String(fileBytes));
+                    code = new String(fileBytes);
                 }
             }
         }
 
-        return FileDto.toDto(fileName, directoryPath, ServerType.LOCAL, fileContents);
+        return FileDto.toDto(fileName, directoryPath, ProjectType.LOCAL, code);
     }
 
 }

@@ -3,7 +3,7 @@ package com.initcloud.rocket23.project.service.Impl;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.project.dto.RedisFileDto;
-import com.initcloud.rocket23.project.enums.ServerType;
+import com.initcloud.rocket23.project.enums.ProjectType;
 import com.initcloud.rocket23.project.service.FileManageService;
 import com.initcloud.rocket23.infra.redis.pubsub.RedisMessagePublisher;
 
@@ -96,7 +96,7 @@ public class FileManageManageServiceImpl implements FileManageService {
 					StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
-		return save(file, ServerType.LOCAL, uuid, path.toString(), teamCode, projectCode);
+		return save(file, ProjectType.LOCAL, uuid, path.toString(), teamCode, projectCode);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public class FileManageManageServiceImpl implements FileManageService {
 	 *                   저장 후 redis publish를 통한 uuid, timestamp 정보 메세지 생성
 	 */
 	@Override
-	public RedisFileDto save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode) {
+	public RedisFileDto save(MultipartFile file, ProjectType type, String uuid, String uploadPath, String teamCode, String projectCode) {
 		RedisFileDto dto = RedisFileDto.toDto(uuid, file.getOriginalFilename(), teamCode, projectCode);
 		redisMessagePublisher.publishFileMessage(dto);
 		return dto;
