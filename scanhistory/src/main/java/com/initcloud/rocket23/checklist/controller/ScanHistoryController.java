@@ -115,7 +115,7 @@ public class ScanHistoryController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "projectCode", in = ParameterIn.PATH, description = "Project unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/projects/{projectCode}/files/{fileHash}")
+    @GetMapping("/{teamCode}/projects/{projectCode}/scans/state/{fileHash}")
     public ResponseDto<Boolean> getScanHistoryFile(
             @PathVariable("teamCode") String teamCode,
             @PathVariable("projectCode") String projectCode,

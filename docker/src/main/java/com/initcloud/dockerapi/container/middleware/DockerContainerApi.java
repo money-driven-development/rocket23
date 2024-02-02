@@ -197,7 +197,7 @@ public class DockerContainerApi implements ContainerApi {
 		return HostConfig.newHostConfig()
 			.withBinds(
 				new Bind(
-					"/home/ubuntu/nas/uploads/",
+					"/home/ubuntu/dev/nas/uploads/",
 					new Volume(dockerClientProperties.getVolumeContainerRoot()))
 			);
 	}

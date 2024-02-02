@@ -51,7 +51,7 @@ public class DockerManageService implements ContainerManageService {
 		 * com.initcloud.dockerapi.container.enums.ContainerLifeCycleStrategy
 		 * 위 두 개의 컨테이너 관리 정책에 따라서, 컨테이너를 stop 할지 혹은 대기열에 다시 넣을지 등을 결정할 수 있음.
 		 */
-		dockerContainerApi.stop(containerId);
+		//dockerContainerApi.stop(containerId);
 
 		// 동작시켰던 컨테이너 정보를 반환
 		return new ContainerDto(containerId, "Exited");
