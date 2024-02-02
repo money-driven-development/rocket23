@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.project.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.project.dto.FileDto;
 import com.initcloud.rocket23.project.dto.RedisFileDto;
 import com.initcloud.rocket23.project.service.FileManageService;
 
@@ -31,12 +32,12 @@ public class FileController {
 	}
 
 	@GetMapping(value = "/team/{teamCode}/projects/{projectCode}/files/{fileHash}")
-	public ResponseDto<List<String>> uploadFile(
+	public ResponseDto<FileDto> uploadFile(
 			@PathVariable String fileHash,
 			@PathVariable String teamCode,
 			@PathVariable String projectCode
 	) throws IOException {
-		List<String> dto = fileService.readAllFilesInDirectory(teamCode, projectCode, fileHash);
+		FileDto dto = fileService.readAllFilesInDirectory(teamCode, projectCode, fileHash);
 		return new ResponseDto<>(dto);
 	}
 

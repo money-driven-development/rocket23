@@ -2,32 +2,35 @@ package com.initcloud.rocket23.project.dto;
 
 import com.initcloud.rocket23.project.enums.ServerType;
 
+import java.nio.file.Path;
+import java.util.List;
 import lombok.*;
+import org.bouncycastle.cms.PasswordRecipientId;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileDto {
 	private Long id;
 	private String fileName;
-	private String uuid;
-	private String path;
+	private Path path;
 	private ServerType serverType;
+	private List<String> code;
 
 	@Builder
-	public FileDto(Long id, String fileName, String uuid, String path, ServerType serverType) {
+	public FileDto(Long id, String fileName, Path path, ServerType serverType, List<String> code) {
 		this.id = id;
 		this.fileName = fileName;
-		this.uuid = uuid;
 		this.path = path;
 		this.serverType = serverType;
+		this.code = code;
 	}
 
-	public static FileDto toDto(String name, String uuid, String path, ServerType serverType) {
+	public static FileDto toDto(String name, Path path, ServerType serverType, List<String> code) {
 		return FileDto.builder()
 			.fileName(name)
-			.uuid(uuid)
 			.path(path)
 			.serverType(serverType)
+			.code(code)
 			.build();
 	}
 }

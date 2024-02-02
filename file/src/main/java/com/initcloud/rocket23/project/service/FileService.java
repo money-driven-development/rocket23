@@ -1,5 +1,7 @@
 package com.initcloud.rocket23.project.service;
 
+import com.initcloud.rocket23.project.dto.FileDto;
+import com.initcloud.rocket23.project.enums.ServerType;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -18,20 +20,22 @@ public class FileService {
     @Value("${spring.servlet.multipart.location}")
     private String uploadPath;
 
-    public List<String> readAllFilesInDirectory(String teamCode, String projectCode, String fileHash) throws IOException {
+    public FileDto readAllFilesInDirectory(String teamCode, String projectCode, String fileHash) throws IOException {
         Path directoryPath = Paths.get(uploadPath, fileHash);
         List<String> fileContents = new ArrayList<>();
+        String fileName = null;
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directoryPath)) {
             for (Path filePath : directoryStream) {
                 if (Files.isRegularFile(filePath)) {
+                    fileName = filePath.getFileName().toString();
                     byte[] fileBytes = Files.readAllBytes(filePath);
                     fileContents.add(new String(fileBytes));
                 }
             }
         }
 
-        return fileContents;
+        return FileDto.toDto(fileName, directoryPath, ServerType.LOCAL, fileContents);
     }
 
 }
