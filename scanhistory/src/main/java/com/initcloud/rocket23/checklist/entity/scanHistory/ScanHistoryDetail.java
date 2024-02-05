@@ -61,7 +61,7 @@ public class ScanHistoryDetail extends BaseEntity {
     /**
      * 2개의 원소를 가짐. 정수, 문자열 [1, "code"]
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scanHistoryDetail")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "scanHistoryDetail", cascade = CascadeType.REMOVE)
     private List<CodeBlock> codeBlock;
 
     @Builder
