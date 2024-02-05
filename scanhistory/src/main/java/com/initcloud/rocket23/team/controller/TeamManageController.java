@@ -14,9 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,7 +69,7 @@ public class TeamManageController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "memberEmail", in = ParameterIn.PATH, description = "member email", required = true, schema = @Schema(type = "string"))
-    @PutMapping("/{teamCode}/members/{memberEmail}")
+    @PatchMapping("/{teamCode}/members/{memberEmail}")
     public ResponseDto<Object> memberStatus(
             @PathVariable String teamCode,
             @PathVariable String memberEmail
@@ -117,7 +117,7 @@ public class TeamManageController {
     )
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamDto.class)), description = "Team Create Dto", required = true)
-    @PostMapping("/")
+    @PostMapping
     public ResponseDto<String> teamCreate(
             @RequestBody TeamDto request
     ) {

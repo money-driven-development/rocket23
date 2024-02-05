@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.project.controller;
 
 import com.initcloud.rocket23.common.dto.ResponseDto;
+import com.initcloud.rocket23.project.dto.FileDto;
 import com.initcloud.rocket23.project.dto.RedisFileDto;
 import com.initcloud.rocket23.project.service.FileManageService;
 
@@ -13,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/rocket23/file/")
+@RequestMapping("/rocket/")
 @RequiredArgsConstructor
 public class FileController {
 
 	private final FileManageService fileManageService;
 	private final FileService fileService;
 
-	@PostMapping(value = "/{teamCode}/{projectCode}")
+	@PostMapping(value = "/team/{teamCode}/projects/{projectCode}/files")
 	public ResponseDto<RedisFileDto> uploadFile(
 			@PathVariable String teamCode,
 			@PathVariable String projectCode,
@@ -30,14 +31,15 @@ public class FileController {
 		return new ResponseDto<>(dto);
 	}
 
-	@GetMapping(value = "/{teamCode}/{projectCode}/{fileHash}")
-	public ResponseDto<List<String>> uploadFile(
+	@GetMapping(value = "/team/{teamCode}/projects/{projectCode}/files/{fileHash}")
+	public ResponseDto<FileDto> uploadFile(
 			@PathVariable String fileHash,
 			@PathVariable String teamCode,
 			@PathVariable String projectCode
 	) throws IOException {
-		List<String> dto = fileService.readAllFilesInDirectory(teamCode, projectCode, fileHash);
+		FileDto dto = fileService.readAllFilesInDirectory(teamCode, projectCode, fileHash);
 		return new ResponseDto<>(dto);
 	}
+
 
 }

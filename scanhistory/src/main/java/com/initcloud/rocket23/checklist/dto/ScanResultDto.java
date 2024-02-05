@@ -53,10 +53,10 @@ public class ScanResultDto {
     }
 
     @Builder(builderClassName = "demoBuilder", builderMethodName = "scanResultDemoBuilder")
-    public ScanResultDto(String fileName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
+    public ScanResultDto(String projectName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
                          Integer passed, Integer failed, Integer skipped, LocalDateTime created,
                          List<Detail> scanResultDetailList) {
-        this.projectName = fileName;
+        this.projectName = projectName;
         this.high = high;
         this.medium = medium;
         this.low = low;
@@ -96,7 +96,7 @@ public class ScanResultDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Summary {
-        private String fileName;
+        private String projectName;
         private Integer passed;
         private Integer skipped;
         private Integer failed;
@@ -106,7 +106,7 @@ public class ScanResultDto {
         private LocalDateTime created_at;
 
         public Summary(ScanHistory entity) {
-            this.fileName = entity.getProjectName();
+            this.projectName = entity.getProjectName();
             this.passed = entity.getPassed();
             this.skipped = entity.getSkipped();
             this.failed = entity.getFailed();

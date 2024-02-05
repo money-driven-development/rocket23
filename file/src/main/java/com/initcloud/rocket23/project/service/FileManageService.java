@@ -1,7 +1,7 @@
 package com.initcloud.rocket23.project.service;
 
 import com.initcloud.rocket23.project.dto.RedisFileDto;
-import com.initcloud.rocket23.project.enums.ServerType;
+import com.initcloud.rocket23.project.enums.ProjectType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,5 +18,5 @@ public interface FileManageService {
     void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException;
 
     //DB 저장
-    RedisFileDto save(MultipartFile file, ServerType type, String uuid, String uploadPath, String teamCode, String projectCode);
+    RedisFileDto save(MultipartFile file, ProjectType type, String uuid, String uploadPath, String teamCode, String projectCode);
 }

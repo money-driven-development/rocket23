@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.team.service;
 
+import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
@@ -14,6 +15,8 @@ import com.initcloud.rocket23.team.dto.TeamProjectCreateDto;
 import com.initcloud.rocket23.team.dto.TeamProjectDto;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +71,13 @@ public class TeamProjectService {
         TeamProject teamProject = teamProjectRepository.findTeamProjectByTeamAndProjectCode(team, projectCode)
                 .orElseThrow(() -> new ApiException(ResponseCode.INVALID_PROJECT_IN_TEAM));
 
-        return teamProject.toDetailsDto();
+        LocalDateTime mostRecentScanDateTime = teamProject.getScanHistories().stream()
+                .map(ScanHistory::getCreatedAt)
+                .max(Comparator.naturalOrder())
+                .orElse(null);
+
+
+        return teamProject.toDetailsDto(mostRecentScanDateTime);
     }
 
     /**

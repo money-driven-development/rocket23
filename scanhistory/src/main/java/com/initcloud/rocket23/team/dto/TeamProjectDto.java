@@ -46,7 +46,6 @@ public class TeamProjectDto {
         private LocalDateTime recentScanDateTime;
         private LocalDateTime projectCreatedAt;
         private LocalDateTime projectModifiedAt;
-        private List<TeamProjectDto.Version> versionHistory = new ArrayList<>();
         private List<PolicySetDto> policySets = new ArrayList<>();
 
         @Builder
@@ -70,7 +69,6 @@ public class TeamProjectDto {
             this.recentScanDateTime = recentScanDateTime;
             this.projectCreatedAt = projectCreatedAt;
             this.projectModifiedAt = projectModifiedAt;
-            this.versionHistory = versionHistory;
             this.policySets = policySets;
         }
     }
