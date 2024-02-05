@@ -7,6 +7,7 @@ import com.initcloud.rocket23.infra.repository.TeamRepository;
 import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
 import com.initcloud.rocket23.infra.repository.UserRepository;
 import com.initcloud.rocket23.team.dto.TeamDto;
+import com.initcloud.rocket23.team.dto.TeamDto.TeamInfo;
 import com.initcloud.rocket23.team.dto.TeamInviteDto;
 import com.initcloud.rocket23.team.entity.Invite;
 import com.initcloud.rocket23.team.entity.Team;
@@ -25,6 +26,7 @@ public class TeamManageService {
     private final UserRepository userRepository;
     private final InviteRepository inviteRepository;
     private final TeamWithUsersRepository teamWithUsersRepository;
+    private final TeamInspectService teamInspectService;
 
     /**
      * [String] 유저를 팀으로 초대
@@ -72,7 +74,7 @@ public class TeamManageService {
     /**
      * []
      */
-    public String addTeam(TeamDto dto) {
+    public String addTeam(TeamDto.Team dto) {
         Team team = teamRepository.save(new Team(dto));
 
         return team.getTeamCode();
@@ -85,4 +87,14 @@ public class TeamManageService {
     public boolean removeTeam(String teamCode) {
         return teamRepository.deleteTeamByTeamCode(teamCode);
     }
+
+    /**
+     * 팀 정보 조회
+     * */
+    public TeamDto.TeamInfo getTeamInfo(String teamCode){
+        Team team = teamInspectService.getTeam(teamCode);
+        return new TeamInfo(team.getName(), team.getDescription(), team.getTeamCode());
+
+    }
+
 }

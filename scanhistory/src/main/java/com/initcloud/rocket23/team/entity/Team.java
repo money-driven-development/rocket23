@@ -31,6 +31,9 @@ public class Team extends BaseEntity {
     @Column
     private String logoUri;
 
+    @Column
+    private String description;
+
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<ScanHistory> scanHistories = new ArrayList<>();
 
@@ -43,16 +46,18 @@ public class Team extends BaseEntity {
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<TeamWithUsers> teamWithUsers = new ArrayList<>();
 
-    public Team(Long id, String teamCode, String name, String logoUri) {
+    public Team(Long id, String teamCode, String name, String logoUri, String description) {
         this.id = id;
         this.teamCode = teamCode;
         this.name = name;
         this.logoUri = logoUri;
+        this.description = description;
     }
 
-    public Team(final TeamDto team) {
+    public Team(final TeamDto.Team team) {
         this.teamCode = UniqueUtils.getUUID();
         this.name = team.getTeamName();
         this.logoUri = team.getLogoUri();
+        this.description = team.getDescription();
     }
 }

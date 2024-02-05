@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -119,11 +120,11 @@ public class TeamManageController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamDto.class)), description = "Team Create Dto", required = true)
     @PostMapping
     public ResponseDto<String> teamCreate(
-            @RequestBody TeamDto request
+            @RequestBody TeamDto.Team request
     ) {
         String response = teamManageService.addTeam(request);
 
-        return new ResponseDto<>(response);
+       return new ResponseDto<>(response);
     }
 
     /**
@@ -146,4 +147,28 @@ public class TeamManageController {
 
         return new ResponseDto<>(response);
     }
+
+    /**
+     * 팀 정보 조회
+     * */
+    /**
+     * 팀 해체
+     */
+    @Operation(
+            summary = "Get team",
+            description = "Get a team",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful response", content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                    )}
+    )
+    @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
+    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
+    @GetMapping("/{teamCode}")
+    public ResponseDto<TeamDto.TeamInfo> getTeamInfo(
+            @PathVariable String teamCode
+    ) {
+        TeamDto.TeamInfo response = teamManageService.getTeamInfo(teamCode);
+        return new ResponseDto<>(response);
+    }
+
 }
