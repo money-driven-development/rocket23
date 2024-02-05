@@ -34,7 +34,8 @@ jobs:
       money-driven-development/rocket23/.github/workflows/template-gradle-build.yaml@dev
     needs: [ git-leaks ]
     secrets:
-      DOCKER_REGISTRY: ${{secrets.DOCKER_REGISTRY}}
-      REGISTRY_USERNAME: ${{secrets.REGISTRY_USERNAME}}
-      REGISTRY_PASSWORD: ${{secrets.REGISTRY_PASSWORD}}
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_REGISTRY: ${{secrets.AWS_REGISTRY}}
+      AWS_REPOSITORY: ${{secrets.AWS_REPOSITORY}}
       SERVICE_NAME: scanhistory
