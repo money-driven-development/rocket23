@@ -151,9 +151,6 @@ public class TeamManageController {
     /**
      * 팀 정보 조회
      * */
-    /**
-     * 팀 해체
-     */
     @Operation(
             summary = "Get team",
             description = "Get a team",
