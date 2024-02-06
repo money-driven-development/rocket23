@@ -7,6 +7,10 @@ import com.initcloud.rocket23.project.enums.ProjectType;
 import com.initcloud.rocket23.project.service.FileManageService;
 import com.initcloud.rocket23.infra.redis.pubsub.RedisMessagePublisher;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.zip.ZipFile;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -70,6 +74,7 @@ public class FileManageManageServiceImpl implements FileManageService {
 			boolean isZipFile = isZip(file);
 			return storeFile(file, root, uuid, isZipFile, teamCode, projectCode);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new ApiException(ResponseCode.FILE_WRONG_ERROR);
 		} catch (IllegalArgumentException e) {
 			throw new ApiException(ResponseCode.ZIP_ENCODING_ERROR);
@@ -139,21 +144,59 @@ public class FileManageManageServiceImpl implements FileManageService {
 	 */
 	@Override
 	public void unZip(MultipartFile file, Path path) throws IOException, IllegalArgumentException {
-		try (ZipInputStream zipInputStream = new ZipInputStream(file.getInputStream(), CP866)) {
-			ZipEntry zipEntry = zipInputStream.getNextEntry();
-			while (zipEntry != null) {
-				Path newPath = path.resolve(zipEntry.getName());
-				if (zipEntry.getName().endsWith(File.separator)) {
-					Files.createDirectories(newPath);
-				} else {
-					if (newPath.getParent() != null && Files.notExists(newPath.getParent())) {
-						Files.createDirectories(newPath.getParent());
+		try (ZipFile zipFile = new ZipFile(convert(file))) {
+			Enumeration<? extends ZipEntry> entries = zipFile.entries();
+			while (entries.hasMoreElements()) {
+				ZipEntry zipEntry = entries.nextElement();
+				System.out.println(zipEntry.getName());
+				if (!zipEntry.getName().startsWith("__MACOSX")) {
+					Path newPath = path.resolve(zipEntry.getName());
+					if (zipEntry.isDirectory()) {
+						Files.createDirectories(newPath);
+					} else {
+						if (newPath.getParent() != null && Files.notExists(newPath.getParent())) {
+							Files.createDirectories(newPath.getParent());
+						}
+
+						if (zipEntry.getMethod() == ZipEntry.STORED) {
+							extractStoredEntry(zipFile.getInputStream(zipEntry), newPath, zipEntry.getSize());
+						} else {
+							extractEntry(zipFile.getInputStream(zipEntry), newPath);
+						}
 					}
-					Files.copy(zipInputStream, newPath, StandardCopyOption.REPLACE_EXISTING);
 				}
-				zipEntry = zipInputStream.getNextEntry();
 			}
-			zipInputStream.closeEntry();
 		}
 	}
+
+	private void extractEntry(InputStream inputStream, Path entryPath) throws IOException {
+		try (OutputStream outputStream = Files.newOutputStream(entryPath)) {
+			byte[] buffer = new byte[1024];
+			int length;
+			while ((length = inputStream.read(buffer)) > 0) {
+				outputStream.write(buffer, 0, length);
+			}
+		}
+	}
+
+	private void extractStoredEntry(InputStream inputStream, Path entryPath, long size) throws IOException {
+		try (OutputStream outputStream = Files.newOutputStream(entryPath)) {
+			byte[] buffer = new byte[1024];
+			long remaining = size;
+			int length;
+			while (remaining > 0 && (length = inputStream.read(buffer, 0, (int) Math.min(buffer.length, remaining))) != -1) {
+				outputStream.write(buffer, 0, length);
+				remaining -= length;
+			}
+		}
+	}
+
+	private File convert(MultipartFile file) throws IOException {
+		File convertedFile = new File(file.getOriginalFilename());
+		try (OutputStream os = new FileOutputStream(convertedFile)) {
+			os.write(file.getBytes());
+		}
+		return convertedFile;
+	}
+
 }
