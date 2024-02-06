@@ -1,5 +1,5 @@
 FROM openjdk:11-jre-slim
-ARG JAR_FILE=build/libs/scanhistory-main.jar
+ARG JAR_FILE=build/libs/file-rocket23.jar
 COPY ${JAR_FILE} app.jar
 ENV REDIS_HOST=localhost
 ENV REDIS_PORT=6379
