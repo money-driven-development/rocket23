@@ -148,7 +148,6 @@ public class FileManageManageServiceImpl implements FileManageService {
 			Enumeration<? extends ZipEntry> entries = zipFile.entries();
 			while (entries.hasMoreElements()) {
 				ZipEntry zipEntry = entries.nextElement();
-				System.out.println(zipEntry.getName());
 				if (!zipEntry.getName().startsWith("__MACOSX")) {
 					Path newPath = path.resolve(zipEntry.getName());
 					if (zipEntry.isDirectory()) {
