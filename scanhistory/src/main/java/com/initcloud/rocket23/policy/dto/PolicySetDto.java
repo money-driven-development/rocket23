@@ -32,6 +32,17 @@ public class PolicySetDto {
         }
     }
 
+    @Getter
+    public static class Summary {
+        private final String policyName;
+        private final String description;
+
+        public Summary(String policyName, String description) {
+            this.policyName = policyName;
+            this.description = description;
+        }
+    }
+
     public PolicySetDto(final PolicySet policySet) {
         this.isNameModified = false;
         this.isDescriptionModified = false;

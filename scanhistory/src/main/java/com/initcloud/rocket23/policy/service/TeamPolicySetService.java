@@ -33,11 +33,11 @@ public class TeamPolicySetService {
     /**
      * 팀 정책 셋 목록 조회
      */
-    public List<String> getTeamPolicySetList(final String teamCode) {
+    public List<PolicySetDto.Summary> getTeamPolicySetList(final String teamCode) {
         List<PolicySet> policySets = teamPolicySetRepository.findPolicySetByTeam_TeamCode(teamCode);
 
         return policySets.stream()
-                .map(PolicySet::getName)
+                .map(policySet -> new PolicySetDto.Summary(policySet.getName(), policySet.getDescription()))
                 .collect(Collectors.toList());
     }
 
