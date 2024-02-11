@@ -102,7 +102,7 @@ public class BasePolicySetService {
      * Base Policy 정책 셋 팀 추가
      */
     @Transactional
-    public void createBasePolicySet(final String teamCode, String description, String name, String csp) {
+    public void createBasePolicySet(final String teamCode, final String description, final String name, final String csp) {
 
         // 1. 대상 팀의 Base Policy를 Team Policy로 등록
         Team team = basePolicyAllToTeamPolicy(teamCode);
