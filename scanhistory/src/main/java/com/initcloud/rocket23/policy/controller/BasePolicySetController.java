@@ -45,7 +45,7 @@ public class BasePolicySetController {
     public ResponseDto<Page<Summary>> baseTeamPolicySet(
             @PathVariable String teamCode
     ) {
-        basePolicySetService.createBasePolicySetList(teamCode);
+        basePolicySetService.createManyBasePolicySet(teamCode);
         return new ResponseDto<>(null);
     }
 

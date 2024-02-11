@@ -89,7 +89,7 @@ public class BasePolicySetService {
      * Base Policy 정책 셋 팀 추가
      */
     @Transactional
-    public void createBasePolicySetList(final String teamCode) {
+    public void createManyBasePolicySet(final String teamCode) {
 
 
         createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(1)"), CSP.AWS1_Base_Policy_Set.getCsp(), IC.IC_AWS.getIc());
