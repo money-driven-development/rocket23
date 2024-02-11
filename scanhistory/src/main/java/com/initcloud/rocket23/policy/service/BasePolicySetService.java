@@ -1,5 +1,7 @@
 package com.initcloud.rocket23.policy.service;
 
+import com.initcloud.rocket23.common.enums.BasePolicySet.CSP;
+import com.initcloud.rocket23.common.enums.BasePolicySet.IC;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
@@ -89,10 +91,11 @@ public class BasePolicySetService {
     @Transactional
     public void createBasePolicySetList(final String teamCode) {
 
-        createBasePolicySet(teamCode, "기본 제공되는 AWS(1) Base Policy Set 입니다.", "AWS1_Base_Policy_Set", "IC_AWS");
-        createBasePolicySet(teamCode, "기본 제공되는 AWS(2) Base Policy Set 입니다.", "AWS2_Base_Policy_Set", "IC2_AWS");
-        createBasePolicySet(teamCode, "기본 제공되는 AWS(3) Base Policy Set 입니다.", "AWS3_Base_Policy_Set", "IC3_AWS");
-        createBasePolicySet(teamCode, "기본 제공되는 NCP Base Policy Set 입니다.", "NCP_Base_Policy_Set", "NCP");
+
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(1)"), CSP.AWS1_Base_Policy_Set.getCsp(), IC.IC_AWS.getIc());
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(2)"), CSP.AWS2_Base_Policy_Set.getCsp(), IC.IC2_AWS.getIc());
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(3)"), CSP.AWS3_Base_Policy_Set.getCsp(), IC.IC3_AWS.getIc());
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "NCP"), CSP.NCP_Base_Policy_Set.getCsp(), IC.NCP.getIc());
     }
 
     /**
