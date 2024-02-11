@@ -1,5 +1,7 @@
 package com.initcloud.rocket23.policy.service;
 
+import com.initcloud.rocket23.common.enums.BasePolicySet.CSP;
+import com.initcloud.rocket23.common.enums.BasePolicySet.IC;
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.BasePolicyRepository;
@@ -87,7 +89,20 @@ public class BasePolicySetService {
      * Base Policy 정책 셋 팀 추가
      */
     @Transactional
-    public void createBasePolicySet(final String teamCode) {
+    public void createManyBasePolicySet(final String teamCode) {
+
+
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(1)"), CSP.AWS1_Base_Policy_Set.getCsp(), IC.IC_AWS.getIc());
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(2)"), CSP.AWS2_Base_Policy_Set.getCsp(), IC.IC2_AWS.getIc());
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "AWS(3)"), CSP.AWS3_Base_Policy_Set.getCsp(), IC.IC3_AWS.getIc());
+        createBasePolicySet(teamCode, String.format("기본 제공 되는 %s Base Policy Set 입니다.", "NCP"), CSP.NCP_Base_Policy_Set.getCsp(), IC.NCP.getIc());
+    }
+
+    /**
+     * Base Policy 정책 셋 팀 추가
+     */
+    @Transactional
+    public void createBasePolicySet(final String teamCode, final String description, final String name, final String csp) {
 
         // 1. 대상 팀의 Base Policy를 Team Policy로 등록
         Team team = basePolicyAllToTeamPolicy(teamCode);
@@ -97,8 +112,8 @@ public class BasePolicySetService {
 
         PolicySet basePolicySet = PolicySet.builder()
                 .team(team)
-                .description("기본 제공되는 Base Policy Set 입니다.")
-                .name("Base_Policy_Set")
+                .description(description)
+                .name(name)
                 .build();
 
         // 3. 정책 셋을 만들고
@@ -106,7 +121,9 @@ public class BasePolicySetService {
 
         // 4. 정책 셋의 정책 목록에 정책 추가
         List<PolicyPerPolicySet> policiesPerPolicySet = new ArrayList<>();
-        baseTeamPolicies.forEach(policy -> policiesPerPolicySet.add(new PolicyPerPolicySet(policySet, policy, true)));
+        baseTeamPolicies.stream()
+                .filter(policy -> policy.getPolicyName().contains(csp))
+                .forEach(policy -> policiesPerPolicySet.add(new PolicyPerPolicySet(policySet, policy, true)));
         policyPerPolicySetRepository.saveAll(policiesPerPolicySet);
     }
 

@@ -4,3 +4,7 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
       location: ${UPLOAD_PATH:./uploads}
+  redis:
+    host: ${REDIS_DATASOURCE_URL:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:dev}

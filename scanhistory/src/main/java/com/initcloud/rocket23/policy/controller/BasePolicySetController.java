@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,11 +41,11 @@ public class BasePolicySetController {
                     )}
     )
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
-    @GetMapping("/{teamCode}/basePolicySets")
+    @PostMapping("/{teamCode}/basePolicySets")
     public ResponseDto<Page<Summary>> baseTeamPolicySet(
             @PathVariable String teamCode
     ) {
-        basePolicySetService.createBasePolicySet(teamCode);
+        basePolicySetService.createManyBasePolicySet(teamCode);
         return new ResponseDto<>(null);
     }
 
