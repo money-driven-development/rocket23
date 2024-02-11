@@ -7,6 +7,7 @@ import com.initcloud.rocket23.checklist.entity.scanHistory.CodeBlock;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 import com.initcloud.rocket23.common.enums.ResponseCode;
+import com.initcloud.rocket23.common.enums.State;
 import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.CodeBlockRepository;
 import com.initcloud.rocket23.infra.repository.ScanHistoryDetailRepository;
@@ -70,6 +71,7 @@ public class ScanService {
                 .unknown(0)
                 .score(dto.getScore())
                 .fileHash(jsonObj.get("fileHash").toString())
+                .state(State.SUCCESS)
                 .build();
         try{
             scanHistoryRepository.save(scanHistory);

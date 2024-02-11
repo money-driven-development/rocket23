@@ -1,6 +1,7 @@
 package com.initcloud.rocket23.checklist.entity.scanHistory;
 
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.common.enums.State;
 import com.initcloud.rocket23.common.utils.UniqueUtils;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
@@ -9,6 +10,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -100,13 +103,17 @@ public class ScanHistory extends BaseEntity {
     @Column(name = "FILE_HASH")
     private String fileHash;
 
+    @Column(name = "STATE")
+    @Enumerated(EnumType.STRING)
+    private State state;
+
     @Builder
     public ScanHistory(
             Team team, TeamProject project, String projectName, String projectCode,
             String username,
             Integer passed, Integer skipped, Integer failed, Integer high,
             Integer medium, Integer low, Integer unknown,
-            Double score, String fileHash) {
+            Double score, String fileHash, State state) {
         this.team = team;
         this.project = project;
         this.projectName = projectName;
@@ -122,5 +129,6 @@ public class ScanHistory extends BaseEntity {
         this.unknown = unknown;
         this.score = score;
         this.fileHash = fileHash;
+        this.state = state;
     }
 }
