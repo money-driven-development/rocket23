@@ -1,10 +1,12 @@
 package com.initcloud.dockerapi.container.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.initcloud.dockerapi.common.dto.ResponseDto;
 import com.initcloud.dockerapi.container.dto.ContainerDto;
 import com.initcloud.dockerapi.container.dto.IaCScanRequestDto;
 import com.initcloud.dockerapi.container.service.DockerManageService;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +21,8 @@ public class DockerContainerManageController {
 //			@ApiImplicitParam(name = "Authorization", paramType = "header", value = "Access Token", required = true, dataTypeClass = String.class),
 //			@ApiImplicitParam(name = "request", paramType = "body", value = "Scan request", required = true, dataTypeClass = IaCScanRequestDto.class)})
 	@PostMapping
-	public ResponseDto containerRun(@RequestBody IaCScanRequestDto request) {
+	public ResponseDto containerRun(@RequestBody IaCScanRequestDto request)
+			throws ParseException, JsonProcessingException {
 
 		ContainerDto response = dockerService.executeContainer(1, request);
 

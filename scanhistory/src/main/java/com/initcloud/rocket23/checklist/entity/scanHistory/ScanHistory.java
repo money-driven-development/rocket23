@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.checklist.entity.scanHistory;
 
+import com.initcloud.rocket23.checklist.dto.ScoreDto;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.common.enums.State;
 import com.initcloud.rocket23.common.utils.UniqueUtils;
@@ -25,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.JSONObject;
 
 @Entity
 @Getter
@@ -130,5 +132,20 @@ public class ScanHistory extends BaseEntity {
         this.score = score;
         this.fileHash = fileHash;
         this.state = state;
+    }
+
+    public void updateScan(JSONObject summaryObject, ScoreDto dto){
+        this.passed = (int) summaryObject.get("passed");
+        this.skipped = (int) summaryObject.get("skipped");
+        this.failed = (int) summaryObject.get("failed");
+        this.high=dto.getSuccessHigh() + dto.getFailHigh();
+        this.medium=dto.getSuccessMedium() + dto.getFailMedium();
+        this.low = dto.getSuccessLow() + dto.getFailLow();
+        this.score = dto.getScore();
+        this.state = State.SUCCESS;
+    }
+
+    public void updateError(){
+        this.state = State.FAIL;
     }
 }

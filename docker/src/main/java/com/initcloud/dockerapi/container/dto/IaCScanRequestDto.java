@@ -11,6 +11,7 @@ public class IaCScanRequestDto {
 
     private final String teamCode;
     private final String projectCode;
+    private boolean error;
 
 
     public IaCScanRequestDto(IaCType iacType, String iacPath, String teamCode, String projectCode) {
@@ -18,5 +19,9 @@ public class IaCScanRequestDto {
         this.iacPath = iacPath;
         this.teamCode = teamCode;
         this.projectCode = projectCode;
+    }
+
+    public void updateError(){
+        this.error = true;
     }
 }

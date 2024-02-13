@@ -16,6 +16,7 @@ import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
 import com.initcloud.rocket23.team.service.TeamInspectService;
 import com.initcloud.rocket23.team.service.TeamProjectService;
+import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,39 @@ public class ScanService {
 
     private final ScanSeverityService scanSeverityService;
 
+    public ScanHistory saveScanState(String data) throws Exception {;
+
+        data = scanParseService.parseJSON(data);
+        JSONParser jsonParser = new JSONParser();
+        Object obj = jsonParser.parse(data);
+        JSONObject jsonObj = (JSONObject) obj;
+
+        Team team = teamInspectService.getTeam(jsonObj.get("team").toString());
+        TeamProject teamProject = teamProjectService.getTeamProject(team, jsonObj.get("project").toString());
+
+        ScanHistory scanHistory = ScanHistory.builder()
+                .team(team)
+                .project(teamProject)
+                .projectName(teamProject.getProjectName())
+                .projectCode(teamProject.getProjectCode())
+                .username("username")
+                .passed(0)
+                .skipped(0)
+                .failed(0)
+                .high(0)
+                .medium(0)
+                .low(0)
+                .unknown(0)
+                .score(0.0)
+                .fileHash(jsonObj.get("uuid").toString())
+                .state(State.SCANNING)
+                .build();
+
+        scanHistoryRepository.save(scanHistory);
+        return scanHistory;
+
+    }
+
 
     //@Transactional
     public ScanHistory saveCheckovScan(String data) throws Exception {
@@ -47,49 +81,40 @@ public class ScanService {
         JSONParser jsonParser = new JSONParser();
         Object obj = jsonParser.parse(data);
         JSONObject jsonObj = (JSONObject) obj;
+        if(Objects.equals(jsonObj.get("error").toString(), "false")){
+            ScanHistory scanHistory = scanHistoryRepository.findByFileHash(jsonObj.get("fileHash").toString());
+            JSONObject summaryObject = (JSONObject) jsonObj.get("summary");
 
-        Team team = teamInspectService.getTeam(jsonObj.get("teamCode").toString());
-        TeamProject teamProject = teamProjectService.getTeamProject(team, jsonObj.get("projectCode").toString());
+            ScoreDto scoreDto = scanSeverityService.countSeverity(jsonObj);
+            ScoreDto dto = scanSeverityService.getScore(scoreDto);
 
-        JSONObject summaryObject = (JSONObject) jsonObj.get("summary");
+            scanHistory.updateScan(summaryObject, dto);
 
-        ScoreDto scoreDto = scanSeverityService.countSeverity(jsonObj);
-        ScoreDto dto = scanSeverityService.getScore(scoreDto);
-
-        ScanHistory scanHistory = ScanHistory.builder()
-                .team(team)
-                .project(teamProject)
-                .projectName(teamProject.getProjectName())
-                .projectCode(teamProject.getProjectCode())
-                .username("username")
-                .passed((int) summaryObject.get("passed"))
-                .skipped((int) summaryObject.get("skipped"))
-                .failed((int) summaryObject.get("failed"))
-                .high(dto.getSuccessHigh() + dto.getFailHigh())
-                .medium(dto.getSuccessMedium() + dto.getFailMedium())
-                .low(dto.getSuccessLow() + dto.getFailLow())
-                .unknown(0)
-                .score(dto.getScore())
-                .fileHash(jsonObj.get("fileHash").toString())
-                .state(State.SUCCESS)
-                .build();
-        try{
             scanHistoryRepository.save(scanHistory);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        try{
             saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        try{
             saveScanHistoryDetails(jsonObj, scanHistory, "failed_checks");
-        }catch(Exception e){
-            e.printStackTrace();
+
+            return scanHistory;
         }
+        else{
+            saveScanError(data);
+        }
+        return null;
+    }
+
+    public ScanHistory saveScanError(String data) throws Exception {
+
+        data = scanParseService.parseJSON(data);
+        JSONParser jsonParser = new JSONParser();
+        Object obj = jsonParser.parse(data);
+        JSONObject jsonObj = (JSONObject) obj;
+
+        ScanHistory scanHistory = scanHistoryRepository.findByFileHash(jsonObj.get("fileHash").toString());
+
+        scanHistory.updateError();
+
+        scanHistoryRepository.save(scanHistory);
+
         return scanHistory;
 
     }
