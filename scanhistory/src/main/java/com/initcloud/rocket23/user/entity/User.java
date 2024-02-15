@@ -5,6 +5,7 @@ import com.initcloud.rocket23.security.dto.OAuthDto;
 import com.initcloud.rocket23.user.enums.AuthProvider;
 import com.initcloud.rocket23.user.enums.UserState;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,13 +51,25 @@ public class User extends BaseEntity implements UserDetails {
     /**
      * Constructor for Individual social User
      */
-    public User(String username, String nickname, AuthProvider oAuthProvider, UserState userState) {
+    @Builder
+    public User(String username, AuthProvider oAuthProvider, UserState userState, String password, String email, String contact, String profileImageUrl) {
         this.lastLogin = LocalDateTime.now();
         this.userState = userState;
         this.username = username;
-        this.password = "";
-        this.email = "";
-        this.contact = "";
+        this.password = password;
+        this.email = email;
+        this.contact = contact;
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void modifyUser(String profileImageUrl, String contact, String email){
+        this.profileImageUrl = profileImageUrl;
+        this.contact = contact;
+        this.email = email;
+    }
+
+    public void modifyState(UserState userState){
+        this.userState = userState;
     }
 
     /**
@@ -65,7 +78,7 @@ public class User extends BaseEntity implements UserDetails {
      * @return User
      */
     public static User addIndividualSocialUser(OAuthDto.GithubUserDetail detail) {
-        return new User(detail.getLogin(), detail.getName(), AuthProvider.GITHUB, UserState.ACTIVATE);
+        return new User(detail.getLogin(), AuthProvider.GITHUB, UserState.ACTIVATE, "","","", "");
     }
 
 

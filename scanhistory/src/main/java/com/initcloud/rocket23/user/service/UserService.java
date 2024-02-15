@@ -8,6 +8,7 @@ import com.initcloud.rocket23.security.provider.JwtProvider;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import com.initcloud.rocket23.user.dto.UserDto;
 import com.initcloud.rocket23.user.entity.User;
+import com.initcloud.rocket23.user.enums.UserState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -58,26 +59,46 @@ public class UserService {
         return myTeams;
     }
 
+    /**
+     * 유저 생성(회원가입)
+     * */
+    public void createUser(UserDto.UserInfo userInfo){
+        User user = userInfo.toDto(userInfo.getUserState(),
+                userInfo.getUsername(),
+                userInfo.getPassword(),
+                userInfo.getEmail(),
+                userInfo.getContact(),
+                userInfo.getProfileImageUrl());
+
+        userRepository.save(user);
+    }
+
 
     /**
      * 사용자 상세 정보 수정
      */
-    public void modifyUserProfile() {
-
+    public void modifyUserProfile(String username, UserDto.modifyUser modifyUser) {
+        User user = userRepository.findByUsername(username);
+        user.modifyUser(modifyUser.getProfileImageUrl(), modifyUser.getContact(), modifyUser.getEmail());
+        userRepository.save(user);
     }
 
     /**
      * 탈퇴
      */
-    public void removeUserProfile() {
-
+    public void removeUserProfile(String userName) {
+        User user = userRepository.findByUsername(userName);
+        user.modifyState(UserState.DELETED);
+        userRepository.save(user);
     }
 
     /**
      * 사용자 상태 변경
      */
-    public void modifyUserStatus() {
-
+    public void modifyUserStatus(String userName, UserState userState) {
+        User user = userRepository.findByUsername(userName);
+        user.modifyState(userState);
+        userRepository.save(user);
     }
 
     public User loadUser() throws UsernameNotFoundException {
