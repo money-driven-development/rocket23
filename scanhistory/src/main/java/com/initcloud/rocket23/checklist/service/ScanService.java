@@ -19,6 +19,7 @@ import com.initcloud.rocket23.team.service.TeamProjectService;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
@@ -74,13 +75,14 @@ public class ScanService {
     }
 
 
-    //@Transactional
+    @Transactional
     public ScanHistory saveCheckovScan(String data) throws Exception {
 
         data = scanParseService.parseJSON(data);
         JSONParser jsonParser = new JSONParser();
         Object obj = jsonParser.parse(data);
         JSONObject jsonObj = (JSONObject) obj;
+
         if(Objects.equals(jsonObj.get("error").toString(), "false")){
             ScanHistory scanHistory = scanHistoryRepository.findByFileHash(jsonObj.get("fileHash").toString());
             JSONObject summaryObject = (JSONObject) jsonObj.get("summary");
@@ -89,7 +91,6 @@ public class ScanService {
             ScoreDto dto = scanSeverityService.getScore(scoreDto);
 
             scanHistory.updateScan(summaryObject, dto);
-
             scanHistoryRepository.save(scanHistory);
             saveScanHistoryDetails(jsonObj, scanHistory, "passed_checks");
             saveScanHistoryDetails(jsonObj, scanHistory, "failed_checks");
@@ -119,6 +120,7 @@ public class ScanService {
 
     }
 
+    @Transactional
     public void saveScanHistoryDetails(JSONObject jsonObj, ScanHistory scanHistory,
                                        String selectName) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -134,9 +136,9 @@ public class ScanService {
 
     }
 
-    private void saveScanHistoryDetail(JsonNode checkNode, ScanHistory scanHistory) {
+    @Transactional
+    public void saveScanHistoryDetail(JsonNode checkNode, ScanHistory scanHistory) {
         try {
-
             ScanHistoryDetail scanHistoryDetail = ScanHistoryDetail.builder()
                     .ruleName(checkNode.get("check_id").asText().replace("CKV","IC"))
                     .scanHistory(scanHistory)
@@ -146,17 +148,13 @@ public class ScanService {
                     .targetFileName(checkNode.get("file_path").asText())
                     .appType("Terraform")
                     .build();
-
-            try{
-                scanHistoryDetailRepository.save(scanHistoryDetail);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+            scanHistoryDetailRepository.save(scanHistoryDetail);
 
             JsonNode codeBlockNodes = checkNode.path("code_block");
             saveCodeBlocks(codeBlockNodes, scanHistoryDetail);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ApiException(ResponseCode.SCAN_DESCRIOTION_ERROR);
         }
     }
