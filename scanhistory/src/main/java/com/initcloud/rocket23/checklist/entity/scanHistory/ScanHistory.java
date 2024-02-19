@@ -65,15 +65,15 @@ public class ScanHistory extends BaseEntity {
 
     @Column(name = "PASSED")
     @NotNull
-    private Integer passed;
+    private Integer passed = 0;
 
     @Column(name = "SKIPPED")
     @NotNull
-    private Integer skipped;
+    private Integer skipped = 0;
 
     @Column(name = "FAILED")
     @NotNull
-    private Integer failed;
+    private Integer failed = 0;
 
     @Column(name = "HIGH")
     @NotNull
