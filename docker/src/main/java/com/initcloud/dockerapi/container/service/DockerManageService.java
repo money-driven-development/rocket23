@@ -1,6 +1,7 @@
 package com.initcloud.dockerapi.container.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.initcloud.dockerapi.container.dto.ScanSaveRequestDto;
 import com.initcloud.dockerapi.container.enums.IaCType;
 import com.initcloud.dockerapi.redis.message.ProjectUploadMessage;
 import org.json.simple.parser.ParseException;
@@ -33,21 +34,27 @@ public class DockerManageService implements ContainerManageService {
 	@Override
 	public ContainerDto executeContainer(Integer count, IaCScanRequestDto path)
 			throws ParseException, JsonProcessingException {
+		String containerId = "";
 		try {
 			CreateContainerResponse containerResponse = dockerContainerApi.create(); // 스캔을 수행할 컨테이너 생성 (cold start)
 			dockerContainerApi.start(containerResponse.getId()); // 컨테이너 실행
 
 			// 미리 생성해둔 스탠바이 컨테이너를 사용해서 cold start 시간을 줄일 수 있음
-			String containerId = queueClient.pollContainerIdFromQueue();
+            containerId = queueClient.pollContainerIdFromQueue();
 			queueClient.addToQueue(containerResponse.getId());
 
 			// 앞서서 가져온 ID를 가지는 컨테이너로 통해서 스캔 수행
 			String scanResult = dockerContainerApi.execute(containerResponse.getId(), path);
 
-			// 이걸 다른 곳에 쏨(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
-			publisher.publishScanMessage(scanResult, path.getTeamCode(), path.getProjectCode(), path.getIacPath());
+			ScanSaveRequestDto scanSaveRequestDto = ScanSaveRequestDto.builder()
+					.data(scanResult)
+					.teamCode(path.getTeamCode())
+					.projectCode(path.getProjectCode())
+					.fileHash(path.getIacPath())
+					.build();
 
-			//
+			// 이걸 다른 곳에 쏨(Main 컴포넌트로 전달하거나 여기서 바로 DB에 저장해도 OK)
+			publisher.publishScanMessage(scanSaveRequestDto);
 
 			/** 스캔이 완료된 컨테이너 종료 시킴
 			 * Todo
@@ -59,11 +66,15 @@ public class DockerManageService implements ContainerManageService {
 			// 동작시켰던 컨테이너 정보를 반환
 			return new ContainerDto(containerId, "Exited");
 		}catch(Exception e){
-			path.updateError();
-			publisher.publishScanMessage(null, path.getTeamCode(), path.getProjectCode(), path.getIacPath());
+			ScanSaveRequestDto scanSaveRequestDto = ScanSaveRequestDto.builder()
+					.data(null)
+					.teamCode(path.getTeamCode())
+					.projectCode(path.getProjectCode())
+					.fileHash(path.getIacPath())
+					.build();
+			publisher.publishScanMessage(scanSaveRequestDto);
+			return new ContainerDto(containerId, "Exited");
 		}
-
-		return null;
 	}
 
 	public ContainerDto executeContainer(ProjectUploadMessage upload) throws ParseException, JsonProcessingException {
