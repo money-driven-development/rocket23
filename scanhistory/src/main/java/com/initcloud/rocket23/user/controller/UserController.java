@@ -3,6 +3,7 @@ package com.initcloud.rocket23.user.controller;
 import com.initcloud.rocket23.common.dto.ResponseDto;
 import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import com.initcloud.rocket23.user.dto.UserDto;
+import com.initcloud.rocket23.user.enums.UserState;
 import com.initcloud.rocket23.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,7 +56,6 @@ public class UserController {
 
         return new ResponseDto<>(response);
     }
-
     // 유저 생성(회원 가입)
     @Operation(summary = "create User", description = "Make a Users")
     @Parameter(
@@ -65,10 +66,10 @@ public class UserController {
             content = @Content(array = @ArraySchema(schema = @Schema(type = "string")))
     )
     @PostMapping()
-    public ResponseDto<String> createUsers(@RequestBody UserDto.UserInfo request) {
+    public ResponseDto<Boolean> createUsers(@RequestBody UserDto.UserInfo request) {
         userService.createUser(request);
 
-        return new ResponseDto<>(null);
+        return new ResponseDto<>(true);
     }
 
     // 유저 정보 수정
@@ -81,16 +82,16 @@ public class UserController {
             content = @Content(array = @ArraySchema(schema = @Schema(type = "string")))
     )
     @PatchMapping("/{username}")
-    public ResponseDto<String> modifyUsers(
+    public ResponseDto<Boolean> modifyUsers(
             @PathVariable String username,
             @RequestBody UserDto.modifyUser request) {
         userService.modifyUserProfile(username, request);
 
-        return new ResponseDto<>(null);
+        return new ResponseDto<>(true);
     }
 
-    // 유저 정보 수정
-    @Operation(summary = "modify User", description = "update user info")
+    // 유저 상태 변경
+    @Operation(summary = "modify User Status", description = "update user status")
     @Parameter(
             name = "username",
             in = ParameterIn.PATH,
@@ -99,11 +100,28 @@ public class UserController {
             content = @Content(array = @ArraySchema(schema = @Schema(type = "string")))
     )
     @PatchMapping("/{username}")
-    public ResponseDto<String> deleteUsers(
+    public ResponseDto<Boolean> modifyUserState(
             @PathVariable String username,
-            @RequestBody UserDto.modifyUser request) {
-        userService.modifyUserProfile(username, request);
+            @RequestBody UserState request) {
+        userService.modifyUserStatus(username, request);
 
-        return new ResponseDto<>(null);
+        return new ResponseDto<>(true);
+    }
+
+    // 유저 정보 삭제 상태 변경
+    @Operation(summary = "delete User", description = "delete user info")
+    @Parameter(
+            name = "username",
+            in = ParameterIn.PATH,
+            description = "username",
+            required = true,
+            content = @Content(array = @ArraySchema(schema = @Schema(type = "string")))
+    )
+    @DeleteMapping("/{username}")
+    public ResponseDto<Boolean> deleteUsers(
+            @PathVariable String username) {
+        userService.removeUserProfile(username);
+
+        return new ResponseDto<>(true);
     }
 }

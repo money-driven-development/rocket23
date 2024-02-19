@@ -2,6 +2,7 @@ package com.initcloud.rocket23.user.service;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiAuthException;
+import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
 import com.initcloud.rocket23.infra.repository.UserRepository;
 import com.initcloud.rocket23.security.provider.JwtProvider;
@@ -9,8 +10,11 @@ import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import com.initcloud.rocket23.user.dto.UserDto;
 import com.initcloud.rocket23.user.entity.User;
 import com.initcloud.rocket23.user.enums.UserState;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +29,7 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final TeamWithUsersRepository teamWithUsersRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 사용자 목록 조회
@@ -62,15 +67,43 @@ public class UserService {
     /**
      * 유저 생성(회원가입)
      * */
-    public void createUser(UserDto.UserInfo userInfo){
+    public void createUser(UserDto.UserInfo userInfo) throws ApiException {
+        // USER name 중복 검증
+        if (userRepository.existsByUsername(userInfo.getUsername())) {
+            throw new ApiException(ResponseCode.DUPLICATE_USER);
+        }
+
+        //password 유효성 검증
+        if(!isValidPassword(userInfo.getPassword())){
+            throw new ApiException(ResponseCode.INVALID_PASSWORD);
+        }
+
         User user = userInfo.toDto(userInfo.getUserState(),
                 userInfo.getUsername(),
-                userInfo.getPassword(),
+                encodePassword(userInfo.getPassword()),
                 userInfo.getEmail(),
                 userInfo.getContact(),
                 userInfo.getProfileImageUrl());
 
         userRepository.save(user);
+    }
+
+    private String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
+    /**
+     * 패스워드 검증
+     * */
+    private boolean isValidPassword(String password) {
+        // 비밀번호가 숫자, 영어, 특수문자로 구성되었는지 확인하는 정규표현식
+        String regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+
+        // 패턴과 매칭
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+
+        return matcher.matches();
     }
 
 
@@ -100,6 +133,7 @@ public class UserService {
         user.modifyState(userState);
         userRepository.save(user);
     }
+
 
     public User loadUser() throws UsernameNotFoundException {
         return userRepository.findUserByUsername(jwtProvider.getUsername())

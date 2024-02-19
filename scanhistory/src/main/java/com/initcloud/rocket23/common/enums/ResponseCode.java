@@ -29,6 +29,10 @@ public enum ResponseCode {
     /*Redis Error. 5500*/
     JSON_PROCESSING_ERROR(5501, HttpStatus.INTERNAL_SERVER_ERROR, "Redis Publish JSON 직렬화 오류입니다."),
 
+    /* 6: User */
+    DUPLICATE_USER(4601, HttpStatus.BAD_REQUEST, "Duplicate user"),
+    INVALID_PASSWORD(4602, HttpStatus.BAD_REQUEST, "Invalid password"),
+
     /* 7: Team */
     INVALID_TEAM(4701, HttpStatus.BAD_REQUEST, "Invalid Team."),
     INVALID_USER_IN_TEAM(4702, HttpStatus.BAD_REQUEST, "Invalid user in this team."),
