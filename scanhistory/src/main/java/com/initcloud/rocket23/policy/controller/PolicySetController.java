@@ -125,13 +125,13 @@ public class PolicySetController {
     @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "policySet", in = ParameterIn.PATH, description = "Unique policy set name", required = true, schema = @Schema(type = "string"))
     @DeleteMapping("/{teamCode}/policySets/{policySet}")
-    public ResponseDto policySetRemove(
+    public ResponseDto<Boolean> policySetRemove(
             @PathVariable String teamCode,
             @PathVariable String policySet
     ) {
         teamPolicySetService.deleteTeamPolicySet(teamCode, policySet);
 
-        return new ResponseDto<>(null);
+        return new ResponseDto<>(true);
     }
 
 }
