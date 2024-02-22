@@ -65,7 +65,7 @@ public class UserController {
             required = true,
             content = @Content(array = @ArraySchema(schema = @Schema(type = "string")))
     )
-    @PostMapping()
+    @PostMapping
     public ResponseDto<Boolean> createUsers(@RequestBody UserDto.UserInfo request) {
         userService.createUser(request);
 
@@ -99,7 +99,7 @@ public class UserController {
             required = true,
             content = @Content(array = @ArraySchema(schema = @Schema(type = "string")))
     )
-    @PatchMapping("/{username}")
+    @PatchMapping("/{username}/state")
     public ResponseDto<Boolean> modifyUserState(
             @PathVariable String username,
             @RequestBody UserState request) {

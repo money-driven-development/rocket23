@@ -42,11 +42,42 @@ public class JwtProvider implements TokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + EXPIREDTIME))
+                .setExpiration(new Date(now.getTime() + EXPIRED_TIME_ACCESS))
                 .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
 
-        return new UsernameToken(username, accessToken, null);
+        String refreshToken = Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + EXPIRED_TIME_REFRESH))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+
+        return new UsernameToken(username, accessToken, refreshToken);
+    }
+
+    public Token refreshAccessToken(String refreshToken, String key) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(key)
+                    .parseClaimsJws(refreshToken)
+                    .getBody();
+            String username = claims.getSubject();
+
+            // Generate a new AccessToken with the same username
+            Date now = new Date();
+            String newAccessToken = Jwts.builder()
+                    .setSubject(username)
+                    .setIssuedAt(now)
+                    .setExpiration(new Date(now.getTime() + EXPIRED_TIME_ACCESS))
+                    .signWith(SignatureAlgorithm.HS256, key)
+                    .compact();
+
+            return new UsernameToken(username, newAccessToken, refreshToken);
+        } catch (JwtException e) {
+            // Handle exception (e.g., token validation failure)
+            return null;
+        }
     }
 
     public String getUsername(String token, String key) {
@@ -156,6 +187,32 @@ public class JwtProvider implements TokenProvider {
         try {
             byte[] encoded = Files.readAllBytes(Paths.get(properties.getGithubPrivKeyPath()));
             return new String(encoded);
+        } catch (Exception e) {
+            throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
+        }
+    }
+
+    public boolean validateTokenExceptExpiration(String jwtToken){
+        try {
+
+            Jws<Claims> claims = Jwts.parser().setSigningKey(properties.getSecret()).parseClaimsJws(jwtToken);
+            Date expirationDate = claims.getBody().getExpiration();
+            Date currentDate = new Date();
+
+            // 토큰 만료 여부 확인
+            return expirationDate.before(currentDate);
+        } catch(ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getUserDetailsFromToken(String jwtToken, String secretKey) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return claims.getBody().getSubject();
+
         } catch (Exception e) {
             throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
         }

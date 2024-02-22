@@ -7,6 +7,7 @@ import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,8 +15,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,10 +59,51 @@ public class AuthController {
     }
 
     @Operation(summary = "Get a Access Token.", description = "Get a Access Token and Redirect to Main Page")
-    @PostMapping("/callback")
-    public ResponseDto<Token> githubAuth(@RequestBody AuthRequestDto request) {
+    @PostMapping("/github/login")
+    public ResponseDto<Token> githubAuth(@RequestBody AuthRequestDto.githubDto request) {
         Token response = authService.getUserAccessToken(request);
 
         return new ResponseDto<>(response);
+    }
+
+    @Operation(summary = "Get a Local Access Token.", description = "Get a Rocket Access Token")
+    @PostMapping("/login")
+    public ResponseDto<Token> rocketAuth(@RequestBody AuthRequestDto.loginDto request) {
+        Token response =  authService.createUserAccessToken(request);
+
+        return new ResponseDto<>(response);
+    }
+
+    @Operation(summary = "Get a Local Access Token.", description = "Get a Rocket Access Token")
+    @Parameter(
+            name = "X-AUTH-TOKEN",
+            in = ParameterIn.HEADER,
+            description = "access-token",
+            required = true,
+            content = @Content(schema = @Schema(type = "string"))
+    )
+    @Parameter(
+            name = "REFRESH-TOKEN",
+            in = ParameterIn.HEADER,
+            description = "refresh-token",
+            required = true,
+            content = @Content(schema = @Schema(type = "string"))
+    )
+    @PostMapping("/refresh")
+    public ResponseDto<Token> refreshToken( @RequestHeader(value="X-AUTH-TOKEN") String token,
+                                            @RequestHeader(value="REFRESH-TOKEN") String refreshToken) {
+        Token response = authService.reIssueAccessToken(token, refreshToken);
+
+        return new ResponseDto<>(response);
+    }
+
+
+    @Operation(summary = "Expire Token", description = "Expire Access Token and Refresh Token")
+    @PostMapping("/logout")
+    public ResponseDto<Boolean> logout( @RequestHeader(value="X-AUTH-TOKEN") String token,
+                                      @RequestHeader(value="REFRESH-TOKEN") String refreshToken) {
+        authService.logout(token, refreshToken);
+
+        return new ResponseDto<>(true);
     }
 }
