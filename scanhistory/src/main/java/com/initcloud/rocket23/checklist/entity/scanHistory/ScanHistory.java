@@ -1,6 +1,8 @@
 package com.initcloud.rocket23.checklist.entity.scanHistory;
 
+import com.initcloud.rocket23.checklist.dto.ScoreDto;
 import com.initcloud.rocket23.common.entity.BaseEntity;
+import com.initcloud.rocket23.common.enums.State;
 import com.initcloud.rocket23.common.utils.UniqueUtils;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamProject;
@@ -9,6 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.minidev.json.JSONObject;
 
 @Entity
 @Getter
@@ -60,15 +65,15 @@ public class ScanHistory extends BaseEntity {
 
     @Column(name = "PASSED")
     @NotNull
-    private Integer passed;
+    private Integer passed = 0;
 
     @Column(name = "SKIPPED")
     @NotNull
-    private Integer skipped;
+    private Integer skipped = 0;
 
     @Column(name = "FAILED")
     @NotNull
-    private Integer failed;
+    private Integer failed = 0;
 
     @Column(name = "HIGH")
     @NotNull
@@ -100,13 +105,17 @@ public class ScanHistory extends BaseEntity {
     @Column(name = "FILE_HASH")
     private String fileHash;
 
+    @Column(name = "STATE")
+    @Enumerated(EnumType.STRING)
+    private State state;
+
     @Builder
     public ScanHistory(
             Team team, TeamProject project, String projectName, String projectCode,
             String username,
             Integer passed, Integer skipped, Integer failed, Integer high,
             Integer medium, Integer low, Integer unknown,
-            Double score, String fileHash) {
+            Double score, String fileHash, State state) {
         this.team = team;
         this.project = project;
         this.projectName = projectName;
@@ -122,5 +131,21 @@ public class ScanHistory extends BaseEntity {
         this.unknown = unknown;
         this.score = score;
         this.fileHash = fileHash;
+        this.state = state;
+    }
+
+    public void updateScan(JSONObject summaryObject, ScoreDto dto){
+        this.passed = (int) summaryObject.get("passed");
+        this.skipped = (int) summaryObject.get("skipped");
+        this.failed = (int) summaryObject.get("failed");
+        this.high=dto.getSuccessHigh() + dto.getFailHigh();
+        this.medium=dto.getSuccessMedium() + dto.getFailMedium();
+        this.low = dto.getSuccessLow() + dto.getFailLow();
+        this.score = dto.getScore();
+        this.state = State.SUCCESS;
+    }
+
+    public void updateError(){
+        this.state = State.FAIL;
     }
 }

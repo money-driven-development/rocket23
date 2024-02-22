@@ -1,6 +1,8 @@
 package com.initcloud.dockerapi.redis.pubsub;
 
+import com.initcloud.dockerapi.container.dto.ScanSaveRequestDto;
 import com.initcloud.dockerapi.redis.message.ScanStreamMessage;
+import org.json.simple.parser.ParseException;
 import org.redisson.api.RTopic;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -39,19 +41,33 @@ public class RedisMessagePublisher {
         }
     }
 
-    public void publishScanMessage(String data, String teamCode, String projectCode, String fileHash) {
+    public void publishScanMessage(ScanSaveRequestDto scanSaveRequestDto)
+            throws ParseException, JsonProcessingException {
         try {
-            if (!data.isEmpty()) {
-
+            if (!scanSaveRequestDto.getData().isEmpty()) {
                 /** Todo - written 23.10.13
                  * ScanStreamMessage.serializeToScanResult(...)
                  * 전달할 json 의 필드를 조절해서최적화 할 수 있음.
                  * 또는, json 이 아닌 protobuf, avro, gin 등 바이너리로 변경 한다면 전송하는 네트워크 비용을 최적화 할 수 있음
                  */
-                String result = ScanStreamMessage.serializeToScanResult(data, teamCode, projectCode, fileHash);
+                String result = ScanStreamMessage.serializeToScanResult(scanSaveRequestDto.getData(),
+                        scanSaveRequestDto.getTeamCode(),
+                        scanSaveRequestDto.getProjectCode(),
+                        scanSaveRequestDto.getFileHash(),
+                        false);
                 topicScan.publish(result);
             }
         } catch (Exception e) {
+            // 예외 메시지를 가져오거나 원하는 에러 메시지를 생성
+            String errorMessage = e.getMessage() != null ? e.getMessage() : "Unknown error occurred";
+            // Error data를 JSON 형식으로 생성
+            String errorData = "{ \"data\": \"" + errorMessage + "\"}";
+            String result = ScanStreamMessage.serializeToScanResult(errorData,
+                    scanSaveRequestDto.getTeamCode(),
+                    scanSaveRequestDto.getProjectCode(),
+                    scanSaveRequestDto.getFileHash(),
+                    true);
+            topicScan.publish(result);
             // Todo - 이 예외는 응답으로 반환할 것이 아니므로 별도의 처리가 필요.
             throw new ApiException(ResponseCode.INVALID_REQUEST);
         }

@@ -64,7 +64,7 @@ public class ScanStreamMessage<T> implements Serializable {
                 .build();
     }
 
-    public static String serializeToScanResult(String rawData, String teamCode, String projectCode, String fileHash)
+    public static String serializeToScanResult(String rawData, String teamCode, String projectCode, String fileHash, boolean error)
             throws ParseException, JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(rawData);
@@ -75,6 +75,8 @@ public class ScanStreamMessage<T> implements Serializable {
                     ((ObjectNode) node).put("teamCode", teamCode);
                     ((ObjectNode) node).put("projectCode", projectCode);
                     ((ObjectNode) node).put("fileHash", fileHash);
+                    ((ObjectNode) node).put("error",error);
+
                     return String.valueOf(node);
                 }
             }
@@ -87,6 +89,7 @@ public class ScanStreamMessage<T> implements Serializable {
             jsonObject.put("teamCode", teamCode);
             jsonObject.put("projectCode", projectCode);
             jsonObject.put("fileHash", fileHash);
+            jsonObject.put("error", error);
 
             return jsonObject.toJSONString();
         }

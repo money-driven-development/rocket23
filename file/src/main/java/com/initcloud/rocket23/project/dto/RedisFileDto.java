@@ -15,9 +15,10 @@ public class RedisFileDto {
 	private String fileType;
 	private String provider;
 	private String projectType;
+	private boolean error;
 
 	@Builder
-	public RedisFileDto(String uuid, String originName, String team, String project, String fileType, String provider, String projectType) {
+	public RedisFileDto(String uuid, String originName, String team, String project, String fileType, String provider, String projectType, boolean error) {
 		this.uuid = uuid;
 		this.team = team;
 		this.originName = originName;
@@ -25,6 +26,7 @@ public class RedisFileDto {
 		this.fileType = fileType;
 		this.provider = provider;
 		this.projectType = projectType;
+		this.error = error;
 	}
 
 	public static RedisFileDto toDto(String uuid, String originName, String teamCode, String projectCode) {
@@ -33,6 +35,7 @@ public class RedisFileDto {
 				.team(teamCode)
 				.originName(originName)
 				.project(projectCode)
+				.error(false)
 				.build();
 	}
 }

@@ -26,4 +26,6 @@ public interface ScanHistoryRepository extends JpaRepository<ScanHistory, Long> 
 	List<ScanHistory> findAllByTeam_TeamCodeAndProject_ProjectCodeOrderByIdDesc(String teamCode, String projectCode);
 
     List<ScanHistory> findAllByFileHash(String fileHash);
+
+	ScanHistory findByFileHash(String fileHash);
 }

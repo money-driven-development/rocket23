@@ -5,6 +5,7 @@ import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistory;
 import com.initcloud.rocket23.checklist.entity.scanHistory.ScanHistoryDetail;
 
 import com.initcloud.rocket23.common.enums.Policy.Severity;
+import com.initcloud.rocket23.common.enums.State;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ScanResultDto {
     private Integer passed;
     private Integer failed;
     private Integer skipped;
+    private State state;
     private LocalDateTime created_at;
     private List<Detail> scanResultDetailList = new ArrayList<>();
 
@@ -43,6 +45,7 @@ public class ScanResultDto {
         this.fileHash = scanHistory.getFileHash();
         this.passed = scanHistory.getPassed();
         this.failed = scanHistory.getFailed();
+        this.state = scanHistory.getState();
         this.skipped = scanHistory.getSkipped();
         this.created_at = scanHistory.getCreatedAt();
         if (scanHistoryDetails != null) {
@@ -55,7 +58,7 @@ public class ScanResultDto {
     @Builder(builderClassName = "demoBuilder", builderMethodName = "scanResultDemoBuilder")
     public ScanResultDto(String projectName, Integer high, Integer medium, Integer low, Integer unknown, Double score,
                          Integer passed, Integer failed, Integer skipped, LocalDateTime created,
-                         List<Detail> scanResultDetailList) {
+                         List<Detail> scanResultDetailList, State state) {
         this.projectName = projectName;
         this.high = high;
         this.medium = medium;
@@ -67,6 +70,7 @@ public class ScanResultDto {
         this.skipped = skipped;
         this.created_at = created;
         this.scanResultDetailList = scanResultDetailList;
+        this.state = state;
     }
 
     @Getter
@@ -104,6 +108,7 @@ public class ScanResultDto {
         private String fileHash;
         private String scanHash;
         private LocalDateTime created_at;
+        private State state;
 
         public Summary(ScanHistory entity) {
             this.projectName = entity.getProjectName();
@@ -114,6 +119,7 @@ public class ScanResultDto {
             this.fileHash = entity.getFileHash();
             this.scanHash = entity.getScanHash();
             this.created_at = entity.getCreatedAt();
+            this.state = entity.getState();
         }
     }
 }

@@ -3,11 +3,13 @@ name: Template Gradle Build
 on:
   workflow_call:
     secrets:
-      DOCKER_REGISTRY:
+      AWS_ACCESS_KEY_ID:
         required: true
-      REGISTRY_USERNAME:
+      AWS_SECRET_ACCESS_KEY:
         required: true
-      REGISTRY_PASSWORD:
+      AWS_REGISTRY:
+        required: true
+      AWS_REPOSITORY:
         required: true
       SERVICE_NAME:
         required: true
@@ -61,31 +63,33 @@ jobs:
         run: ./gradlew build -x test
         working-directory: ./${{ secrets.SERVICE_NAME }}
 
-      ## 웹 이미지 빌드 및 NHN Registry에 Push
-      - name: web docker build
-        working-directory: ./${{ secrets.SERVICE_NAME }}
-        run: |
-          docker login ${{ secrets.DOCKER_REGISTRY }} -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
-          docker build -t ${{ secrets.SERVICE_NAME }} .
-
-      - name: web docker tag and push
-        working-directory: ./${{ secrets.SERVICE_NAME }}
-        run: |
-          docker tag ${{ secrets.SERVICE_NAME }}:latest ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.SERVICE_NAME }}:latest
-          docker push ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.SERVICE_NAME }}:latest
-      ## 도커파일 업로드
-      - name: Upload Dockerfile
-        uses: actions/upload-artifact@v3
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
         with:
-          name: Dockerfile_${{ secrets.SERVICE_NAME }}
-          path: ./Dockerfile_${{ secrets.SERVICE_NAME }}
-          retention-days: 1
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
 
-      ## 빌드한 앱 업로드
-      - name: Upload app
-        uses: actions/upload-artifact@v3
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
+
+      ## AWS에 로그인합니다
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          name:
-            ${{ secrets.SERVICE_NAME }}.jar
-          path:
-            ./${{ secrets.SERVICE_NAME }}/build/libs/${{ secrets.SERVICE_NAME }}.jar
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      ## ECR에 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      ## sample라는 ECR 리파지터리에 현재 시간 태그를 생성하고, 푸쉬
+      - name: Build, tag, and push image to Amazon ECR
+        run: |
+          docker build -t rocket-backend:${{steps.current-time.outputs.formattedTime}} .
+          docker tag rocket-backend:${{steps.current-time.outputs.formattedTime}} ${{ secrets.AWS_REGISTRY }}/${{ secrets.AWS_REPOSITORY }}:${{steps.current-time.outputs.formattedTime}}
+          docker push ${{ secrets.AWS_REGISTRY }}/${{ secrets.AWS_REPOSITORY }}:${{steps.current-time.outputs.formattedTime}}
+        working-directory: ./${{ secrets.SERVICE_NAME }}
