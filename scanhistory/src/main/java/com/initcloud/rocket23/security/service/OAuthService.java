@@ -2,6 +2,7 @@ package com.initcloud.rocket23.security.service;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiAuthException;
+import com.initcloud.rocket23.infra.repository.UserRefreshTokenRepository;
 import com.initcloud.rocket23.infra.repository.UserRepository;
 import com.initcloud.rocket23.security.config.SecurityProperties;
 import com.initcloud.rocket23.security.dto.OAuthDto;
@@ -10,6 +11,7 @@ import com.initcloud.rocket23.security.facade.OAuthRequestFacade;
 import com.initcloud.rocket23.security.provider.JwtProvider;
 import com.initcloud.rocket23.user.dto.AuthRequestDto;
 import com.initcloud.rocket23.user.entity.User;
+import com.initcloud.rocket23.user.entity.UserRefreshToken;
 import java.io.IOException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +29,8 @@ import org.springframework.stereotype.Service;
 public class OAuthService {
 
     private final UserRepository userRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
+
     private final OAuthRequestFacade oauthRequestFacade;
     private final SecurityProperties properties;
     private final Environment environment;
@@ -60,17 +64,42 @@ public class OAuthService {
         OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(
                 tokenResponse.getAccessToken());
 
-        User user = getUserIfExist(userDetail);
-        return oauthRequestFacade.createSocialUserToken(user.getUsername());
+        User user = getGithubUserIfExist(userDetail);
+        Token token = oauthRequestFacade.createSocialUserToken(user.getUsername());
+        UserRefreshToken userToken = UserRefreshToken.builder()
+                .user(user)
+                .refreshToken(token.getRefreshToken())
+                .build();
+        userRefreshTokenRepository.save(userToken);
+
+        return token;
     }
 
     public Token createUserAccessToken(AuthRequestDto.loginDto dto) {
-        UserDetails user = customUserDetailsService.loadUserByUsername(dto.getUsername());
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(dto.getUsername());
+        if (!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword())) {
             throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
         }
 
-        return oauthRequestFacade.createSocialUserToken(user.getUsername());
+        User user = getUserIfExist(userDetails);
+
+        Token token = oauthRequestFacade.createSocialUserToken(userDetails.getUsername());
+
+        // 기존 refreshToken을 가져오거나 새로 생성
+        Optional<UserRefreshToken> existingTokenOptional = userRefreshTokenRepository.findByUser(user);
+        UserRefreshToken userRefreshToken;
+
+        if (existingTokenOptional.isPresent()) {
+            userRefreshToken = existingTokenOptional.get();
+            userRefreshToken.updateRefreshToken(token.getRefreshToken());
+        } else {
+            userRefreshToken = UserRefreshToken.builder()
+                    .user(user)
+                    .refreshToken(token.getRefreshToken())
+                    .build();
+        }
+        userRefreshTokenRepository.save(userRefreshToken);
+        return token;
     }
 
     public Token reIssueAccessToken(String accessToken, String refreshToken){
@@ -83,18 +112,39 @@ public class OAuthService {
         if(jwtProvider.validateTokenExceptExpiration(refreshToken))
             throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
 
+        //refresh Token 값 일치 확인하기
+        getUserByRefreshToken(refreshToken);
+
         //access token 재발급하기
         return jwtProvider.refreshAccessToken(refreshToken, properties.getSecret());
 
     }
 
-    public void logout(String accessToken, String refreshToken) {
-        // accessToken 무효화
-        tokenStore.removeAccessToken(tokenStore.readAccessToken(accessToken));
-
+    public void logout(String refreshToken) {
         // refreshToken 무효화
-        tokenStore.removeRefreshToken(tokenStore.readRefreshToken(refreshToken));
+        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByRefreshToken(refreshToken);
+        if(userRefreshToken.isPresent()){
+            UserRefreshToken token = userRefreshToken.get();
+            token.updateRefreshToken(" "); // null값으로 처리
+            userRefreshTokenRepository.save(token);
+        }else{
+            throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
+        }
+
     }
+
+    private void getUserByRefreshToken(String refreshToken) {
+        // Refresh Token 값으로 UserRefreshToken 조회
+        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new ApiAuthException(ResponseCode.INVALID_CREDENTIALS));
+
+        // JWT 내에 있는 username과 UserRefreshToken에 저장된 username 비교
+        String usernameFromToken = jwtProvider.getUsername(refreshToken, properties.getSecret());
+        if (!userRefreshToken.getUser().getUsername().equals(usernameFromToken)) {
+            throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
+        }
+    }
+
 
     /**
      * Todo
@@ -107,7 +157,7 @@ public class OAuthService {
     /**
      * @return registered User
      */
-    public User getUserIfExist(OAuthDto.GithubUserDetail userDetail) {
+    public User getGithubUserIfExist(OAuthDto.GithubUserDetail userDetail) {
         Optional<User> user = userRepository.findUserByUsername(userDetail.getLogin());
 
         if (user.isPresent()) {
@@ -119,6 +169,13 @@ public class OAuthService {
         initializeUserRules(socialUser);
 
         return socialUser;
+    }
+
+    /**
+     * @return registered User
+     */
+    public User getUserIfExist(UserDetails userDetails) {
+        return userRepository.findByUsername(userDetails.getUsername());
     }
 
 }

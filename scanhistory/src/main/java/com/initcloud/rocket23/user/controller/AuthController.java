@@ -100,9 +100,9 @@ public class AuthController {
 
     @Operation(summary = "Expire Token", description = "Expire Access Token and Refresh Token")
     @PostMapping("/logout")
-    public ResponseDto<Boolean> logout( @RequestHeader(value="X-AUTH-TOKEN") String token,
+    public ResponseDto<Boolean> logout(
                                       @RequestHeader(value="REFRESH-TOKEN") String refreshToken) {
-        authService.logout(token, refreshToken);
+        authService.logout(refreshToken);
 
         return new ResponseDto<>(true);
     }
