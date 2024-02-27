@@ -82,22 +82,10 @@ public class OAuthService {
         }
 
         User user = getUserIfExist(userDetails);
-
         Token token = oauthRequestFacade.createSocialUserToken(userDetails.getUsername());
+        UserRefreshToken userRefreshToken = getUserRefreshToken(user, token);
 
         // 기존 refreshToken을 가져오거나 새로 생성
-        Optional<UserRefreshToken> existingTokenOptional = userRefreshTokenRepository.findByUser(user);
-        UserRefreshToken userRefreshToken;
-
-        if (existingTokenOptional.isPresent()) {
-            userRefreshToken = existingTokenOptional.get();
-            userRefreshToken.updateRefreshToken(token.getRefreshToken());
-        } else {
-            userRefreshToken = UserRefreshToken.builder()
-                    .user(user)
-                    .refreshToken(token.getRefreshToken())
-                    .build();
-        }
         userRefreshTokenRepository.save(userRefreshToken);
         return token;
     }
@@ -176,6 +164,23 @@ public class OAuthService {
      */
     public User getUserIfExist(UserDetails userDetails) {
         return userRepository.findByUsername(userDetails.getUsername());
+    }
+
+    private UserRefreshToken getUserRefreshToken(User user, Token token){
+
+        Optional<UserRefreshToken> existingTokenOptional = userRefreshTokenRepository.findByUser(user);
+        UserRefreshToken userRefreshToken;
+
+        if (existingTokenOptional.isPresent()) {
+            userRefreshToken = existingTokenOptional.get();
+            userRefreshToken.updateRefreshToken(token.getRefreshToken());
+        } else {
+            userRefreshToken = UserRefreshToken.builder()
+                    .user(user)
+                    .refreshToken(token.getRefreshToken())
+                    .build();
+        }
+        return userRefreshToken;
     }
 
 }
