@@ -50,7 +50,7 @@ public class TeamManageController {
     @PostMapping("/{teamCode}/members")
     public ResponseDto<String> memberInvite(
             @PathVariable String teamCode,
-            @RequestBody @Valid TeamInviteDto.Request request
+            @RequestBody TeamInviteDto.Request request
     ) {
         String response = teamManageService.inviteUser(teamCode, request);
 

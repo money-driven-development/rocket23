@@ -4,6 +4,7 @@ import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.team.dto.TeamMemberDto;
 import com.initcloud.rocket23.user.entity.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,15 +20,6 @@ public class TeamWithUsers extends BaseEntity {
     @Column(name = "TEAM_WITH_USER_ID")
     private Long id;
 
-    @Column
-    private Boolean isAdmin;
-
-    @Column
-    private String roleType;
-
-    @Column
-    private String authorities;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
@@ -36,11 +28,9 @@ public class TeamWithUsers extends BaseEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    public TeamWithUsers(Long id, Boolean isAdmin, String roleType, String authorities, Team team, User user) {
+    @Builder
+    public TeamWithUsers(Long id, Team team, User user) {
         this.id = id;
-        this.isAdmin = isAdmin;
-        this.roleType = roleType;
-        this.authorities = authorities;
         this.team = team;
         this.user = user;
     }

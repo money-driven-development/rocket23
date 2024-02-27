@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamInviteDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Request {
+
         @Email @NotNull
         private String email;
 
@@ -23,6 +23,22 @@ public class TeamInviteDto {
             this.email = email;
             this.teamCode = teamCode;
         }
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class acceptRequest {
+        private String username;
+        private String teamCode;
+        private boolean accept;
+
+        public acceptRequest(String username, String teamCode, boolean accept) {
+            this.username = username;
+            this.teamCode = teamCode;
+            this.accept = accept;
+        }
+
+
     }
 
     @Getter

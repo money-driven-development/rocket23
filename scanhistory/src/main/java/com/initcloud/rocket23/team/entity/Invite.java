@@ -1,5 +1,6 @@
 package com.initcloud.rocket23.team.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.initcloud.rocket23.common.entity.BaseEntity;
 import com.initcloud.rocket23.user.entity.User;
 import lombok.AccessLevel;
@@ -18,9 +19,13 @@ public class Invite extends BaseEntity {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private User user;
 
 	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "team_id")
+	@JsonIgnore
 	private Team team;
 
 	public Invite(User user, Team team) {
