@@ -111,7 +111,9 @@ public class UserService {
      * 사용자 상세 정보 수정
      */
     public void modifyUserProfile(String username, UserDto.modifyUser modifyUser) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new ApiException(ResponseCode.INVALID_USER_IN_TEAM)
+        );
         user.modifyUser(modifyUser.getProfileImageUrl(), modifyUser.getContact(), modifyUser.getEmail());
         userRepository.save(user);
     }
@@ -120,7 +122,9 @@ public class UserService {
      * 탈퇴
      */
     public void removeUserProfile(String userName) {
-        User user = userRepository.findByUsername(userName);
+        User user = userRepository.findByUsername(userName).orElseThrow(
+                () -> new ApiException(ResponseCode.INVALID_USER_IN_TEAM)
+        );;
         user.modifyState(UserState.DELETED);
         userRepository.save(user);
     }
@@ -129,7 +133,9 @@ public class UserService {
      * 사용자 상태 변경
      */
     public void modifyUserStatus(String userName, UserState userState) {
-        User user = userRepository.findByUsername(userName);
+        User user = userRepository.findByUsername(userName).orElseThrow(
+                () -> new ApiException(ResponseCode.INVALID_USER_IN_TEAM)
+        );;
         user.modifyState(userState);
         userRepository.save(user);
     }

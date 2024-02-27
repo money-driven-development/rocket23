@@ -2,6 +2,7 @@ package com.initcloud.rocket23.security.service;
 
 import com.initcloud.rocket23.common.enums.ResponseCode;
 import com.initcloud.rocket23.common.exception.ApiAuthException;
+import com.initcloud.rocket23.common.exception.ApiException;
 import com.initcloud.rocket23.infra.repository.UserRefreshTokenRepository;
 import com.initcloud.rocket23.infra.repository.UserRepository;
 import com.initcloud.rocket23.security.config.SecurityProperties;
@@ -82,6 +83,7 @@ public class OAuthService {
         }
 
         User user = getUserIfExist(userDetails);
+
         Token token = oauthRequestFacade.createSocialUserToken(userDetails.getUsername());
         UserRefreshToken userRefreshToken = getUserRefreshToken(user, token);
 
@@ -163,7 +165,9 @@ public class OAuthService {
      * @return registered User
      */
     public User getUserIfExist(UserDetails userDetails) {
-        return userRepository.findByUsername(userDetails.getUsername());
+        return userRepository.findByUsername(userDetails.getUsername()).orElseThrow(
+                () -> new ApiException(ResponseCode.INVALID_USER_IN_TEAM)
+        );
     }
 
     private UserRefreshToken getUserRefreshToken(User user, Token token){
