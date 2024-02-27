@@ -60,7 +60,7 @@ public class AuthController {
 
     @Operation(summary = "Get a Access Token.", description = "Get a Access Token and Redirect to Main Page")
     @PostMapping("/github/login")
-    public ResponseDto<Token> githubAuth(@RequestBody AuthRequestDto.githubDto request) {
+    public ResponseDto<Token> githubAuth(@RequestBody AuthRequestDto.github request) {
         Token response = authService.getUserAccessToken(request);
 
         return new ResponseDto<>(response);
@@ -68,7 +68,7 @@ public class AuthController {
 
     @Operation(summary = "Get a Local Access Token.", description = "Get a Rocket Access Token")
     @PostMapping("/login")
-    public ResponseDto<Token> rocketAuth(@RequestBody AuthRequestDto.loginDto request) {
+    public ResponseDto<Token> rocketAuth(@RequestBody AuthRequestDto.login request) {
         Token response =  authService.createUserAccessToken(request);
 
         return new ResponseDto<>(response);

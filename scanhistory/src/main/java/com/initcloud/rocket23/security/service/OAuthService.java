@@ -49,8 +49,8 @@ public class OAuthService {
         }
     }
 
-    public OAuthDto.GithubTokenResponse getAccessToken(AuthRequestDto.githubDto request) {
-        AuthRequestDto.githubDto dto = new AuthRequestDto.githubDto(
+    public OAuthDto.GithubTokenResponse getAccessToken(AuthRequestDto.github request) {
+        AuthRequestDto.github dto = new AuthRequestDto.github(
                 environment.getProperty("GITHUB_CLIENT_ID"),
                 environment.getProperty("GITHUB_CLIENT_SECRET"),
                 request.getCode(),
@@ -59,7 +59,7 @@ public class OAuthService {
         return oauthRequestFacade.requestGithubOAuthToken(dto);
     }
 
-    public Token getUserAccessToken(AuthRequestDto.githubDto request) {
+    public Token getUserAccessToken(AuthRequestDto.github request) {
         OAuthDto.GithubTokenResponse tokenResponse = getAccessToken(request);
         OAuthDto.GithubUserDetail userDetail = oauthRequestFacade.requestGithubUserDetail(
                 tokenResponse.getAccessToken());
@@ -75,7 +75,7 @@ public class OAuthService {
         return token;
     }
 
-    public Token createUserAccessToken(AuthRequestDto.loginDto dto) {
+    public Token createUserAccessToken(AuthRequestDto.login dto) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(dto.getUsername());
         if (!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword())) {
             throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);

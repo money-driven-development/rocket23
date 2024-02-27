@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class AuthRequestDto {
 
     @Getter
-    public static class githubDto{
+    public static class github{
         @JsonProperty("client_id")
         private String clientId;
 
@@ -20,7 +20,7 @@ public class AuthRequestDto {
         private String redirect;
 
 
-        public githubDto(String clientId, String clientSecret, String code, String redirect) {
+        public github(String clientId, String clientSecret, String code, String redirect) {
             this.clientId = clientId;
             this.clientSecret = clientSecret;
             this.code = code;
@@ -30,18 +30,18 @@ public class AuthRequestDto {
     }
 
     @Getter
-    public static class loginDto{
+    public static class login{
 
         private String username;
 
         private String password;
 
-        public loginDto(String username, String password){
+        public login(String username, String password){
             this.username = username;
             this.password = password;
         }
 
-        public loginDto(){
+        public login(){
             super();
         }
     }
