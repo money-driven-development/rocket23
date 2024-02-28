@@ -12,6 +12,7 @@ import com.initcloud.rocket23.team.dto.TeamInviteDto;
 import com.initcloud.rocket23.team.entity.Invite;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
+import com.initcloud.rocket23.team.enums.InviteState;
 import com.initcloud.rocket23.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class TeamManageService {
         Optional<User> user = userRepository.findUserByEmail(dto.getEmail());
 
         if (user.isPresent()) {
-            Invite newInvite = new Invite(user.get(), team);
+            Invite newInvite = new Invite(user.get(), team, InviteState.wait);
             inviteRepository.save(newInvite);
         }
 

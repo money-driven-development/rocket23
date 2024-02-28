@@ -1,17 +1,14 @@
 package com.initcloud.rocket23.team.service;
 
 import com.initcloud.rocket23.infra.repository.InviteRepository;
-import com.initcloud.rocket23.infra.repository.TeamRepository;
 import com.initcloud.rocket23.infra.repository.TeamWithUsersRepository;
-import com.initcloud.rocket23.infra.repository.UserRepository;
 import com.initcloud.rocket23.team.dto.TeamInviteDto;
 import com.initcloud.rocket23.team.entity.Invite;
-import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
-import com.initcloud.rocket23.user.entity.User;
+import com.initcloud.rocket23.team.enums.InviteState;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +31,19 @@ public class TeamInviteService {
      * */
     public void acceptInvite(TeamInviteDto.acceptRequest dto){
         Invite invite = getInvite(dto.getUsername(), dto.getTeamCode());
-        if(dto.isAccept()){
+        if(dto.isAccept()) {
             TeamWithUsers teamWithUsers = TeamWithUsers.builder()
                     .user(invite.getUser())
                     .team(invite.getTeam())
                     .build();
             teamWithUsersRepository.save(teamWithUsers);
+
+            invite.updateState(InviteState.approve);
+        }else{
+            invite.updateState(InviteState.deny);
         }
-        inviteRepository.delete(invite);
+        inviteRepository.save(invite);
+
     }
 
     /**
