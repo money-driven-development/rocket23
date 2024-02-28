@@ -112,15 +112,11 @@ public class OAuthService {
 
     public void logout(String refreshToken) {
         // refreshToken 무효화
-        Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByRefreshToken(refreshToken);
-        if(userRefreshToken.isPresent()){
-            UserRefreshToken token = userRefreshToken.get();
-            token.updateRefreshToken(" "); // null값으로 처리
-            userRefreshTokenRepository.save(token);
-        }else{
-            throw new ApiAuthException(ResponseCode.INVALID_CREDENTIALS);
-        }
-
+        UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(
+                () -> new ApiException(ResponseCode.INVALID_CREDENTIALS)
+        );
+        userRefreshToken.updateRefreshToken(" "); // null값으로 처리
+        userRefreshTokenRepository.save(userRefreshToken);
     }
 
     private void getUserByRefreshToken(String refreshToken) {

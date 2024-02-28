@@ -56,28 +56,41 @@ public class JwtProvider implements TokenProvider {
         return new UsernameToken(username, accessToken, refreshToken);
     }
 
-    public Token refreshAccessToken(String refreshToken, String key) {
+    public String createJwtToken() {
         try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(key)
-                    .parseClaimsJws(refreshToken)
-                    .getBody();
-            String username = claims.getSubject();
+            PrivateKey privateKey = loadPrivateKey();
 
-            // Generate a new AccessToken with the same username
-            Date now = new Date();
-            String newAccessToken = Jwts.builder()
-                    .setSubject(username)
-                    .setIssuedAt(now)
-                    .setExpiration(new Date(now.getTime() + EXPIRED_TIME_ACCESS))
-                    .signWith(SignatureAlgorithm.HS256, key)
-                    .compact();
-
-            return new UsernameToken(username, newAccessToken, refreshToken);
-        } catch (JwtException e) {
-            // Handle exception (e.g., token validation failure)
-            return null;
+            // Create JWT token
+            Instant now = Instant.now();
+            Date expirationTime = Date.from(now.plus(Duration.ofMinutes(10)));
+            JwtBuilder jwtBuilder = Jwts.builder()
+                    .setIssuer(properties.getGithubAppId())
+                    .setIssuedAt(Date.from(now))
+                    .setExpiration(expirationTime)
+                    .signWith(SignatureAlgorithm.HS256, privateKey);
+            return jwtBuilder.compact();
+        } catch (Exception e) {
+            throw new ApiException(ResponseCode.DATA_MISSING);
         }
+    }
+
+    public Token refreshAccessToken(String refreshToken, String key) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJws(refreshToken)
+                .getBody();
+        String username = claims.getSubject();
+
+        // Generate a new AccessToken with the same username
+        Date now = new Date();
+        String newAccessToken = Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + EXPIRED_TIME_ACCESS))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+
+        return new UsernameToken(username, newAccessToken, refreshToken);
     }
 
     public String getUsername(String token, String key) {
@@ -146,29 +159,7 @@ public class JwtProvider implements TokenProvider {
     public Authentication getAuthentication(String token, String key) {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token, key));
-
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    public String createJwtToken() {
-        try {
-            // Load and parse private key
-            PrivateKey privateKey = loadPrivateKey();
-
-            // Create JWT token
-            Instant now = Instant.now();
-            Date expirationTime = Date.from(now.plus(Duration.ofMinutes(10)));
-            JwtBuilder jwtBuilder = Jwts.builder()
-                    .setIssuer(properties.getGithubAppId())
-                    .setIssuedAt(Date.from(now))
-                    .setExpiration(expirationTime)
-                    .signWith(SignatureAlgorithm.HS256, privateKey);
-
-            return jwtBuilder.compact();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ResponseCode.DATA_MISSING);
-        }
     }
 
     private PrivateKey loadPrivateKey() throws Exception {
