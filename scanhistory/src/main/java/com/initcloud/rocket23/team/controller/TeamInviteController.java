@@ -40,7 +40,6 @@ public class TeamInviteController {
                     )}
     )
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
-    @Parameter(name = "teamCode", in = ParameterIn.PATH, description = "Team unique code", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamInviteDto.Request.class)), description = "Request info", required = true)
     @PostMapping()
     public ResponseDto<Boolean> memberInvite(
@@ -63,11 +62,11 @@ public class TeamInviteController {
     @Parameter(name = "Authorization", in = ParameterIn.HEADER, description = "Access Token", required = true, schema = @Schema(type = "string"))
     @Parameter(name = "username", in = ParameterIn.PATH, description = "User's name", required = true, schema = @Schema(type = "string"))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(schema = @Schema(implementation = TeamInviteDto.Request.class)), description = "Request info", required = true)
-    @GetMapping("/members/{username}")
+    @GetMapping("/members/{userEmail}")
     public ResponseDto<List<Invite>> userInviteList(
-            @PathVariable String username
+            @PathVariable String userEmail
     ) {
-        List<Invite> inviteList =  teamInviteService.userInviteList(username);
+        List<Invite> inviteList =  teamInviteService.userInviteWaitList(userEmail);
         return new ResponseDto<>(inviteList);
     }
 

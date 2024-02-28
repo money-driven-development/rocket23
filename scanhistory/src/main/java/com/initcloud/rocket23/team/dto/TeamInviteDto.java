@@ -28,12 +28,12 @@ public class TeamInviteDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class acceptRequest {
-        private String username;
+        private String email;
         private String teamCode;
         private boolean accept;
 
-        public acceptRequest(String username, String teamCode, boolean accept) {
-            this.username = username;
+        public acceptRequest(String email, String teamCode, boolean accept) {
+            this.email = email;
             this.teamCode = teamCode;
             this.accept = accept;
         }

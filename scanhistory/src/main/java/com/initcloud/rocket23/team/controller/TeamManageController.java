@@ -51,7 +51,7 @@ public class TeamManageController {
     public ResponseDto<String> memberInvite(
             @PathVariable String teamCode,
             @RequestBody TeamInviteDto.Request request
-    ) {
+    ) throws Exception {
         String response = teamManageService.inviteUser(teamCode, request);
 
         return new ResponseDto<>(response);

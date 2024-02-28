@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InviteRepository extends JpaRepository<Invite, Long> {
-    Invite findByUser_UsernameAndTeam_TeamCode(String username, String teamCode);
 
-    List<Invite> findByUser_Username(String username);
+    List<Invite> findByUser_Email(String userEmail);
+
+    List<Invite> findByUser_EmailAndTeam_TeamCode(String email, String teamCode);
 }

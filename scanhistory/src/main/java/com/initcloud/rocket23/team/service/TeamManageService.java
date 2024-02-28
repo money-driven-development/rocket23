@@ -14,6 +14,7 @@ import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import com.initcloud.rocket23.team.enums.InviteState;
 import com.initcloud.rocket23.user.entity.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,20 +35,26 @@ public class TeamManageService {
      * Todo - 현재는 DB로 관리하지만 만료 기한을 두고 캐시로 관리 예정
      * Todo - QueryDSL 또는 JPQL 로 단일 쿼리로 Join 하여 실행할 예정
      */
-    public String inviteUser(String teamCode, TeamInviteDto.Request dto) {
+    public String inviteUser(String teamCode, TeamInviteDto.Request dto) throws Exception {
+        try {
+            validInvite(dto);
 
-        Team team = teamRepository.findByTeamCode(dto.getTeamCode())
-                .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
+            Team team = teamRepository.findByTeamCode(dto.getTeamCode())
+                    .orElseThrow(() -> new ApiException(ResponseCode.INVALID_TEAM));
 
-        Optional<User> user = userRepository.findUserByEmail(dto.getEmail());
+            Optional<User> user = userRepository.findUserByEmail(dto.getEmail());
 
-        if (user.isPresent()) {
-            Invite newInvite = new Invite(user.get(), team, InviteState.wait);
-            inviteRepository.save(newInvite);
+            if (user.isPresent()) {
+                Invite newInvite = new Invite(user.get(), team, InviteState.wait);
+                inviteRepository.save(newInvite);
+            }
+
+            return dto.getEmail();
+        } catch (ApiException e) {
+            throw e;
         }
-
-        return dto.getEmail();
     }
+
 
     /**
      * [boolean] 멤버를 팀에서 탈퇴 시킴
@@ -97,5 +104,23 @@ public class TeamManageService {
         return new TeamInfo(team.getName(), team.getDescription(), team.getTeamCode());
 
     }
+
+    public void validInvite(TeamInviteDto.Request dto) throws Exception {
+        List<Invite> invites = inviteRepository.findByUser_EmailAndTeam_TeamCode(dto.getEmail(), dto.getTeamCode());
+
+        // 이미 승인된 초대가 1개라도 있는지 확인
+        Optional<TeamWithUsers> approveInvite = teamWithUsersRepository.findByUser_EmailAndTeam_TeamCode(dto.getEmail(), dto.getTeamCode());
+        if (approveInvite.isPresent()) {
+            throw new ApiException(ResponseCode.INVALID_INVITE);
+        }
+
+        boolean hasWait = invites.stream()
+                .anyMatch(invite -> InviteState.wait.equals(invite.getInviteState()));
+
+        if (hasWait) {
+            throw new ApiException(ResponseCode.PENDING_WAIT_INVITE);
+        }
+    }
+
 
 }

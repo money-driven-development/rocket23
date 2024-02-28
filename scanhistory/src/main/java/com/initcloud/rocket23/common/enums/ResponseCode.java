@@ -40,6 +40,10 @@ public enum ResponseCode {
     INVALID_POLICY_IN_TEAM(4704, HttpStatus.BAD_REQUEST, "Invalid policy in this team."),
     INVALID_POLICY_SET_IN_TEAM(4705, HttpStatus.BAD_REQUEST, "Invalid policy set in this team."),
     INVALID_OWNER(4706, HttpStatus.BAD_REQUEST, "Invalid owner for github organizations or users."),
+    INVALID_INVITE(4707, HttpStatus.BAD_REQUEST, "Invalid invite for user"),
+    USER_ALREADY_INVITED(4708, HttpStatus.BAD_REQUEST, "User already invited"),
+    PENDING_WAIT_INVITE(4709, HttpStatus.BAD_REQUEST, "There is a pending invitation for the user"),
+
 
     /* Server Error. */
     SERVER_BUSY(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Server busy."),
