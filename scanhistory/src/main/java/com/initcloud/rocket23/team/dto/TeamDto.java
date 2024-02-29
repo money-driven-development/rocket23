@@ -1,10 +1,9 @@
 package com.initcloud.rocket23.team.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import com.initcloud.rocket23.user.dto.UserDto;
+import com.initcloud.rocket23.user.dto.UserDto.UserInfo;
+import java.util.List;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,11 +32,13 @@ public class TeamDto {
         private String teamName;
         private String description;
         private String teamCode;
+        private List<UserInfo> user;
 
-        public TeamInfo(String teamName, String description, String teamCode) {
+        public TeamInfo(String teamName, String description, String teamCode, List<UserInfo> user) {
             this.teamName = teamName;
             this.description = description;
             this.teamCode = teamCode;
+            this.user = user;
         }
     }
 

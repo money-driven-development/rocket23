@@ -23,4 +23,6 @@ public interface TeamWithUsersRepository extends JpaRepository<TeamWithUsers, Lo
     Optional<TeamWithUsers> findTeamWithUsersByTeamAndUser(Team team, User user);
 
     List<TeamWithUsers> findTeamWithUsersByUser(User user);
+
+    List<TeamWithUsers> findByTeam_TeamCode(String teamCode);
 }

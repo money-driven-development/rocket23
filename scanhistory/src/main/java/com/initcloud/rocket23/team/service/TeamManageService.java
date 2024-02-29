@@ -13,8 +13,10 @@ import com.initcloud.rocket23.team.entity.Invite;
 import com.initcloud.rocket23.team.entity.Team;
 import com.initcloud.rocket23.team.entity.TeamWithUsers;
 import com.initcloud.rocket23.team.enums.InviteState;
+import com.initcloud.rocket23.user.dto.UserDto;
 import com.initcloud.rocket23.user.entity.User;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -101,8 +103,11 @@ public class TeamManageService {
      * */
     public TeamDto.TeamInfo getTeamInfo(String teamCode){
         Team team = teamInspectService.getTeam(teamCode);
-        return new TeamInfo(team.getName(), team.getDescription(), team.getTeamCode());
-
+        List<TeamWithUsers> teamWithUsers = teamWithUsersRepository.findByTeam_TeamCode(teamCode);
+        List<UserDto.UserInfo> userInfoList = teamWithUsers.stream()
+                .map(teamWithUser -> UserDto.UserInfo.of(teamWithUser.getUser()))
+                .collect(Collectors.toList());
+        return new TeamInfo(team.getName(), team.getDescription(), team.getTeamCode(), userInfoList);
     }
 
     public void validInvite(TeamInviteDto.Request dto) throws Exception {

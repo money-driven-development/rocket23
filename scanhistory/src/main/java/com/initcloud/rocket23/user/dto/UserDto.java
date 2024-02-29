@@ -34,6 +34,7 @@ public class UserDto {
 
 
     @Getter
+    @Builder
     public static class UserInfo {
 
         private UserState userState;
@@ -51,6 +52,16 @@ public class UserDto {
                     .email(email)
                     .contact(contact)
                     .profileImageUrl(profileImageUrl)
+                    .build();
+        }
+
+        public static UserInfo of(User user){
+            return UserInfo.builder()
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .email(user.getEmail())
+                    .contact(user.getContact())
+                    .profileImageUrl(user.getProfileImageUrl())
                     .build();
         }
 
